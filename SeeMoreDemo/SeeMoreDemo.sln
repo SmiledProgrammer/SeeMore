@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeeMoreDemo", "SeeMoreDemo\SeeMoreDemo.csproj", "{22EF445B-0BF2-45AC-9FB3-54305FC0C7C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeeMore", "..\SeeMore\SeeMore\SeeMore.csproj", "{7BB5C0CD-7993-4E82-B7EB-77ADD3C266D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22EF445B-0BF2-45AC-9FB3-54305FC0C7C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22EF445B-0BF2-45AC-9FB3-54305FC0C7C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22EF445B-0BF2-45AC-9FB3-54305FC0C7C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22EF445B-0BF2-45AC-9FB3-54305FC0C7C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BB5C0CD-7993-4E82-B7EB-77ADD3C266D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BB5C0CD-7993-4E82-B7EB-77ADD3C266D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BB5C0CD-7993-4E82-B7EB-77ADD3C266D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BB5C0CD-7993-4E82-B7EB-77ADD3C266D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D3E262CA-7F0A-4B9A-A7BF-153CA349AE3F}
+	EndGlobalSection
+EndGlobal

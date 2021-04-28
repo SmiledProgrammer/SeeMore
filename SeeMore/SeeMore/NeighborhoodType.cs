@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public enum Neighborhood
+    public enum NeighborhoodType
     {
         SKIP_UNDEFINED,
         ZERO_PADDING,

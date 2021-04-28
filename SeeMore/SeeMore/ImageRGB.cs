@@ -15,7 +15,7 @@ namespace SeeMore
             B = b;
         }
 
-        protected void ApplyToChannels(Func<T[,], int, int, T> operation)
+        protected void ApplyToChannels(Func<T[,], int, int, T> operation) //check if needed l8r
         {
             R.Apply(operation);
             G.Apply(operation);

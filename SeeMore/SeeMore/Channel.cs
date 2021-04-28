@@ -14,6 +14,7 @@ namespace SeeMore
             Pixels = new T[width, height];
         }
 
+        public abstract T Mean();
         public abstract void Apply(Func<T[,], int, int, T> operation);
         public abstract void Print(); //tmp
         public abstract void Randomize(); //tmp

@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public enum Filter
+    public enum FilterType
     {
         MEAN,
         MEDIAN

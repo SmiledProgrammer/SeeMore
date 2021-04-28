@@ -18,6 +18,11 @@ namespace SeeMore
             }
         }
 
+        public override byte Mean()
+        {
+            return default;
+        }
+
         public override void Print() //tmp
         {
             for (int y = 0; y < Height; y++)

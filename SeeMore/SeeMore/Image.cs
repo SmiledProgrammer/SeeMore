@@ -12,7 +12,7 @@ namespace SeeMore
             Height = height;
         }
 
-        public abstract Image Filter(Filter filter, Neighborhood neighborhood);
+        public abstract Image Filter(FilterType filter, NeighborhoodSize neighborhoodSize, NeighborhoodType neighborhoodType);
         public abstract Image Intensify(); //tmp
     }
 }

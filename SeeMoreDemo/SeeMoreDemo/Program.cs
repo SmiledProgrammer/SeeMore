@@ -11,7 +11,7 @@ namespace SeeMoreDemo
             ImageUInt8RGB rgbImg = (ImageUInt8RGB)img;
             rgbImg.GenerateSomeImage();
             rgbImg.Intensify();
-            Image outcome = rgbImg.Filter(filter: Filter.MEAN, neighborhood: Neighborhood.SKIP_UNDEFINED);
+            Image outcome = rgbImg.Filter(filter: FilterType.MEAN, neighborhoodSize: NeighborhoodSize.SIZE_5x5, neighborhoodType: NeighborhoodType.SKIP_UNDEFINED);
 
             Console.ReadLine();
         }
