@@ -7,11 +7,13 @@ namespace SeeMoreDemo
     {
         static void Main(string[] args)
         {
-            Image img = ImageFactory.Create(width: 5, height: 5, type: DataType.UInt8, model: ColorModel.RGB);
-            ImageUInt8RGB rgbImg = (ImageUInt8RGB)img;
-            rgbImg.GenerateSomeImage();
-            rgbImg.Intensify();
-            Image outcome = rgbImg.Filter(filter: FilterType.MEAN, neighborhoodSize: NeighborhoodSize.SIZE_5x5, neighborhoodType: NeighborhoodType.SKIP_UNDEFINED);
+            ImageUInt8RGB image = (ImageUInt8RGB)ImageFactory.Create(width: 5, height: 5, type: DataType.UInt8, model: ColorModel.RGB);
+            image.GenerateSomeImage();
+            ImageUInt8RGB outcome = (ImageUInt8RGB)image.Filter(filter: FilterType.AVERAGE, neighborhoodSize: NeighborhoodSize.SIZE_5x5, neighborhoodType: NeighborhoodType.MIRROR_EXTENSION);
+
+            image.Print();
+            Console.WriteLine();
+            outcome.Print();
 
             Console.ReadLine();
         }

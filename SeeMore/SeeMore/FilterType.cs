@@ -2,7 +2,12 @@
 {
     public enum FilterType
     {
-        MEAN,
-        MEDIAN
+        SUM,
+        AVERAGE,
+        MAXIMUM,
+        MINIMUM,
+        MEDIAN,
+        DIVERSITY,
+        RANGE
     }
 }

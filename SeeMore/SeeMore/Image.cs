@@ -6,13 +6,14 @@ namespace SeeMore
     {
         protected uint Width, Height;
 
-        public Image(uint width, uint height)
+        protected Image(uint width, uint height)
         {
             Width = width;
             Height = height;
         }
 
         public abstract Image Filter(FilterType filter, NeighborhoodSize neighborhoodSize, NeighborhoodType neighborhoodType);
-        public abstract Image Intensify(); //tmp
+        public abstract DataType GetDataType();
+        public abstract ColorModel GetColorModel();
     }
 }

@@ -7,18 +7,28 @@ namespace SeeMore
         public ImageUInt8RGB(uint width, uint height) : base(width, height, new ChannelUInt8(width, height), new ChannelUInt8(width, height), new ChannelUInt8(width, height))
         {}
 
-        public override Image Intensify() //tmp
+        public override void Average(Image originalImage, Action<byte[,], int, int, Action<byte>> neighborhoodFunction, uint x, uint y, Image outputImage)
         {
-            ImageUInt8RGB result = new ImageUInt8RGB(Width, Height);
-            Func<byte[,], int, int, byte> operation = (p, x, y) => (byte)(p[x,y] * 3 / 2);
-            result.ApplyToChannels(operation);
-            return result;
+            ImageUInt8RGB castedOriginalImage = (ImageUInt8RGB)originalImage;
+            ImageUInt8RGB castedOutputImage = (ImageUInt8RGB)outputImage;
+            castedOutputImage.R.Average(castedOriginalImage.R, neighborhoodFunction, x, y);
+            castedOutputImage.G.Average(castedOriginalImage.G, neighborhoodFunction, x, y);
+            castedOutputImage.B.Average(castedOriginalImage.B, neighborhoodFunction, x, y);
         }
+
+        public override DataType GetDataType()
+        {
+            return DataType.UInt8;
+        }
+
 
         public void Print() //tmp
         {
+            Console.WriteLine("R");
             R.Print();
+            Console.WriteLine("G");
             G.Print();
+            Console.WriteLine("B");
             B.Print();
         }
 

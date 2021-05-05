@@ -8,18 +8,16 @@ namespace SeeMore
         public Channel<T> G { get; protected set; }
         public Channel<T> B { get; protected set; }
 
-        public ImageRGB(uint width, uint height, Channel<T> r, Channel<T> g, Channel<T> b) : base(width, height)
+        protected ImageRGB(uint width, uint height, Channel<T> r, Channel<T> g, Channel<T> b) : base(width, height)
         {
             R = r;
             G = g;
             B = b;
         }
 
-        protected void ApplyToChannels(Func<T[,], int, int, T> operation) //check if needed l8r
+        public override ColorModel GetColorModel()
         {
-            R.Apply(operation);
-            G.Apply(operation);
-            B.Apply(operation);
+            return ColorModel.RGB;
         }
     }
 }

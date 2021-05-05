@@ -7,20 +7,18 @@ namespace SeeMore
         public ChannelUInt8(uint width, uint height) : base(width, height)
         {}
 
-        public override void Apply(Func<byte[,], int, int, byte> operation)
+        public override void Average(Channel<byte> originalChannel, Action<byte[,], int, int, Action<byte>> neighborhoodFunction, uint x, uint y)
         {
-            for (int x = 0; x < Width; x++)
+            ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
+            ushort sum = 0;
+            ushort count = 0;
+            Action<byte> filterFunction = (p) =>
             {
-                for (int y = 0; y < Height; y++)
-                {
-                    Pixels[x, y] = operation(Pixels, x, y);
-                }
-            }
-        }
-
-        public override byte Mean()
-        {
-            return default;
+                sum += (ushort)x;
+                count++;
+            };
+            neighborhoodFunction(castedOriginalChannel.Pixels, (int)x, (int)y, filterFunction);
+            Pixels[x, y] = (byte)(sum / count);
         }
 
         public override void Print() //tmp
