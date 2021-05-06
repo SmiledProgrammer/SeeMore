@@ -14,7 +14,7 @@ namespace SeeMore
             ushort count = 0;
             Action<byte> filterFunction = (p) =>
             {
-                sum += (ushort)x;
+                sum += (ushort)p;
                 count++;
             };
             neighborhoodFunction(castedOriginalChannel.Pixels, (int)x, (int)y, filterFunction);

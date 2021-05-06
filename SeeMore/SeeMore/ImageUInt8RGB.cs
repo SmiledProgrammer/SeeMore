@@ -26,10 +26,10 @@ namespace SeeMore
         {
             Console.WriteLine("R");
             R.Print();
-            Console.WriteLine("G");
-            G.Print();
-            Console.WriteLine("B");
-            B.Print();
+            //Console.WriteLine("G");
+            //G.Print();
+            //Console.WriteLine("B");
+            //B.Print();
         }
 
         public void GenerateSomeImage() //tmp
