@@ -9,7 +9,7 @@ namespace SeeMoreDemo
         {
             ImageUInt8RGB image = (ImageUInt8RGB)ImageFactory.Create(width: 5, height: 5, type: DataType.UInt8, model: ColorModel.RGB);
             image.GenerateSomeImage();
-            ImageUInt8RGB outcome = (ImageUInt8RGB)image.Filter(filter: FilterType.AVERAGE, neighborhoodSize: NeighborhoodSize.SIZE_3x3, neighborhoodType: NeighborhoodType.MIRROR_EXTENSION);
+            ImageUInt8RGB outcome = (ImageUInt8RGB)image.Filter(filter: FilterType.MEDIAN, neighborhoodSize: NeighborhoodSize.SIZE_3x3, neighborhoodType: NeighborhoodType.SKIP_UNDEFINED);
 
             image.Print();
             Console.WriteLine();

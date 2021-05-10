@@ -7,11 +7,10 @@ namespace SeeMore
         protected GenericImage(uint width, uint height) : base(width, height)
         {}
 
-        //public abstract void Sum(Image result, uint x, uint y);
-        public abstract void Average(Image originalImage, Action<T[,], int, int, Action<T>> neighborhoodFunction, uint x, uint y, Image outputImage);
+        public abstract void Average(Image originalImage, Action<T[,], int, int, Action<T>> neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
         //public abstract void Maximum(Image result, uint x, uint y);
         //public abstract void Minimum(Image result, uint x, uint y);
-        //public abstract void Median(Image result, uint x, uint y);
+        public abstract void Median(Image originalImage, Action<T[,], int, int, Action<T>> neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
         //public abstract void Diversity(Image result, uint x, uint y);
         //public abstract void Range(Image result, uint x, uint y);
 
@@ -27,12 +26,12 @@ namespace SeeMore
             uint lowerX, upperX, lowerY, upperY;
             GetNeighborhoodArea(neighborhoodType, range, out lowerX, out upperX, out lowerY, out upperY);
             Action<T[,], int, int, Action<T>> neighborhoodFunction = GetNeighborhoodFunction(neighborhoodType, (int)range);
-            Action<Image, Action<T[,], int, int, Action<T>>, uint, uint, Image> filterOperation = GetFilterOperation(filter);
+            Action<Image, Action<T[,], int, int, Action<T>>, uint, uint, uint, Image> filterOperation = GetFilterOperation(filter);
             for (uint x = lowerX; x < upperX; x++)
             {
                 for (uint y = lowerY; y < upperY; y++)
                 {
-                    filterOperation(this, neighborhoodFunction, x, y, result);
+                    filterOperation(this, neighborhoodFunction, size, x, y, result);
                 }
             }
             return result;
@@ -56,6 +55,7 @@ namespace SeeMore
             }
         }
 
+        // TODO: dla SKIP_UNDEFINED nie ustawiać zer, tylko kopiować wartość
         private Action<T[,], int, int, Action<T>> GetNeighborhoodFunction(NeighborhoodType neighborhoodType, int range) // TODO: zrobić for'y zliczające zamiast zwracania pojedynczych wartości
         {
             if (neighborhoodType == NeighborhoodType.MIRROR_EXTENSION)
@@ -93,28 +93,23 @@ namespace SeeMore
                         for (int y = py - range; y <= py + range; y++)
                         {
                             if (x < 0 || x >= Width || y < 0 || y >= Height)
-                            {
                                 act(default);
-                            }
                             else
-                            {
                                 act(pixels[x, y]);
-                            }
                         }
                     }
                 };
             }
         }
 
-        private Action<Image, Action<T[,], int, int, Action<T>>, uint, uint, Image> GetFilterOperation(FilterType filter)
+        private Action<Image, Action<T[,], int, int, Action<T>>, uint, uint, uint, Image> GetFilterOperation(FilterType filter)
         {
             switch (filter)
             {
-                //case FilterType.SUM: return Sum;
                 case FilterType.AVERAGE: return Average;
                 //case FilterType.MAXIMUM: return Maximum;
                 //case FilterType.MINIMUM: return Minimum;
-                //case FilterType.MEDIAN: return Median;
+                case FilterType.MEDIAN: return Median;
                 //case FilterType.DIVERSITY: return Diversity;
                 //case FilterType.RANGE: return Range;
                 default: return Average;
