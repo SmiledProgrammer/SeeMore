@@ -14,12 +14,14 @@ namespace SeeMore
             Pixels = new T[width, height];
         }
 
-        public abstract void Average(Channel<T> originalChannel, Action<T[,], int, int, Action<T>> neighborhoodFunction, uint x, uint y);
-        //public abstract void Maximum(Channel<T> originalChannel, Action<T[,], int, int, Action<T>> neighborhoodFunction, uint x, uint y);
-        //public abstract void Minimum(Channel<T> originalChannel, Action<T[,], int, int, Action<T>> neighborhoodFunction, uint x, uint y);
-        public abstract void Median(Channel<T> originalChannel, Action<T[,], int, int, Action<T>> neighborhoodFunction, uint x, uint y, uint neighborhoodSize);
-        //public abstract void Diversity(Channel<T> originalChannel, Action<T[,], int, int, Action<T>> neighborhoodFunction, uint x, uint y);
-        //public abstract void Range(Channel<T> originalChannel, Action<T[,], int, int, Action<T>> neighborhoodFunction, uint x, uint y);
+        public abstract Channel<T> Clone();
+
+        public abstract void Average(Channel<T> originalChannel, GenericImage<T>.NeighborhoodFunction neighborhoodFunction, uint x, uint y);
+        //public abstract void Maximum(Channel<T> originalChannel, NeighborhoodFunction neighborhoodFunction, uint x, uint y);
+        //public abstract void Minimum(Channel<T> originalChannel, NeighborhoodFunction neighborhoodFunction, uint x, uint y);
+        public abstract void Median(Channel<T> originalChannel, GenericImage<T>.NeighborhoodFunction neighborhoodFunction, uint x, uint y, uint neighborhoodSize);
+        //public abstract void Diversity(Channel<T> originalChannel, NeighborhoodFunction neighborhoodFunction, uint x, uint y);
+        //public abstract void Range(Channel<T> originalChannel, NeighborhoodFunction neighborhoodFunction, uint x, uint y);
 
         public abstract void Print(); //tmp
         public abstract void Randomize(); //tmp

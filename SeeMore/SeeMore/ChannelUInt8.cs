@@ -7,7 +7,20 @@ namespace SeeMore
         public ChannelUInt8(uint width, uint height) : base(width, height)
         { }
 
-        public override void Average(Channel<byte> originalChannel, Action<byte[,], int, int, Action<byte>> neighborhoodFunction, uint x, uint y)
+        public override Channel<byte> Clone()
+        {
+            ChannelUInt8 clone = new ChannelUInt8(Width, Height);
+            for (uint x = 0; x < Width; x++)
+            {
+                for (uint y = 0; y < Height; y++)
+                {
+                    clone.Pixels[x, y] = Pixels[x, y];
+                }
+            }
+            return clone;
+        }
+
+        public override void Average(Channel<byte> originalChannel, GenericImage<byte>.NeighborhoodFunction neighborhoodFunction, uint x, uint y)
         {
             ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
             ushort sum = 0;
@@ -22,7 +35,7 @@ namespace SeeMore
             Pixels[x, y] = average;
         }
 
-        public override void Median(Channel<byte> originalChannel, Action<byte[,], int, int, Action<byte>> neighborhoodFunction, uint x, uint y, uint neighborhoodSize)
+        public override void Median(Channel<byte> originalChannel, GenericImage<byte>.NeighborhoodFunction neighborhoodFunction, uint x, uint y, uint neighborhoodSize)
         {
             ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
             byte[] pixels = new byte[neighborhoodSize * neighborhoodSize];

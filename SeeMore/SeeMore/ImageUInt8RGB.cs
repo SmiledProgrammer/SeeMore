@@ -5,9 +5,18 @@ namespace SeeMore
     public class ImageUInt8RGB : ImageRGB<byte> // TODO: remove "public"
     {
         public ImageUInt8RGB(uint width, uint height) : base(width, height, new ChannelUInt8(width, height), new ChannelUInt8(width, height), new ChannelUInt8(width, height))
-        {}
+        { }
 
-        public override void Average(Image originalImage, Action<byte[,], int, int, Action<byte>> neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
+        public override Image Clone()
+        {
+            ImageUInt8RGB clone = new ImageUInt8RGB(Width, Height);
+            clone.R = R.Clone();
+            clone.G = G.Clone();
+            clone.B = B.Clone();
+            return clone;
+        }
+
+        protected override void Average(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageUInt8RGB castedOriginalImage = (ImageUInt8RGB)originalImage;
             ImageUInt8RGB castedOutputImage = (ImageUInt8RGB)outputImage;
@@ -16,7 +25,7 @@ namespace SeeMore
             castedOutputImage.B.Average(castedOriginalImage.B, neighborhoodFunction, x, y);
         }
 
-        public override void Median(Image originalImage, Action<byte[,], int, int, Action<byte>> neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
+        protected override void Median(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageUInt8RGB castedOriginalImage = (ImageUInt8RGB)originalImage;
             ImageUInt8RGB castedOutputImage = (ImageUInt8RGB)outputImage;
@@ -29,7 +38,6 @@ namespace SeeMore
         {
             return DataType.UInt8;
         }
-
 
         public void Print() //tmp
         {

@@ -12,6 +12,7 @@ namespace SeeMore
             Height = height;
         }
 
+        public abstract Image Clone();
         public abstract Image Filter(FilterType filter, NeighborhoodSize neighborhoodSize, NeighborhoodType neighborhoodType);
         public abstract DataType GetDataType();
         public abstract ColorModel GetColorModel();

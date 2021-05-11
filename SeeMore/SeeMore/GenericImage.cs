@@ -5,34 +5,41 @@ namespace SeeMore
     public abstract class GenericImage<T> : Image
     {
         protected GenericImage(uint width, uint height) : base(width, height)
-        {}
+        { }
 
-        public abstract void Average(Image originalImage, Action<T[,], int, int, Action<T>> neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
-        //public abstract void Maximum(Image result, uint x, uint y);
-        //public abstract void Minimum(Image result, uint x, uint y);
-        public abstract void Median(Image originalImage, Action<T[,], int, int, Action<T>> neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
-        //public abstract void Diversity(Image result, uint x, uint y);
-        //public abstract void Range(Image result, uint x, uint y);
+        public delegate void NeighborhoodFunction(T[,] pixels, int x, int y, Action<T> filterFunction);
+        public delegate void FilterOperation(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
+
+        protected abstract void Average(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
+        //protected abstract void Maximum(Image result, uint x, uint y);
+        //protected abstract void Minimum(Image result, uint x, uint y);
+        protected abstract void Median(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
+        //protected abstract void Diversity(Image result, uint x, uint y);
+        //protected abstract void Range(Image result, uint x, uint y);
 
         public override Image Filter(FilterType filter, NeighborhoodSize neighborhoodSize, NeighborhoodType neighborhoodType)
         {
             Image result = ImageFactory.Create(Width, Height, GetDataType(), GetColorModel());
             uint size = (uint)neighborhoodSize;
             uint range = size / 2;
-            if (Width < range + 1 || Height < range + 1)
+            if (Width < range + 1 || Height < range + 1) // TODO: needs testing
             {
                 throw new IndexOutOfRangeException("Neighborhood range cannot be greater than image size.");
             }
             uint lowerX, upperX, lowerY, upperY;
             GetNeighborhoodArea(neighborhoodType, range, out lowerX, out upperX, out lowerY, out upperY);
-            Action<T[,], int, int, Action<T>> neighborhoodFunction = GetNeighborhoodFunction(neighborhoodType, (int)range);
-            Action<Image, Action<T[,], int, int, Action<T>>, uint, uint, uint, Image> filterOperation = GetFilterOperation(filter);
+            NeighborhoodFunction neighborhoodFunction = GetNeighborhoodFunction(neighborhoodType, (int)range);
+            FilterOperation filterOperation = GetFilterOperation(filter);
             for (uint x = lowerX; x < upperX; x++)
             {
                 for (uint y = lowerY; y < upperY; y++)
                 {
                     filterOperation(this, neighborhoodFunction, size, x, y, result);
                 }
+            }
+            if (neighborhoodType == NeighborhoodType.SKIP_UNDEFINED) //TODO
+            {
+                //CopyUndefinedPixelsFromOriginalImage(result, )
             }
             return result;
         }
@@ -56,11 +63,11 @@ namespace SeeMore
         }
 
         // TODO: dla SKIP_UNDEFINED nie ustawiać zer, tylko kopiować wartość
-        private Action<T[,], int, int, Action<T>> GetNeighborhoodFunction(NeighborhoodType neighborhoodType, int range) // TODO: zrobić for'y zliczające zamiast zwracania pojedynczych wartości
+        private NeighborhoodFunction GetNeighborhoodFunction(NeighborhoodType neighborhoodType, int range) // TODO: zrobić for'y zliczające zamiast zwracania pojedynczych wartości
         {
             if (neighborhoodType == NeighborhoodType.MIRROR_EXTENSION)
             {
-                return (pixels, px, py, act) =>
+                return (pixels, px, py, action) =>
                 {
                     for (int x = px - range; x <= px + range; x++)
                     {
@@ -79,30 +86,30 @@ namespace SeeMore
                                 finalY = (int)(Height - (y - Height + 1));
                             else
                                 finalY = y;
-                            act(pixels[finalX, finalY]);
+                            action(pixels[finalX, finalY]);
                         }
                     }
                 };
             }
             else
             {
-                return (pixels, px, py, act) =>
+                return (pixels, px, py, action) =>
                 {
                     for (int x = px - range; x <= px + range; x++)
                     {
                         for (int y = py - range; y <= py + range; y++)
                         {
                             if (x < 0 || x >= Width || y < 0 || y >= Height)
-                                act(default);
+                                action(default);
                             else
-                                act(pixels[x, y]);
+                                action(pixels[x, y]);
                         }
                     }
                 };
             }
         }
 
-        private Action<Image, Action<T[,], int, int, Action<T>>, uint, uint, uint, Image> GetFilterOperation(FilterType filter)
+        private FilterOperation GetFilterOperation(FilterType filter)
         {
             switch (filter)
             {
