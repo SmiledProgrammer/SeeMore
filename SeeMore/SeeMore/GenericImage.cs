@@ -19,13 +19,17 @@ namespace SeeMore
 
         public override Image Filter(FilterType filter, NeighborhoodSize neighborhoodSize, NeighborhoodType neighborhoodType)
         {
-            Image result = ImageFactory.Create(Width, Height, GetDataType(), GetColorModel());
             uint size = (uint)neighborhoodSize;
             uint range = size / 2;
             if (Width < range + 1 || Height < range + 1) // TODO: needs testing
             {
                 throw new IndexOutOfRangeException("Neighborhood range cannot be greater than image size.");
             }
+            Image result;
+            if (neighborhoodType == NeighborhoodType.SKIP_UNDEFINED)
+                result = Clone();
+            else
+                result = ImageFactory.Create(Width, Height, GetDataType(), GetColorModel());
             uint lowerX, upperX, lowerY, upperY;
             GetNeighborhoodArea(neighborhoodType, range, out lowerX, out upperX, out lowerY, out upperY);
             NeighborhoodFunction neighborhoodFunction = GetNeighborhoodFunction(neighborhoodType, (int)range);
@@ -36,10 +40,6 @@ namespace SeeMore
                 {
                     filterOperation(this, neighborhoodFunction, size, x, y, result);
                 }
-            }
-            if (neighborhoodType == NeighborhoodType.SKIP_UNDEFINED) //TODO
-            {
-                //CopyUndefinedPixelsFromOriginalImage(result, )
             }
             return result;
         }
