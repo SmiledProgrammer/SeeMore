@@ -25,11 +25,13 @@ namespace SeeMore
             {
                 throw new IndexOutOfRangeException("Neighborhood range cannot be greater than image size.");
             }
+
             Image result;
             if (neighborhoodType == NeighborhoodType.SKIP_UNDEFINED)
                 result = Clone();
             else
                 result = ImageFactory.Create(Width, Height, GetDataType(), GetColorModel());
+
             uint lowerX, upperX, lowerY, upperY;
             GetNeighborhoodArea(neighborhoodType, range, out lowerX, out upperX, out lowerY, out upperY);
             NeighborhoodFunction neighborhoodFunction = GetNeighborhoodFunction(neighborhoodType, (int)range);
@@ -62,7 +64,6 @@ namespace SeeMore
             }
         }
 
-        // TODO: dla SKIP_UNDEFINED nie ustawiać zer, tylko kopiować wartość
         private NeighborhoodFunction GetNeighborhoodFunction(NeighborhoodType neighborhoodType, int range) // TODO: zrobić for'y zliczające zamiast zwracania pojedynczych wartości
         {
             if (neighborhoodType == NeighborhoodType.MIRROR_EXTENSION)

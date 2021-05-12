@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace SeeMore
+﻿namespace SeeMore
 {
     public abstract class Channel<T>
     {
         protected uint Width, Height;
-        protected T[,] Pixels;
+        public T[,] Pixels { get; set; }
 
         public Channel(uint width, uint height)
         {

@@ -1,15 +1,17 @@
-﻿using System;
-
-namespace SeeMore
+﻿namespace SeeMore
 {
-    public class ImageUInt8RGB : ImageRGB<byte> // TODO: remove "public"
+    public abstract class ImageRGB<T> : GenericImage<T> // TODO: remove "public"
     {
-        public ImageUInt8RGB(uint width, uint height) : base(width, height, new ChannelUInt8(width, height), new ChannelUInt8(width, height), new ChannelUInt8(width, height))
+        public Channel<T> R { get; protected set; }
+        public Channel<T> G { get; protected set; }
+        public Channel<T> B { get; protected set; }
+
+        protected ImageRGB(uint width, uint height) : base(width, height)
         { }
 
         public override Image Clone()
         {
-            ImageUInt8RGB clone = new ImageUInt8RGB(Width, Height);
+            ImageRGB<T> clone = (ImageRGB <T>)ImageFactory.Create(Width, Height, GetDataType(), ColorModel.RGB);
             clone.R = R.Clone();
             clone.G = G.Clone();
             clone.B = B.Clone();
@@ -18,8 +20,8 @@ namespace SeeMore
 
         protected override void Average(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
-            ImageUInt8RGB castedOriginalImage = (ImageUInt8RGB)originalImage;
-            ImageUInt8RGB castedOutputImage = (ImageUInt8RGB)outputImage;
+            ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
+            ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
             castedOutputImage.R.Average(castedOriginalImage.R, neighborhoodFunction, x, y);
             castedOutputImage.G.Average(castedOriginalImage.G, neighborhoodFunction, x, y);
             castedOutputImage.B.Average(castedOriginalImage.B, neighborhoodFunction, x, y);
@@ -27,33 +29,18 @@ namespace SeeMore
 
         protected override void Median(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
-            ImageUInt8RGB castedOriginalImage = (ImageUInt8RGB)originalImage;
-            ImageUInt8RGB castedOutputImage = (ImageUInt8RGB)outputImage;
+            ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
+            ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
             castedOutputImage.R.Median(castedOriginalImage.R, neighborhoodFunction, x, y, neighborhoodSize);
             castedOutputImage.G.Median(castedOriginalImage.G, neighborhoodFunction, x, y, neighborhoodSize);
             castedOutputImage.B.Median(castedOriginalImage.B, neighborhoodFunction, x, y, neighborhoodSize);
         }
 
-        public override DataType GetDataType()
+        public override ColorModel GetColorModel()
         {
-            return DataType.UInt8;
+            return ColorModel.RGB;
         }
 
-        public void Print() //tmp
-        {
-            Console.WriteLine("R");
-            R.Print();
-            //Console.WriteLine("G");
-            //G.Print();
-            //Console.WriteLine("B");
-            //B.Print();
-        }
-
-        public void GenerateSomeImage() //tmp
-        {
-            R.Randomize();
-            G.Randomize();
-            B.Randomize();
-        }
+        public abstract ImageHSV<T> ToHSV();
     }
 }

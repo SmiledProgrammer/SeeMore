@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SeeMore
+﻿namespace SeeMore
 {
     public abstract class Image
     {
