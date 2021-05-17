@@ -5,4 +5,8 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="7.24.0" />
+  </ItemGroup>
+
 </Project>

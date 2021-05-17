@@ -11,7 +11,8 @@
         }
 
         public abstract Image Clone();
-        public abstract Image Filter(FilterType filter, NeighborhoodSize neighborhoodSize, NeighborhoodType neighborhoodType);
+        public abstract Image Filter(FilterType filter, NeighborhoodSize neighborhoodSize, EdgeHandling neighborhoodType);
+        public abstract ImageUInt8RGB ToByteRGBImage();
         public abstract DataType GetDataType();
         public abstract ColorModel GetColorModel();
     }

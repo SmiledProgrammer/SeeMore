@@ -7,7 +7,7 @@ namespace SeeMore
         protected GenericImage(uint width, uint height) : base(width, height)
         { }
 
-        public delegate void NeighborhoodFunction(T[,] pixels, int x, int y, Action<T> filterFunction);
+        public delegate void NeighborhoodFunction(T[,] pixels, uint x, uint y, Action<T> filterFunction);
         public delegate void FilterOperation(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
 
         protected abstract void Average(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
@@ -17,7 +17,7 @@ namespace SeeMore
         //protected abstract void Diversity(Image result, uint x, uint y);
         //protected abstract void Range(Image result, uint x, uint y);
 
-        public override Image Filter(FilterType filter, NeighborhoodSize neighborhoodSize, NeighborhoodType neighborhoodType)
+        public override Image Filter(FilterType filter, NeighborhoodSize neighborhoodSize, EdgeHandling neighborhoodType)
         {
             uint size = (uint)neighborhoodSize;
             uint range = size / 2;
@@ -27,7 +27,7 @@ namespace SeeMore
             }
 
             Image result;
-            if (neighborhoodType == NeighborhoodType.SKIP_UNDEFINED)
+            if (neighborhoodType == EdgeHandling.SKIP_UNDEFINED)
                 result = Clone();
             else
                 result = ImageFactory.Create(Width, Height, GetDataType(), GetColorModel());
@@ -46,9 +46,9 @@ namespace SeeMore
             return result;
         }
 
-        private void GetNeighborhoodArea(NeighborhoodType neighborhoodType, uint neighborhoodRange, out uint lowerX, out uint upperX, out uint lowerY, out uint upperY)
+        private void GetNeighborhoodArea(EdgeHandling neighborhoodType, uint neighborhoodRange, out uint lowerX, out uint upperX, out uint lowerY, out uint upperY)
         {
-            if (neighborhoodType == NeighborhoodType.SKIP_UNDEFINED)
+            if (neighborhoodType == EdgeHandling.SKIP_UNDEFINED)
             {
                 lowerX = neighborhoodRange;
                 upperX = Width - neighborhoodRange;
@@ -64,12 +64,14 @@ namespace SeeMore
             }
         }
 
-        private NeighborhoodFunction GetNeighborhoodFunction(NeighborhoodType neighborhoodType, int range) // TODO: zrobić for'y zliczające zamiast zwracania pojedynczych wartości
+        private NeighborhoodFunction GetNeighborhoodFunction(EdgeHandling neighborhoodType, int range) // TODO: zrobić for'y zliczające zamiast zwracania pojedynczych wartości
         {
-            if (neighborhoodType == NeighborhoodType.MIRROR_EXTENSION)
+            if (neighborhoodType == EdgeHandling.MIRROR_EXTENSION)
             {
-                return (pixels, px, py, action) =>
+                return (pixels, ppx, ppy, action) =>
                 {
+                    int px = (int)ppx;
+                    int py = (int)ppy;
                     for (int x = px - range; x <= px + range; x++)
                     {
                         for (int y = py - range; y <= py + range; y++)
@@ -94,8 +96,10 @@ namespace SeeMore
             }
             else
             {
-                return (pixels, px, py, action) =>
+                return (pixels, ppx, ppy, action) =>
                 {
+                    int px = (int)ppx;
+                    int py = (int)ppy;
                     for (int x = px - range; x <= px + range; x++)
                     {
                         for (int y = py - range; y <= py + range; y++)

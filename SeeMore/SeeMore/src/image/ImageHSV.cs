@@ -9,6 +9,8 @@
         protected ImageHSV(uint width, uint height) : base(width, height)
         { }
 
+        public abstract ImageRGB<T> ToRGB();
+
         public override Image Clone()
         {
             ImageHSV<T> clone = (ImageHSV<T>)ImageFactory.Create(Width, Height, GetDataType(), ColorModel.HSV);
@@ -32,7 +34,5 @@
         {
             return ColorModel.HSV;
         }
-
-        public abstract ImageRGB<T> ToRGB();
     }
 }

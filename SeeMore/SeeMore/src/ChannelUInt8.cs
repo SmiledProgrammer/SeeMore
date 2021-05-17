@@ -30,7 +30,7 @@ namespace SeeMore
                 sum += (ushort)p;
                 count++;
             };
-            neighborhoodFunction(castedOriginalChannel.Pixels, (int)x, (int)y, filterFunction);
+            neighborhoodFunction(castedOriginalChannel.Pixels, x, y, filterFunction);
             byte average = (byte)(sum / count);
             Pixels[x, y] = average;
         }
@@ -45,7 +45,7 @@ namespace SeeMore
                 pixels[count] = p;
                 count++;
             };
-            neighborhoodFunction(castedOriginalChannel.Pixels, (int)x, (int)y, filterFunction);
+            neighborhoodFunction(castedOriginalChannel.Pixels, x, y, filterFunction);
             Array.Sort(pixels);
             byte median = pixels[count / 2];
             Pixels[x, y] = median;

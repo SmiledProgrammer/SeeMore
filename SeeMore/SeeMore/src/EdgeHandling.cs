@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public enum NeighborhoodType
+    public enum EdgeHandling
     {
         SKIP_UNDEFINED,
         ZERO_PADDING,

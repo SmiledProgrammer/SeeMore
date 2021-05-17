@@ -49,6 +49,11 @@ namespace SeeMore
             return hsvImage;
         }
 
+        public override ImageUInt8RGB ToByteRGBImage()
+        {
+            return (ImageUInt8RGB)Clone();
+        }
+
         public override DataType GetDataType()
         {
             return DataType.UInt8;
@@ -62,13 +67,6 @@ namespace SeeMore
             //G.Print();
             //Console.WriteLine("B");
             //B.Print();
-        }
-
-        public void GenerateSomeImage() //tmp
-        {
-            R.Randomize();
-            G.Randomize();
-            B.Randomize();
         }
     }
 }

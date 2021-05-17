@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public enum FilterType
+    public enum FilterType // TODO: rename
     {
         SUM,
         AVERAGE,

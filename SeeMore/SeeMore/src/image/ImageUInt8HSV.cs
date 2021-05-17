@@ -69,6 +69,11 @@
             return rgbImage;
         }
 
+        public override ImageUInt8RGB ToByteRGBImage()
+        {
+            return (ImageUInt8RGB)ToRGB();
+        }
+
         public override DataType GetDataType()
         {
             return DataType.UInt8;
