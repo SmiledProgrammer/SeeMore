@@ -2,7 +2,7 @@
 
 namespace SeeMore
 {
-    public class ImageUInt8RGB : ImageRGB<byte> // TODO: remove "public"
+    public class ImageUInt8RGB : ImageRGB<byte>
     {
         public ImageUInt8RGB(uint width, uint height) : base(width, height)
         {
@@ -57,16 +57,6 @@ namespace SeeMore
         public override DataType GetDataType()
         {
             return DataType.UInt8;
-        }
-
-        public void Print() //tmp
-        {
-            Console.WriteLine("R");
-            R.Print();
-            //Console.WriteLine("G");
-            //G.Print();
-            //Console.WriteLine("B");
-            //B.Print();
         }
     }
 }

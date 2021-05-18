@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public abstract class ImageRGB<T> : GenericImage<T> // TODO: remove "public"
+    public abstract class ImageRGB<T> : GenericImage<T>
     {
         public Channel<T> R { get; set; }
         public Channel<T> G { get; set; }

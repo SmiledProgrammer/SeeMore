@@ -2,7 +2,8 @@
 {
     public abstract class Image
     {
-        protected uint Width, Height;
+        public uint Width { get; }
+        public uint Height { get; }
 
         protected Image(uint width, uint height)
         {
@@ -11,8 +12,8 @@
         }
 
         public abstract Image Clone();
-        public abstract Image Filter(FilterType filter, NeighborhoodSize neighborhoodSize, EdgeHandling neighborhoodType);
         public abstract ImageUInt8RGB ToByteRGBImage();
+        public abstract Image Filter(FilterType filter, NeighborhoodSize neighborhoodSize, EdgeHandling neighborhoodType);
         public abstract DataType GetDataType();
         public abstract ColorModel GetColorModel();
     }

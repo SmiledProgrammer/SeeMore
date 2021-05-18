@@ -20,6 +20,20 @@ namespace SeeMore
             return clone;
         }
 
+        public override byte[,] ToByteArray() // TODO: remove unnecessary code l8r
+        {
+            /*byte[,] array = new byte[Width, Height];
+            for (uint x = 0; x < Width; x++)
+            {
+                for (uint y = 0; y < Height; y++)
+                {
+                    array[x, y] = Pixels[x, y];
+                }
+            }*/
+            byte[,] array = Pixels.Clone() as byte[,];
+            return array;
+        }
+
         public override void Average(Channel<byte> originalChannel, GenericImage<byte>.NeighborhoodFunction neighborhoodFunction, uint x, uint y)
         {
             ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
@@ -49,30 +63,6 @@ namespace SeeMore
             Array.Sort(pixels);
             byte median = pixels[count / 2];
             Pixels[x, y] = median;
-        }
-
-        public override void Print() //tmp
-        {
-            for (int y = 0; y < Height; y++)
-            {
-                for (int x = 0; x < Width; x++)
-                {
-                    Console.Write(Pixels[x, y] + "   ");
-                }
-                Console.WriteLine();
-            }
-        }
-
-        public override void Randomize() //tmp
-        {
-            Random rand = new Random();
-            for (int x = 0; x < Width; x++)
-            {
-                for (int y = 0; y < Height; y++)
-                {
-                    Pixels[x, y] = (byte)rand.Next(0, 255);
-                }
-            }
         }
     }
 }

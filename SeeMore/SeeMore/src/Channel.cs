@@ -13,6 +13,7 @@
         }
 
         public abstract Channel<T> Clone();
+        public abstract byte[,] ToByteArray();
 
         public abstract void Average(Channel<T> originalChannel, GenericImage<T>.NeighborhoodFunction neighborhoodFunction, uint x, uint y);
         //public abstract void Maximum(Channel<T> originalChannel, NeighborhoodFunction neighborhoodFunction, uint x, uint y);
@@ -20,8 +21,5 @@
         public abstract void Median(Channel<T> originalChannel, GenericImage<T>.NeighborhoodFunction neighborhoodFunction, uint x, uint y, uint neighborhoodSize);
         //public abstract void Diversity(Channel<T> originalChannel, NeighborhoodFunction neighborhoodFunction, uint x, uint y);
         //public abstract void Range(Channel<T> originalChannel, NeighborhoodFunction neighborhoodFunction, uint x, uint y);
-
-        public abstract void Print(); //tmp
-        public abstract void Randomize(); //tmp
     }
 }
