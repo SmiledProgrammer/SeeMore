@@ -9,8 +9,6 @@
         protected ImageRGB(uint width, uint height) : base(width, height)
         { }
 
-        public abstract ImageHSV<T> ToHSV();
-
         public override Image Clone()
         {
             ImageRGB<T> clone = (ImageRGB <T>)ImageFactory.Create(Width, Height, GetDataType(), ColorModel.RGB);
@@ -18,6 +16,11 @@
             clone.G = G.Clone();
             clone.B = B.Clone();
             return clone;
+        }
+
+        public override ImageRGB<T> ToRGB()
+        {
+            return (ImageRGB<T>)Clone();
         }
 
         protected override void Average(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)

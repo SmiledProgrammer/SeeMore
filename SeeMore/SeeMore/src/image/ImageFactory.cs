@@ -13,16 +13,37 @@ namespace SeeMore
                     switch (type)
                     {
                         case DataType.UInt8:  return new ImageUInt8RGB(width, height);
-                        case DataType.UInt16: return new ImageUInt8RGB(width, height); //TODO
-                        case DataType.UInt32: return new ImageUInt8RGB(width, height); //TODO
-                        case DataType.Double: return new ImageUInt8RGB(width, height); //TODO
+                        case DataType.UInt16: return null; //TODO
+                        case DataType.UInt32: return null; //TODO
+                        case DataType.Double: return null; //TODO
                     }
                     break;
                 case ColorModel.HSV:
-                    //TODO
+                    switch (type)
+                    {
+                        case DataType.UInt8:  return new ImageUInt8HSV(width, height);
+                        case DataType.UInt16: return null; //TODO
+                        case DataType.UInt32: return null; //TODO
+                        case DataType.Double: return null; //TODO
+                    }
                     break;
                 case ColorModel.CMYK:
-                    //TODO
+                    switch (type)
+                    {
+                        case DataType.UInt8:  return null; //TODO
+                        case DataType.UInt16: return null; //TODO
+                        case DataType.UInt32: return null; //TODO
+                        case DataType.Double: return null; //TODO
+                    }
+                    break;
+                case ColorModel.GRAY:
+                    switch (type)
+                    {
+                        case DataType.UInt8:  return new ImageUInt8Gray(width, height);
+                        case DataType.UInt16: return null; //TODO
+                        case DataType.UInt32: return null; //TODO
+                        case DataType.Double: return null; //TODO
+                    }
                     break;
             }
             return null;
@@ -38,15 +59,15 @@ namespace SeeMore
                 for (int y = 0; y < image.Height; y++)
                 {
                     IPixel<byte> pixel = pixelCollection.GetPixel(x, y);
-                    result.R.Pixels[x, y] = pixel.GetChannel(0);
-                    result.G.Pixels[x, y] = pixel.GetChannel(1);
-                    result.B.Pixels[x, y] = pixel.GetChannel(2);
+                    result.R[x, y] = pixel.GetChannel(0);
+                    result.G[x, y] = pixel.GetChannel(1);
+                    result.B[x, y] = pixel.GetChannel(2);
                 }
             }
             return result;
         }
 
-        public static void SaveImageToFile(string filepath, Image image)
+        public static void SaveImageToFile(string filepath, Image image, MagickFormat format = MagickFormat.Png)
         {
             ImageUInt8RGB rgbImage = image.ToByteRGBImage();
             byte[,] r = rgbImage.R.ToByteArray();

@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public abstract class ImageHSV<T> : GenericImage<T> // TODO: remove "public"
+    public abstract class ImageHSV<T> : GenericImage<T>
     {
         public Channel<T> H { get; protected set; }
         public Channel<T> S { get; protected set; }
@@ -9,8 +9,6 @@
         protected ImageHSV(uint width, uint height) : base(width, height)
         { }
 
-        public abstract ImageRGB<T> ToRGB();
-
         public override Image Clone()
         {
             ImageHSV<T> clone = (ImageHSV<T>)ImageFactory.Create(Width, Height, GetDataType(), ColorModel.HSV);
@@ -18,6 +16,11 @@
             clone.S = S.Clone();
             clone.V = V.Clone();
             return clone;
+        }
+
+        public override ImageHSV<T> ToHSV()
+        {
+            return (ImageHSV<T>)Clone();
         }
 
         protected override void Average(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)

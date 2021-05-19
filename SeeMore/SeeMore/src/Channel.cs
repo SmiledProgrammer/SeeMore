@@ -19,7 +19,12 @@
         //public abstract void Maximum(Channel<T> originalChannel, NeighborhoodFunction neighborhoodFunction, uint x, uint y);
         //public abstract void Minimum(Channel<T> originalChannel, NeighborhoodFunction neighborhoodFunction, uint x, uint y);
         public abstract void Median(Channel<T> originalChannel, GenericImage<T>.NeighborhoodFunction neighborhoodFunction, uint x, uint y, uint neighborhoodSize);
-        //public abstract void Diversity(Channel<T> originalChannel, NeighborhoodFunction neighborhoodFunction, uint x, uint y);
         //public abstract void Range(Channel<T> originalChannel, NeighborhoodFunction neighborhoodFunction, uint x, uint y);
+        
+        public T this[int x, int y]
+        {
+            get => Pixels[x, y];
+            set => Pixels[x, y] = value;
+        }
     }
 }

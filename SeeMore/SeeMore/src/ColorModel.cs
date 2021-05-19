@@ -4,6 +4,7 @@
     {
         RGB,
         HSV,
-        CMYK
+        CMYK,
+        GRAY
     }
 }

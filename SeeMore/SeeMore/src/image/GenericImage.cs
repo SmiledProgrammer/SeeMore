@@ -10,11 +10,13 @@ namespace SeeMore
         public delegate void NeighborhoodFunction(T[,] pixels, uint x, uint y, Action<T> filterFunction);
         public delegate void FilterOperation(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
 
+        public abstract ImageRGB<T> ToRGB();
+        public abstract ImageHSV<T> ToHSV();
+
         protected abstract void Average(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
         //protected abstract void Maximum(Image result, uint x, uint y);
         //protected abstract void Minimum(Image result, uint x, uint y);
         protected abstract void Median(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
-        //protected abstract void Diversity(Image result, uint x, uint y);
         //protected abstract void Range(Image result, uint x, uint y);
 
         public override Image Filter(FilterType filter, NeighborhoodSize neighborhoodSize, EdgeHandling neighborhoodType)

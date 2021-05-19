@@ -10,11 +10,11 @@ namespace SeeMore
         public override Channel<byte> Clone()
         {
             ChannelUInt8 clone = new ChannelUInt8(Width, Height);
-            for (uint x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (uint y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
-                    clone.Pixels[x, y] = Pixels[x, y];
+                    clone[x, y] = Pixels[x, y];
                 }
             }
             return clone;
@@ -41,7 +41,7 @@ namespace SeeMore
             byte count = 0;
             Action<byte> filterFunction = (p) =>
             {
-                sum += (ushort)p;
+                sum += p;
                 count++;
             };
             neighborhoodFunction(castedOriginalChannel.Pixels, x, y, filterFunction);

@@ -12,18 +12,18 @@
         public override ImageRGB<byte> ToRGB()
         {
             ImageRGB<byte> rgbImage = new ImageUInt8RGB(Width, Height);
-            for (uint x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (uint y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
-                    byte h = H.Pixels[x, y];
-                    byte s = S.Pixels[x, y];
-                    byte v = V.Pixels[x, y];
+                    byte h = H[x, y];
+                    byte s = S[x, y];
+                    byte v = V[x, y];
                     if (s == 0)
                     {
-                        rgbImage.R.Pixels[x, y] = v;
-                        rgbImage.G.Pixels[x, y] = v;
-                        rgbImage.B.Pixels[x, y] = v;
+                        rgbImage.R[x, y] = v;
+                        rgbImage.G[x, y] = v;
+                        rgbImage.B[x, y] = v;
                         break;
                     }
                     byte region = (byte)(h / 43);
@@ -34,34 +34,34 @@
                     switch (region)
                     {
                         case 0:
-                            rgbImage.R.Pixels[x, y] = v;
-                            rgbImage.G.Pixels[x, y] = t;
-                            rgbImage.B.Pixels[x, y] = p;
+                            rgbImage.R[x, y] = v;
+                            rgbImage.G[x, y] = t;
+                            rgbImage.B[x, y] = p;
                             break;
                         case 1:
-                            rgbImage.R.Pixels[x, y] = q;
-                            rgbImage.G.Pixels[x, y] = v;
-                            rgbImage.B.Pixels[x, y] = p;
+                            rgbImage.R[x, y] = q;
+                            rgbImage.G[x, y] = v;
+                            rgbImage.B[x, y] = p;
                             break;
                         case 2:
-                            rgbImage.R.Pixels[x, y] = p;
-                            rgbImage.G.Pixels[x, y] = v;
-                            rgbImage.B.Pixels[x, y] = t;
+                            rgbImage.R[x, y] = p;
+                            rgbImage.G[x, y] = v;
+                            rgbImage.B[x, y] = t;
                             break;
                         case 3:
-                            rgbImage.R.Pixels[x, y] = p;
-                            rgbImage.G.Pixels[x, y] = q;
-                            rgbImage.B.Pixels[x, y] = v;
+                            rgbImage.R[x, y] = p;
+                            rgbImage.G[x, y] = q;
+                            rgbImage.B[x, y] = v;
                             break;
                         case 4:
-                            rgbImage.R.Pixels[x, y] = t;
-                            rgbImage.G.Pixels[x, y] = p;
-                            rgbImage.B.Pixels[x, y] = v;
+                            rgbImage.R[x, y] = t;
+                            rgbImage.G[x, y] = p;
+                            rgbImage.B[x, y] = v;
                             break;
                         default:
-                            rgbImage.R.Pixels[x, y] = v;
-                            rgbImage.G.Pixels[x, y] = p;
-                            rgbImage.B.Pixels[x, y] = q;
+                            rgbImage.R[x, y] = v;
+                            rgbImage.G[x, y] = p;
+                            rgbImage.B[x, y] = q;
                             break;
                     }
                 }
