@@ -24,7 +24,7 @@
                         rgbImage.R[x, y] = v;
                         rgbImage.G[x, y] = v;
                         rgbImage.B[x, y] = v;
-                        break;
+                        continue;
                     }
                     byte region = (byte)(h / 43);
                     byte remainder = (byte)((h - (region * 43)) * 6);

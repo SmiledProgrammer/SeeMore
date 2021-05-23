@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public abstract class ImageRGB<T> : GenericImage<T>
+    public abstract class ImageRGB<T> : Image<T>
     {
         public Channel<T> R { get; set; }
         public Channel<T> G { get; set; }
@@ -9,9 +9,9 @@
         protected ImageRGB(uint width, uint height) : base(width, height)
         { }
 
-        public override Image Clone()
+        public override Image<T> Clone()
         {
-            ImageRGB<T> clone = (ImageRGB <T>)ImageFactory.Create(Width, Height, GetDataType(), ColorModel.RGB);
+            ImageRGB<T> clone = (ImageRGB<T>)ImageFactory.Create<T>(Width, Height, ColorModel.RGB);
             clone.R = R.Clone();
             clone.G = G.Clone();
             clone.B = B.Clone();
@@ -23,7 +23,7 @@
             return (ImageRGB<T>)Clone();
         }
 
-        protected override void Average(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
+        protected override void Average(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
@@ -32,7 +32,7 @@
             castedOutputImage.B.Average(castedOriginalImage.B, neighborhoodFunction, x, y);
         }
 
-        protected override void Median(Image originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
+        protected override void Median(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;

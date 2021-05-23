@@ -34,7 +34,7 @@ namespace SeeMore
             return array;
         }
 
-        public override void Average(Channel<byte> originalChannel, GenericImage<byte>.NeighborhoodFunction neighborhoodFunction, uint x, uint y)
+        public override void Average(Channel<byte> originalChannel, Image<byte>.NeighborhoodFunction neighborhoodFunction, uint x, uint y)
         {
             ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
             ushort sum = 0;
@@ -49,7 +49,7 @@ namespace SeeMore
             Pixels[x, y] = average;
         }
 
-        public override void Median(Channel<byte> originalChannel, GenericImage<byte>.NeighborhoodFunction neighborhoodFunction, uint x, uint y, uint neighborhoodSize)
+        public override void Median(Channel<byte> originalChannel, Image<byte>.NeighborhoodFunction neighborhoodFunction, uint x, uint y, uint neighborhoodSize)
         {
             ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
             byte[] pixels = new byte[neighborhoodSize * neighborhoodSize];

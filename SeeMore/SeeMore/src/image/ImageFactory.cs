@@ -1,55 +1,56 @@
 ﻿using ImageMagick;
-using System.IO;
+using System;
 
 namespace SeeMore
 {
     public static class ImageFactory
     {
-        public static Image Create(uint width, uint height, DataType type, ColorModel model)
+        public static Image<T> Create<T>(uint width, uint height, ColorModel model = ColorModel.RGB)
         {
+            string type = typeof(T).FullName;
             switch (model)
             {
                 case ColorModel.RGB:
                     switch (type)
                     {
-                        case DataType.UInt8:  return new ImageUInt8RGB(width, height);
-                        case DataType.UInt16: return null; //TODO
-                        case DataType.UInt32: return null; //TODO
-                        case DataType.Double: return null; //TODO
+                        case "System.Byte":  return new ImageUInt8RGB(width, height) as Image<T>;
+                        case "System.Int16": return null; //TODO
+                        case "System.Int32": return null; //TODO
+                        case "System.Double": return null; //TODO
+                        default: throw new NotSupportedException("Neighborhood range cannot be greater than image size.");
                     }
-                    break;
                 case ColorModel.HSV:
                     switch (type)
                     {
-                        case DataType.UInt8:  return new ImageUInt8HSV(width, height);
-                        case DataType.UInt16: return null; //TODO
-                        case DataType.UInt32: return null; //TODO
-                        case DataType.Double: return null; //TODO
+                        case "System.Byte": return new ImageUInt8HSV(width, height) as Image<T>;
+                        case "System.Int16": return null; //TODO
+                        case "System.Int32": return null; //TODO
+                        case "System.Double": return null; //TODO
+                        default: throw new NotSupportedException("Neighborhood range cannot be greater than image size.");
                     }
-                    break;
                 case ColorModel.CMYK:
                     switch (type)
                     {
-                        case DataType.UInt8:  return null; //TODO
-                        case DataType.UInt16: return null; //TODO
-                        case DataType.UInt32: return null; //TODO
-                        case DataType.Double: return null; //TODO
+                        case "System.Byte": return null;
+                        case "System.Int16": return null; //TODO
+                        case "System.Int32": return null; //TODO
+                        case "System.Double": return null; //TODO
+                        default: throw new NotSupportedException("Neighborhood range cannot be greater than image size.");
                     }
-                    break;
                 case ColorModel.GRAY:
                     switch (type)
                     {
-                        case DataType.UInt8:  return new ImageUInt8Gray(width, height);
-                        case DataType.UInt16: return null; //TODO
-                        case DataType.UInt32: return null; //TODO
-                        case DataType.Double: return null; //TODO
+                        case "System.Byte": return new ImageUInt8Gray(width, height) as Image<T>;
+                        case "System.Int16": return null; //TODO
+                        case "System.Int32": return null; //TODO
+                        case "System.Double": return null; //TODO
+                        default: throw new NotSupportedException("Neighborhood range cannot be greater than image size.");
                     }
-                    break;
             }
             return null;
         }
 
-        public static Image LoadFromFile(string filepath)
+        public static ImageUInt8RGB LoadFromFile(string filepath)
         {
             var image = new MagickImage(filepath);
             ImageUInt8RGB result = new ImageUInt8RGB((uint)image.Width, (uint)image.Height);
@@ -67,26 +68,26 @@ namespace SeeMore
             return result;
         }
 
-        public static void SaveImageToFile(string filepath, Image image, MagickFormat format = MagickFormat.Png)
+        public static void SaveImageToFile(string filepath, ImageUInt8RGB byteRgbImage, MagickFormat format = MagickFormat.Png)
         {
-            ImageUInt8RGB rgbImage = image.ToByteRGBImage();
-            byte[,] r = rgbImage.R.ToByteArray();
-            byte[,] g = rgbImage.G.ToByteArray();
-            byte[,] b = rgbImage.B.ToByteArray();
-            byte[] data = new byte[image.Width * image.Height * 3];
-            for (uint y = 0; y < image.Height; y++)
+            uint width = byteRgbImage.Width;
+            uint height = byteRgbImage.Height;
+            byte[,] r = byteRgbImage.R.ToByteArray();
+            byte[,] g = byteRgbImage.G.ToByteArray();
+            byte[,] b = byteRgbImage.B.ToByteArray();
+            byte[] data = new byte[width * height * 3];
+            for (uint y = 0; y < height; y++)
             {
-                for (uint x = 0; x < image.Width; x++)
+                for (uint x = 0; x < width; x++)
                 {
-                    data[3*image.Width*y + 3*x] = r[x, y];
-                    data[3*image.Width*y + 3*x + 1] = g[x, y];
-                    data[3*image.Width*y + 3*x + 2] = b[x, y];
+                    data[3*width*y + 3*x] = r[x, y];
+                    data[3*width*y + 3*x + 1] = g[x, y];
+                    data[3*width*y + 3*x + 2] = b[x, y];
                 }
             }
-            var memoryStream = new MemoryStream();
             var readSettings = new MagickReadSettings();
-            readSettings.Width = (int)image.Width;
-            readSettings.Height = (int)image.Height;
+            readSettings.Width = (int)width;
+            readSettings.Height = (int)height;
             readSettings.Format = MagickFormat.Rgb;
             var savedImage = new MagickImage(data, readSettings);
             savedImage.Format = MagickFormat.Png;

@@ -28,15 +28,15 @@ namespace SeeMore
                     {
                         hsvImage.S[x, y] = 0;
                         hsvImage.H[x, y] = 0;
-                        break;
+                        continue;
                     }
                     byte diff = (byte)(max - min);
-                    byte saturation = (byte)(255 * diff / max);
+                    byte saturation = (byte)(255 * (long)diff / max);
                     hsvImage.S[x, y] = saturation;
                     if (saturation == 0)
                     {
                         hsvImage.H[x, y] = 0;
-                        break;
+                        continue;
                     }
                     if (max == r)
                         hsvImage.H[x, y] = (byte)(43 * (g - b) / diff);
