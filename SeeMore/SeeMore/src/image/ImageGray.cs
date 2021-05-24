@@ -14,6 +14,11 @@
             return clone;
         }
 
+        public override ImageGray<T> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
+        {
+            return (ImageGray<T>)Clone();
+        }
+
         protected override void Average(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageGray<T> castedOriginalImage = (ImageGray<T>)originalImage;

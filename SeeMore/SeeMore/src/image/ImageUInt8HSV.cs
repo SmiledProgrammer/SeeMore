@@ -69,6 +69,11 @@
             return rgbImage;
         }
 
+        public override ImageGray<byte> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
+        {
+            return ToRGB().ToGray();
+        }
+
         public override ImageUInt8RGB ToByteRGBImage()
         {
             return (ImageUInt8RGB)ToRGB();

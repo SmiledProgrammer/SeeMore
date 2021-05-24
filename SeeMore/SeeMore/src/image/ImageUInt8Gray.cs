@@ -9,18 +9,6 @@
 
         public override ImageRGB<byte> ToRGB()
         {
-            // TODO
-            return null;
-        }
-
-        public override ImageHSV<byte> ToHSV()
-        {
-            // TODO
-            return null;
-        }
-
-        public override ImageUInt8RGB ToByteRGBImage()
-        {
             ImageUInt8RGB result = new ImageUInt8RGB(Width, Height);
             for (int x = 0; x < Width; x++)
             {
@@ -32,6 +20,17 @@
                 }
             }
             return result;
+        }
+
+        public override ImageHSV<byte> ToHSV()
+        {
+            // TODO
+            return null;
+        }
+
+        public override ImageUInt8RGB ToByteRGBImage()
+        {
+            return (ImageUInt8RGB)ToRGB();
         }
 
         public override DataType GetDataType()

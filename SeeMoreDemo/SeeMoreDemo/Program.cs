@@ -7,9 +7,10 @@ namespace SeeMoreDemo
         static void Main(string[] args)
         {
             string inputFile = "D:/Pulpit/Pliki szkolne/Semestr 4/Projekt Indywidualny/SeeMore/SeeMoreDemo/SeeMoreDemo/resources/dog.jpg";
-            string outputFile = "D:/Pulpit/Pliki szkolne/Semestr 4/Projekt Indywidualny/SeeMore/SeeMoreDemo/SeeMoreDemo/resources/test.png";
+            string outputFile = "D:/Pulpit/Pliki szkolne/Semestr 4/Projekt Indywidualny/SeeMore/SeeMoreDemo/SeeMoreDemo/resources/gray_harmonic.png";
             var image = ImageFactory.LoadFromFile(inputFile);
-            var outcome = image.ToHSV().ToRGB().Filter(filter: FilterType.AVERAGE, neighborhoodSize: NeighborhoodSize.SIZE_9x9, edgeHandling: EdgeHandling.MIRROR_EXTENSION);
+            //var outcome = image.ToHSV().ToRGB().Filter(filter: FilterType.AVERAGE, neighborhoodSize: NeighborhoodSize.SIZE_9x9, edgeHandling: EdgeHandling.MIRROR_EXTENSION);
+            var outcome = image.ToGray(GrayscaleConversionMethod.HARMONIC_MEAN);
             ImageFactory.SaveImageToFile(outputFile, outcome.ToByteRGBImage());
         }
     }
