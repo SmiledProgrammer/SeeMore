@@ -5,6 +5,8 @@ namespace SeeMore
 {
     public static class ImageFactory
     {
+        private static string WrongTypeExceptionMessage = "Neighborhood range cannot be greater than image size.";
+
         public static Image<T> Create<T>(uint width, uint height, ColorModel model = ColorModel.RGB)
         {
             string type = typeof(T).FullName;
@@ -17,7 +19,7 @@ namespace SeeMore
                         case "System.Int16": return null; //TODO
                         case "System.Int32": return null; //TODO
                         case "System.Double": return null; //TODO
-                        default: throw new NotSupportedException("Neighborhood range cannot be greater than image size.");
+                        default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
                 case ColorModel.HSV:
                     switch (type)
@@ -26,7 +28,7 @@ namespace SeeMore
                         case "System.Int16": return null; //TODO
                         case "System.Int32": return null; //TODO
                         case "System.Double": return null; //TODO
-                        default: throw new NotSupportedException("Neighborhood range cannot be greater than image size.");
+                        default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
                 case ColorModel.CMYK:
                     switch (type)
@@ -35,7 +37,7 @@ namespace SeeMore
                         case "System.Int16": return null; //TODO
                         case "System.Int32": return null; //TODO
                         case "System.Double": return null; //TODO
-                        default: throw new NotSupportedException("Neighborhood range cannot be greater than image size.");
+                        default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
                 case ColorModel.GRAY:
                     switch (type)
@@ -44,7 +46,7 @@ namespace SeeMore
                         case "System.Int16": return null; //TODO
                         case "System.Int32": return null; //TODO
                         case "System.Double": return null; //TODO
-                        default: throw new NotSupportedException("Neighborhood range cannot be greater than image size.");
+                        default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
             }
             return null;

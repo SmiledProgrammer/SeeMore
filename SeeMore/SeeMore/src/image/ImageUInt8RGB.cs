@@ -49,32 +49,6 @@ namespace SeeMore
             return hsvImage;
         }
 
-        public override ImageGray<byte> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN) // TODO: try to move this function to ImageRGB
-        {
-            ImageUInt8Gray grayImage = new ImageUInt8Gray(Width, Height);
-            Func<int, int, int, double> conversionFunction;
-            switch (method)
-            {
-                case GrayscaleConversionMethod.GEOMETRIC_MEAN:
-                    conversionFunction = (r, g, b) => (double)Math.Pow(r * g * b, 1.0 / 3.0);
-                    break;
-                case GrayscaleConversionMethod.HARMONIC_MEAN:
-                    conversionFunction = (r, g, b) => (double)(3.0 / (1.0 / r + 1.0 / g + 1.0 / b));
-                    break;
-                default:
-                    conversionFunction = (r, g, b) => (r + g + b) / 3.0;
-                    break;
-            }
-            for (uint x = 0; x < Width; x++)
-            {
-                for (uint y = 0; y < Height; y++)
-                {
-                    grayImage.Gray.Pixels[x, y] = (byte)conversionFunction(R.Pixels[x, y], G.Pixels[x, y], B.Pixels[x, y]);
-                }
-            }
-            return grayImage;
-        }
-
         public override ImageUInt8RGB ToByteRGBImage()
         {
             return (ImageUInt8RGB)Clone();

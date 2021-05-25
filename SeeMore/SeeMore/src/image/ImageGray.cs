@@ -7,6 +7,8 @@
         protected ImageGray(uint width, uint height) : base(width, height)
         { }
 
+        public abstract void SetPixelValueFromDouble(uint x, uint y, double value);
+
         public override Image<T> Clone()
         {
             ImageGray<T> clone = (ImageGray<T>)ImageFactory.Create<T>(Width, Height, ColorModel.GRAY);

@@ -17,10 +17,10 @@ namespace SeeMore
         public delegate void FilterOperation(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
 
         public abstract Image<T> Clone();
-        public abstract ImageUInt8RGB ToByteRGBImage();
         public abstract ImageRGB<T> ToRGB();
         public abstract ImageHSV<T> ToHSV();
         public abstract ImageGray<T> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN);
+        public abstract ImageUInt8RGB ToByteRGBImage();
         public abstract DataType GetDataType();
         public abstract ColorModel GetColorModel();
 

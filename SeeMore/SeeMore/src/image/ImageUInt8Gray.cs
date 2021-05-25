@@ -7,6 +7,11 @@
             Gray = new ChannelUInt8(width, height);
         }
 
+        public override void SetPixelValueFromDouble(uint x, uint y, double value)
+        {
+            Gray.Pixels[x, y] = (byte)value;
+        }
+
         public override ImageRGB<byte> ToRGB()
         {
             ImageUInt8RGB result = new ImageUInt8RGB(Width, Height);

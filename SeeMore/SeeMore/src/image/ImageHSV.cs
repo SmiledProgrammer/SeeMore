@@ -25,12 +25,20 @@
 
         protected override void Average(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
-            // TODO
+            ImageHSV<T> castedOriginalImage = (ImageHSV<T>)originalImage;
+            ImageHSV<T> castedOutputImage = (ImageHSV<T>)outputImage;
+            castedOutputImage.H.Average(castedOriginalImage.H, neighborhoodFunction, x, y);
+            castedOutputImage.S.Average(castedOriginalImage.S, neighborhoodFunction, x, y);
+            castedOutputImage.V.Average(castedOriginalImage.V, neighborhoodFunction, x, y);
         }
 
         protected override void Median(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
-            // TODO
+            ImageHSV<T> castedOriginalImage = (ImageHSV<T>)originalImage;
+            ImageHSV<T> castedOutputImage = (ImageHSV<T>)outputImage;
+            castedOutputImage.H.Median(castedOriginalImage.H, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.S.Median(castedOriginalImage.S, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.V.Median(castedOriginalImage.V, neighborhoodFunction, x, y, neighborhoodSize);
         }
 
         public override ColorModel GetColorModel()

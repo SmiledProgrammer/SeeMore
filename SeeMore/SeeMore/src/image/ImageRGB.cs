@@ -1,4 +1,6 @@
-﻿namespace SeeMore
+﻿using System;
+
+namespace SeeMore
 {
     public abstract class ImageRGB<T> : Image<T>
     {
@@ -21,6 +23,32 @@
         public override ImageRGB<T> ToRGB()
         {
             return (ImageRGB<T>)Clone();
+        }
+
+        public override ImageGray<T> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
+        {
+            ImageGray<T> grayImage = (ImageGray<T>)ImageFactory.Create<T>(Width, Height, ColorModel.GRAY);
+            Func<double, double, double, double> conversionFunction;
+            switch (method)
+            {
+                case GrayscaleConversionMethod.GEOMETRIC_MEAN:
+                    conversionFunction = (r, g, b) => Math.Pow(r * g * b, 1.0 / 3.0);
+                    break;
+                case GrayscaleConversionMethod.HARMONIC_MEAN:
+                    conversionFunction = (r, g, b) => (3.0 / (1.0 / r + 1.0 / g + 1.0 / b));
+                    break;
+                default:
+                    conversionFunction = (r, g, b) => (r + g + b) / 3.0;
+                    break;
+            }
+            for (uint x = 0; x < Width; x++)
+            {
+                for (uint y = 0; y < Height; y++)
+                {
+                    grayImage.SetPixelValueFromDouble(x, y, conversionFunction(Convert.ToDouble(R.Pixels[x, y]), Convert.ToDouble(G.Pixels[x, y]), Convert.ToDouble(B.Pixels[x, y])));
+                }
+            }
+            return grayImage;
         }
 
         protected override void Average(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
