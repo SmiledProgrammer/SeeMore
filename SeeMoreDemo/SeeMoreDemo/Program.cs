@@ -10,7 +10,7 @@ namespace SeeMoreDemo
             string outputFile = "D:/Pulpit/Pliki szkolne/Semestr 4/Projekt Indywidualny/SeeMore/SeeMoreDemo/SeeMoreDemo/resources/test.png";
             var image = ImageFactory.LoadFromFile(inputFile);
             //var outcome = image.Filter(filter: FilterType.AVERAGE, neighborhoodSize: NeighborhoodSize.SIZE_9x9, edgeHandling: EdgeHandling.MIRROR_EXTENSION);
-            var outcome = image.ToGray(GrayscaleConversionMethod.ARITHMETIC_MEAN);
+            var outcome = image.ToCMYK().ToRGB();
             ImageFactory.SaveImageToFile(outputFile, outcome.ToByteRGBImage());
         }
     }

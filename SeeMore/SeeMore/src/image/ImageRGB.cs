@@ -35,7 +35,7 @@ namespace SeeMore
                     conversionFunction = (r, g, b) => Math.Pow(r * g * b, 1.0 / 3.0);
                     break;
                 case GrayscaleConversionMethod.HARMONIC_MEAN:
-                    conversionFunction = (r, g, b) => (3.0 / (1.0 / r + 1.0 / g + 1.0 / b));
+                    conversionFunction = (r, g, b) => 3.0 / (1.0 / r + 1.0 / g + 1.0 / b);
                     break;
                 default:
                     conversionFunction = (r, g, b) => (r + g + b) / 3.0;
@@ -55,9 +55,9 @@ namespace SeeMore
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
-            castedOutputImage.R.Average(castedOriginalImage.R, neighborhoodFunction, x, y);
-            castedOutputImage.G.Average(castedOriginalImage.G, neighborhoodFunction, x, y);
-            castedOutputImage.B.Average(castedOriginalImage.B, neighborhoodFunction, x, y);
+            castedOutputImage.R.Average(castedOriginalImage.R, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.G.Average(castedOriginalImage.G, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.B.Average(castedOriginalImage.B, neighborhoodFunction, x, y, neighborhoodSize);
         }
 
         protected override void Median(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
@@ -67,6 +67,33 @@ namespace SeeMore
             castedOutputImage.R.Median(castedOriginalImage.R, neighborhoodFunction, x, y, neighborhoodSize);
             castedOutputImage.G.Median(castedOriginalImage.G, neighborhoodFunction, x, y, neighborhoodSize);
             castedOutputImage.B.Median(castedOriginalImage.B, neighborhoodFunction, x, y, neighborhoodSize);
+        }
+
+        protected override void Maximum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        {
+            ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
+            ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
+            castedOutputImage.R.Maximum(castedOriginalImage.R, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.G.Maximum(castedOriginalImage.G, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.B.Maximum(castedOriginalImage.B, neighborhoodFunction, x, y, neighborhoodSize);
+        }
+
+        protected override void Minimum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        {
+            ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
+            ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
+            castedOutputImage.R.Minimum(castedOriginalImage.R, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.G.Minimum(castedOriginalImage.G, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.B.Minimum(castedOriginalImage.B, neighborhoodFunction, x, y, neighborhoodSize);
+        }
+
+        protected override void Range(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        {
+            ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
+            ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
+            castedOutputImage.R.Range(castedOriginalImage.R, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.G.Range(castedOriginalImage.G, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.B.Range(castedOriginalImage.B, neighborhoodFunction, x, y, neighborhoodSize);
         }
 
         public override ColorModel GetColorModel()

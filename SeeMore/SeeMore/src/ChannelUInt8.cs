@@ -10,9 +10,9 @@ namespace SeeMore
         public override Channel<byte> Clone()
         {
             ChannelUInt8 clone = new ChannelUInt8(Width, Height);
-            for (int x = 0; x < Width; x++)
+            for (uint x = 0; x < Width; x++)
             {
-                for (int y = 0; y < Height; y++)
+                for (uint y = 0; y < Height; y++)
                 {
                     clone[x, y] = Pixels[x, y];
                 }
@@ -34,7 +34,7 @@ namespace SeeMore
             return array;
         }
 
-        public override void Average(Channel<byte> originalChannel, Image<byte>.NeighborhoodFunction neighborhoodFunction, uint x, uint y)
+        public override void Average(Channel<byte> originalChannel, Image<byte>.NeighborhoodFunction neighborhoodFunction, uint x, uint y, uint neighborhoodSize)
         {
             ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
             ushort sum = 0;
@@ -63,6 +63,56 @@ namespace SeeMore
             Array.Sort(pixels);
             byte median = pixels[count / 2];
             Pixels[x, y] = median;
+        }
+
+        public override void Maximum(Channel<byte> originalChannel, Image<byte>.NeighborhoodFunction neighborhoodFunction, uint x, uint y, uint neighborhoodSize)
+        {
+            ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
+            byte max = 0;
+            Action<byte> filterFunction = (p) =>
+            {
+                if (p >= max)
+                {
+                    max = p;
+                }
+            };
+            neighborhoodFunction(castedOriginalChannel.Pixels, x, y, filterFunction);
+            Pixels[x, y] = max;
+        }
+
+        public override void Minimum(Channel<byte> originalChannel, Image<byte>.NeighborhoodFunction neighborhoodFunction, uint x, uint y, uint neighborhoodSize)
+        {
+            ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
+            byte min = 255;
+            Action<byte> filterFunction = (p) =>
+            {
+                if (p <= min)
+                {
+                    min = p;
+                }
+            };
+            neighborhoodFunction(castedOriginalChannel.Pixels, x, y, filterFunction);
+            Pixels[x, y] = min;
+        }
+
+        public override void Range(Channel<byte> originalChannel, Image<byte>.NeighborhoodFunction neighborhoodFunction, uint x, uint y, uint neighborhoodSize)
+        {
+            ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
+            byte max = 0;
+            byte min = 255;
+            Action<byte> filterFunction = (p) =>
+            {
+                if (p >= max)
+                {
+                    max = p;
+                }
+                if (p <= min)
+                {
+                    min = p;
+                }
+            };
+            neighborhoodFunction(castedOriginalChannel.Pixels, x, y, filterFunction);
+            Pixels[x, y] = (byte)(max - min);
         }
     }
 }

@@ -1,13 +1,11 @@
 ﻿namespace SeeMore
 {
-    public enum FilterType // TODO: rename
+    public enum FilterType
     {
-        SUM,
         AVERAGE,
+        MEDIAN,
         MAXIMUM,
         MINIMUM,
-        MEDIAN,
-        DIVERSITY,
         RANGE
     }
 }

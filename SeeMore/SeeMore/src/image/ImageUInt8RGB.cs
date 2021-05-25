@@ -14,9 +14,9 @@ namespace SeeMore
         public override ImageHSV<byte> ToHSV()
         {
             ImageHSV<byte> hsvImage = new ImageUInt8HSV(Width, Height);
-            for (int x = 0; x < Width; x++)
+            for (uint x = 0; x < Width; x++)
             {
-                for (int y = 0; y < Height; y++)
+                for (uint y = 0; y < Height; y++)
                 {
                     byte r = R[x, y];
                     byte g = G[x, y];
@@ -47,6 +47,35 @@ namespace SeeMore
                 }
             }
             return hsvImage;
+        }
+
+        public override ImageCMYK<byte> ToCMYK()
+        {
+            ImageCMYK<byte> cmykImage = new ImageUInt8CMYK(Width, Height);
+            for (uint x = 0; x < Width; x++)
+            {
+                for (uint y = 0; y < Height; y++)
+                {
+                    byte r = R[x, y];
+                    byte g = G[x, y];
+                    byte b = B[x, y];
+                    byte max = Math.Max(r, Math.Max(g, b));
+                    if (max == 0)
+                    {
+                        cmykImage.C[x, y] = 0;
+                        cmykImage.M[x, y] = 0;
+                        cmykImage.Y[x, y] = 0;
+                        cmykImage.K[x, y] = 255;
+                        continue;
+                    }
+                    double k = 1.0 - (max / 255.0);
+                    cmykImage.K[x, y] = (byte)(255 * k);
+                    cmykImage.C[x, y] = (byte)(255 * ((1 - (r / 255.0) - k) / (1 - k)));
+                    cmykImage.M[x, y] = (byte)(255 * ((1 - (g / 255.0) - k) / (1 - k)));
+                    cmykImage.Y[x, y] = (byte)(255 * ((1 - (b / 255.0) - k) / (1 - k)));
+                }
+            }
+            return cmykImage;
         }
 
         public override ImageUInt8RGB ToByteRGBImage()

@@ -19,16 +19,17 @@ namespace SeeMore
         public abstract Image<T> Clone();
         public abstract ImageRGB<T> ToRGB();
         public abstract ImageHSV<T> ToHSV();
+        public abstract ImageCMYK<T> ToCMYK();
         public abstract ImageGray<T> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN);
         public abstract ImageUInt8RGB ToByteRGBImage();
         public abstract DataType GetDataType();
         public abstract ColorModel GetColorModel();
 
         protected abstract void Average(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
-        //protected abstract void Maximum(Image result, uint x, uint y);
-        //protected abstract void Minimum(Image result, uint x, uint y);
         protected abstract void Median(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
-        //protected abstract void Range(Image result, uint x, uint y);
+        protected abstract void Maximum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        protected abstract void Minimum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        protected abstract void Range(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
 
         public Image<T> Filter(FilterType filter, NeighborhoodSize neighborhoodSize, EdgeHandling edgeHandling)
         {

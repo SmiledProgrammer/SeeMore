@@ -16,6 +16,11 @@
             return clone;
         }
 
+        public override ImageHSV<T> ToHSV()
+        {
+            return ToRGB().ToHSV();
+        }
+
         public override ImageGray<T> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
         {
             return (ImageGray<T>)Clone();
@@ -25,7 +30,7 @@
         {
             ImageGray<T> castedOriginalImage = (ImageGray<T>)originalImage;
             ImageGray<T> castedOutputImage = (ImageGray<T>)outputImage;
-            castedOutputImage.Gray.Average(castedOriginalImage.Gray, neighborhoodFunction, x, y);
+            castedOutputImage.Gray.Average(castedOriginalImage.Gray, neighborhoodFunction, x, y, neighborhoodSize);
         }
 
         protected override void Median(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
@@ -33,6 +38,27 @@
             ImageGray<T> castedOriginalImage = (ImageGray<T>)originalImage;
             ImageGray<T> castedOutputImage = (ImageGray<T>)outputImage;
             castedOutputImage.Gray.Median(castedOriginalImage.Gray, neighborhoodFunction, x, y, neighborhoodSize);
+        }
+
+        protected override void Maximum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        {
+            ImageGray<T> castedOriginalImage = (ImageGray<T>)originalImage;
+            ImageGray<T> castedOutputImage = (ImageGray<T>)outputImage;
+            castedOutputImage.Gray.Maximum(castedOriginalImage.Gray, neighborhoodFunction, x, y, neighborhoodSize);
+        }
+
+        protected override void Minimum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        {
+            ImageGray<T> castedOriginalImage = (ImageGray<T>)originalImage;
+            ImageGray<T> castedOutputImage = (ImageGray<T>)outputImage;
+            castedOutputImage.Gray.Minimum(castedOriginalImage.Gray, neighborhoodFunction, x, y, neighborhoodSize);
+        }
+
+        protected override void Range(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        {
+            ImageGray<T> castedOriginalImage = (ImageGray<T>)originalImage;
+            ImageGray<T> castedOutputImage = (ImageGray<T>)outputImage;
+            castedOutputImage.Gray.Range(castedOriginalImage.Gray, neighborhoodFunction, x, y, neighborhoodSize);
         }
 
         public override ColorModel GetColorModel()

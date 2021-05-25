@@ -57,11 +57,11 @@ namespace SeeMore
             var image = new MagickImage(filepath);
             ImageUInt8RGB result = new ImageUInt8RGB((uint)image.Width, (uint)image.Height);
             IPixelCollection<byte> pixelCollection = image.GetPixels();
-            for (int x = 0; x < image.Width; x++)
+            for (uint x = 0; x < image.Width; x++)
             {
-                for (int y = 0; y < image.Height; y++)
+                for (uint y = 0; y < image.Height; y++)
                 {
-                    IPixel<byte> pixel = pixelCollection.GetPixel(x, y);
+                    IPixel<byte> pixel = pixelCollection.GetPixel((int)x, (int)y);
                     result.R[x, y] = pixel.GetChannel(0);
                     result.G[x, y] = pixel.GetChannel(1);
                     result.B[x, y] = pixel.GetChannel(2);
