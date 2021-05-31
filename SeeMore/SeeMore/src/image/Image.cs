@@ -13,8 +13,8 @@ namespace SeeMore
             Height = height;
         }
 
-        public delegate void NeighborhoodFunction(T[,] pixels, uint x, uint y, Action<T> filterFunction);
-        public delegate void FilterOperation(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        public delegate void KernelFunction(Channel<T> channel, uint x, uint y, Action<double> filterFunction);
+        public delegate void FilterOperation(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
 
         public abstract Image<T> Clone();
         public abstract ImageRGB<T> ToRGB();
@@ -25,15 +25,15 @@ namespace SeeMore
         public abstract DataType GetDataType();
         public abstract ColorModel GetColorModel();
 
-        protected abstract void Average(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
-        protected abstract void Median(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
-        protected abstract void Maximum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
-        protected abstract void Minimum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
-        protected abstract void Range(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        protected abstract void Average(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        protected abstract void Median(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        protected abstract void Maximum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        protected abstract void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        protected abstract void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
 
-        public Image<T> Filter(FilterType filter, NeighborhoodSize neighborhoodSize, EdgeHandling edgeHandling)
+        public Image<T> Filter(FilterType filter, Kernel kernel, EdgeHandling edgeHandling)
         {
-            uint size = (uint)neighborhoodSize;
+            uint size = kernel.Size;
             uint range = size / 2;
             if (Width < range + 1 || Height < range + 1) // TODO: needs testing
             {
@@ -47,27 +47,27 @@ namespace SeeMore
                 result = ImageFactory.Create<T>(Width, Height, GetColorModel());
 
             uint lowerX, upperX, lowerY, upperY;
-            GetNeighborhoodArea(edgeHandling, range, out lowerX, out upperX, out lowerY, out upperY);
-            NeighborhoodFunction neighborhoodFunction = GetNeighborhoodFunction(edgeHandling, (int)range);
+            GetFilterArea(edgeHandling, range, out lowerX, out upperX, out lowerY, out upperY);
+            KernelFunction kernelFunction = GetKernelFunction(kernel, edgeHandling, (int)range);
             FilterOperation filterOperation = GetFilterOperation(filter);
             for (uint x = lowerX; x < upperX; x++)
             {
                 for (uint y = lowerY; y < upperY; y++)
                 {
-                    filterOperation(this, neighborhoodFunction, size, x, y, result);
+                    filterOperation(this, kernelFunction, size, x, y, result);
                 }
             }
             return result;
         }
 
-        private void GetNeighborhoodArea(EdgeHandling edgeHandling, uint neighborhoodRange, out uint lowerX, out uint upperX, out uint lowerY, out uint upperY)
+        private void GetFilterArea(EdgeHandling edgeHandling, uint range, out uint lowerX, out uint upperX, out uint lowerY, out uint upperY)
         {
             if (edgeHandling == EdgeHandling.SKIP_UNDEFINED)
             {
-                lowerX = neighborhoodRange;
-                upperX = Width - neighborhoodRange;
-                lowerY = neighborhoodRange;
-                upperY = Height - neighborhoodRange;
+                lowerX = range;
+                upperX = Width - range;
+                lowerY = range;
+                upperY = Height - range;
             }
             else
             {
@@ -78,50 +78,54 @@ namespace SeeMore
             }
         }
 
-        private NeighborhoodFunction GetNeighborhoodFunction(EdgeHandling edgeHandling, int range)
+        private KernelFunction GetKernelFunction(Kernel kernel, EdgeHandling edgeHandling, int range)
         {
             if (edgeHandling == EdgeHandling.MIRROR_EXTENSION)
             {
-                return (pixels, ppx, ppy, action) =>
+                return (channel, ppx, ppy, action) =>
                 {
-                    int px = (int)ppx;
-                    int py = (int)ppy;
-                    for (int x = px - range; x <= px + range; x++)
+                    int middleX = (int)ppx;
+                    int middleY = (int)ppy;
+                    for (int x = 0; x < kernel.Size; x++)
                     {
-                        for (int y = py - range; y <= py + range; y++)
+                        for (int y = 0; y < kernel.Size; y++)
                         {
+                            int pixelX = middleX - range + x;
+                            int pixelY = middleY - range + y;
                             int finalX, finalY;
-                            if (x < 0)
-                                finalX = -x;
-                            else if (x >= Width)
-                                finalX = (int)(Width - (x - Width + 1));
+                            if (pixelX < 0)
+                                finalX = -pixelX;
+                            else if (pixelX >= Width)
+                                finalX = (int)(Width - (pixelX - Width + 1));
                             else
-                                finalX = x;
-                            if (y < 0)
-                                finalY = -y;
-                            else if (y >= Height)
-                                finalY = (int)(Height - (y - Height + 1));
+                                finalX = pixelX;
+                            if (pixelY < 0)
+                                finalY = -pixelY;
+                            else if (pixelY >= Height)
+                                finalY = (int)(Height - (pixelY - Height + 1));
                             else
-                                finalY = y;
-                            action(pixels[finalX, finalY]);
+                                finalY = pixelY;
+                            action(channel.GetMultipliedValue((uint)finalX, (uint)finalY, kernel[(uint)x, (uint)y]));
                         }
                     }
                 };
             }
             else
             {
-                return (pixels, ppx, ppy, action) =>
+                return (channel, ppx, ppy, action) =>
                 {
-                    int px = (int)ppx;
-                    int py = (int)ppy;
-                    for (int x = px - range; x <= px + range; x++)
+                    int middleX = (int)ppx;
+                    int middleY = (int)ppy;
+                    for (int x = 0; x < kernel.Size; x++)
                     {
-                        for (int y = py - range; y <= py + range; y++)
+                        for (int y = 0; y < kernel.Size; y++)
                         {
-                            if (x < 0 || x >= Width || y < 0 || y >= Height)
+                            int pixelX = middleX - range + x;
+                            int pixelY = middleY - range + y;
+                            if (pixelX < 0 || pixelX >= Width || pixelY < 0 || pixelY >= Height)
                                 action(default);
                             else
-                                action(pixels[x, y]);
+                                action(channel.GetMultipliedValue((uint)pixelX, (uint)pixelY, kernel[(uint)x, (uint)y]));
                         }
                     }
                 };
@@ -133,11 +137,10 @@ namespace SeeMore
             switch (filter)
             {
                 case FilterType.AVERAGE: return Average;
-                //case FilterType.MAXIMUM: return Maximum;
-                //case FilterType.MINIMUM: return Minimum;
-                case FilterType.MEDIAN: return Median;
-                //case FilterType.DIVERSITY: return Diversity;
-                //case FilterType.RANGE: return Range;
+                case FilterType.MEDIAN:  return Median;
+                case FilterType.MAXIMUM: return Maximum;
+                case FilterType.MINIMUM: return Minimum;
+                case FilterType.RANGE:   return Range;
                 default: return Average;
             }
         }

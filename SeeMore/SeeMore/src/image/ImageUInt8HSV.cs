@@ -12,9 +12,9 @@
         public override ImageRGB<byte> ToRGB()
         {
             ImageRGB<byte> rgbImage = new ImageUInt8RGB(Width, Height);
-            for (uint x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (uint y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
                     byte h = H[x, y];
                     byte s = S[x, y];

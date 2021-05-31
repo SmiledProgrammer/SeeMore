@@ -57,11 +57,11 @@ namespace SeeMore
             var image = new MagickImage(filepath);
             ImageUInt8RGB result = new ImageUInt8RGB((uint)image.Width, (uint)image.Height);
             IPixelCollection<byte> pixelCollection = image.GetPixels();
-            for (uint x = 0; x < image.Width; x++)
+            for (int x = 0; x < image.Width; x++)
             {
-                for (uint y = 0; y < image.Height; y++)
+                for (int y = 0; y < image.Height; y++)
                 {
-                    IPixel<byte> pixel = pixelCollection.GetPixel((int)x, (int)y);
+                    IPixel<byte> pixel = pixelCollection.GetPixel(x, y);
                     result.R[x, y] = pixel.GetChannel(0);
                     result.G[x, y] = pixel.GetChannel(1);
                     result.B[x, y] = pixel.GetChannel(2);
@@ -87,12 +87,14 @@ namespace SeeMore
                     data[3*width*y + 3*x + 2] = b[x, y];
                 }
             }
-            var readSettings = new MagickReadSettings();
-            readSettings.Width = (int)width;
-            readSettings.Height = (int)height;
-            readSettings.Format = MagickFormat.Rgb;
+            var readSettings = new MagickReadSettings
+            {
+                Width = (int)width,
+                Height = (int)height,
+                Format = MagickFormat.Rgb
+            };
             var savedImage = new MagickImage(data, readSettings);
-            savedImage.Format = MagickFormat.Png;
+            savedImage.Format = format;
             savedImage.Write(filepath);
         }
     }

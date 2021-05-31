@@ -48,9 +48,9 @@ namespace SeeMore
                     conversionFunction = (c, m, y, k) => (c + m + y + k) / 4.0;
                     break;
             }
-            for (uint x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (uint y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
                     grayImage.SetPixelValueFromDouble(x, y, conversionFunction(Convert.ToDouble(C.Pixels[x, y]), Convert.ToDouble(M.Pixels[x, y]), Convert.ToDouble(Y.Pixels[x, y]), Convert.ToDouble(K.Pixels[x, y])));
                 }
@@ -58,54 +58,54 @@ namespace SeeMore
             return grayImage;
         }
 
-        protected override void Average(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Average(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
-            castedOutputImage.C.Average(castedOriginalImage.C, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.M.Average(castedOriginalImage.M, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.Y.Average(castedOriginalImage.Y, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.K.Average(castedOriginalImage.K, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.C.Average(castedOriginalImage.C, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.M.Average(castedOriginalImage.M, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.Y.Average(castedOriginalImage.Y, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.K.Average(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Median(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Median(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
-            castedOutputImage.C.Median(castedOriginalImage.C, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.M.Median(castedOriginalImage.M, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.Y.Median(castedOriginalImage.Y, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.K.Median(castedOriginalImage.K, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.C.Median(castedOriginalImage.C, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.M.Median(castedOriginalImage.M, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.Y.Median(castedOriginalImage.Y, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.K.Median(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Maximum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Maximum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
-            castedOutputImage.C.Maximum(castedOriginalImage.C, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.M.Maximum(castedOriginalImage.M, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.Y.Maximum(castedOriginalImage.Y, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.K.Maximum(castedOriginalImage.K, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.C.Maximum(castedOriginalImage.C, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.M.Maximum(castedOriginalImage.M, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.Y.Maximum(castedOriginalImage.Y, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.K.Maximum(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Minimum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
-            castedOutputImage.C.Minimum(castedOriginalImage.C, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.M.Minimum(castedOriginalImage.M, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.Y.Minimum(castedOriginalImage.Y, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.K.Minimum(castedOriginalImage.K, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.C.Minimum(castedOriginalImage.C, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.M.Minimum(castedOriginalImage.M, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.Y.Minimum(castedOriginalImage.Y, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.K.Minimum(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Range(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
-            castedOutputImage.C.Range(castedOriginalImage.C, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.M.Range(castedOriginalImage.M, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.Y.Range(castedOriginalImage.Y, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.K.Range(castedOriginalImage.K, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.C.Range(castedOriginalImage.C, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.M.Range(castedOriginalImage.M, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.Y.Range(castedOriginalImage.Y, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.K.Range(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
         public override ColorModel GetColorModel()

@@ -41,9 +41,9 @@ namespace SeeMore
                     conversionFunction = (r, g, b) => (r + g + b) / 3.0;
                     break;
             }
-            for (uint x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (uint y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
                     grayImage.SetPixelValueFromDouble(x, y, conversionFunction(Convert.ToDouble(R.Pixels[x, y]), Convert.ToDouble(G.Pixels[x, y]), Convert.ToDouble(B.Pixels[x, y])));
                 }
@@ -51,49 +51,49 @@ namespace SeeMore
             return grayImage;
         }
 
-        protected override void Average(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Average(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
-            castedOutputImage.R.Average(castedOriginalImage.R, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.G.Average(castedOriginalImage.G, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.B.Average(castedOriginalImage.B, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.R.Average(castedOriginalImage.R, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.G.Average(castedOriginalImage.G, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.B.Average(castedOriginalImage.B, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Median(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Median(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
-            castedOutputImage.R.Median(castedOriginalImage.R, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.G.Median(castedOriginalImage.G, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.B.Median(castedOriginalImage.B, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.R.Median(castedOriginalImage.R, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.G.Median(castedOriginalImage.G, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.B.Median(castedOriginalImage.B, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Maximum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Maximum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
-            castedOutputImage.R.Maximum(castedOriginalImage.R, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.G.Maximum(castedOriginalImage.G, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.B.Maximum(castedOriginalImage.B, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.R.Maximum(castedOriginalImage.R, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.G.Maximum(castedOriginalImage.G, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.B.Maximum(castedOriginalImage.B, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Minimum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
-            castedOutputImage.R.Minimum(castedOriginalImage.R, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.G.Minimum(castedOriginalImage.G, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.B.Minimum(castedOriginalImage.B, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.R.Minimum(castedOriginalImage.R, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.G.Minimum(castedOriginalImage.G, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.B.Minimum(castedOriginalImage.B, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Range(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
-            castedOutputImage.R.Range(castedOriginalImage.R, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.G.Range(castedOriginalImage.G, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.B.Range(castedOriginalImage.B, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.R.Range(castedOriginalImage.R, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.G.Range(castedOriginalImage.G, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.B.Range(castedOriginalImage.B, kernelFunction, x, y, neighborhoodSize);
         }
 
         public override ColorModel GetColorModel()

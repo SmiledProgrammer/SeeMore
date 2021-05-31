@@ -33,49 +33,49 @@
             return ToRGB().ToGray();
         }
 
-        protected override void Average(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Average(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageHSV<T> castedOriginalImage = (ImageHSV<T>)originalImage;
             ImageHSV<T> castedOutputImage = (ImageHSV<T>)outputImage;
-            castedOutputImage.H.Average(castedOriginalImage.H, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.S.Average(castedOriginalImage.S, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.V.Average(castedOriginalImage.V, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.H.Average(castedOriginalImage.H, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.S.Average(castedOriginalImage.S, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.V.Average(castedOriginalImage.V, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Median(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Median(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageHSV<T> castedOriginalImage = (ImageHSV<T>)originalImage;
             ImageHSV<T> castedOutputImage = (ImageHSV<T>)outputImage;
-            castedOutputImage.H.Median(castedOriginalImage.H, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.S.Median(castedOriginalImage.S, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.V.Median(castedOriginalImage.V, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.H.Median(castedOriginalImage.H, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.S.Median(castedOriginalImage.S, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.V.Median(castedOriginalImage.V, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Maximum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Maximum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageHSV<T> castedOriginalImage = (ImageHSV<T>)originalImage;
             ImageHSV<T> castedOutputImage = (ImageHSV<T>)outputImage;
-            castedOutputImage.H.Maximum(castedOriginalImage.H, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.S.Maximum(castedOriginalImage.S, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.V.Maximum(castedOriginalImage.V, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.H.Maximum(castedOriginalImage.H, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.S.Maximum(castedOriginalImage.S, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.V.Maximum(castedOriginalImage.V, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Minimum(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageHSV<T> castedOriginalImage = (ImageHSV<T>)originalImage;
             ImageHSV<T> castedOutputImage = (ImageHSV<T>)outputImage;
-            castedOutputImage.H.Minimum(castedOriginalImage.H, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.S.Minimum(castedOriginalImage.S, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.V.Minimum(castedOriginalImage.V, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.H.Minimum(castedOriginalImage.H, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.S.Minimum(castedOriginalImage.S, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.V.Minimum(castedOriginalImage.V, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Range(Image<T> originalImage, NeighborhoodFunction neighborhoodFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        protected override void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageHSV<T> castedOriginalImage = (ImageHSV<T>)originalImage;
             ImageHSV<T> castedOutputImage = (ImageHSV<T>)outputImage;
-            castedOutputImage.H.Range(castedOriginalImage.H, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.S.Range(castedOriginalImage.S, neighborhoodFunction, x, y, neighborhoodSize);
-            castedOutputImage.V.Range(castedOriginalImage.V, neighborhoodFunction, x, y, neighborhoodSize);
+            castedOutputImage.H.Range(castedOriginalImage.H, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.S.Range(castedOriginalImage.S, kernelFunction, x, y, neighborhoodSize);
+            castedOutputImage.V.Range(castedOriginalImage.V, kernelFunction, x, y, neighborhoodSize);
         }
 
         public override ColorModel GetColorModel()

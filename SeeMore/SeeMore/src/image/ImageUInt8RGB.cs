@@ -14,9 +14,9 @@ namespace SeeMore
         public override ImageHSV<byte> ToHSV()
         {
             ImageHSV<byte> hsvImage = new ImageUInt8HSV(Width, Height);
-            for (uint x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (uint y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
                     byte r = R[x, y];
                     byte g = G[x, y];
@@ -52,9 +52,9 @@ namespace SeeMore
         public override ImageCMYK<byte> ToCMYK()
         {
             ImageCMYK<byte> cmykImage = new ImageUInt8CMYK(Width, Height);
-            for (uint x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (uint y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
                     byte r = R[x, y];
                     byte g = G[x, y];
