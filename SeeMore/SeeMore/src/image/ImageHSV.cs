@@ -18,6 +18,16 @@
             return clone;
         }
 
+        public override Image<T> Add(Image<T> other)
+        {
+            ImageHSV<T> outcome = (ImageHSV<T>)ImageFactory.Create<T>(Width, Height, GetColorModel());
+            ImageHSV<T> otherHSV = other.ToHSV();
+            outcome.H = H.Add(otherHSV.H);
+            outcome.S = S.Add(otherHSV.S);
+            outcome.V = V.Add(otherHSV.V);
+            return outcome;
+        }
+
         public override ImageHSV<T> ToHSV()
         {
             return (ImageHSV<T>)Clone();

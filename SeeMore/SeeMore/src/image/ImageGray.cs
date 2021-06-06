@@ -16,6 +16,14 @@
             return clone;
         }
 
+        public override Image<T> Add(Image<T> other)
+        {
+            ImageGray<T> outcome = (ImageGray<T>)ImageFactory.Create<T>(Width, Height, GetColorModel());
+            ImageGray<T> otherGray = other.ToGray();
+            outcome.Gray = Gray.Add(otherGray.Gray);
+            return outcome;
+        }
+
         public override ImageHSV<T> ToHSV()
         {
             return ToRGB().ToHSV();

@@ -3,12 +3,12 @@
     public class Kernel
     {
         public uint Size { get; }
-        private byte[,] ConvolutionMatrix;
+        private short[,] ConvolutionMatrix;
 
         internal Kernel(KernelSize size)
         {
             Size = (uint)size;
-            ConvolutionMatrix = new byte[Size, Size];
+            ConvolutionMatrix = new short[Size, Size];
             for (uint x = 0; x < Size; x++)
             {
                 for (uint y = 0; y < Size; y++)
@@ -18,13 +18,13 @@
             }
         }
 
-        internal Kernel(byte[,] convolutionMatrix, uint size)
+        internal Kernel(short[,] convolutionMatrix, uint size)
         {
             Size = size;
-            ConvolutionMatrix = convolutionMatrix.Clone() as byte[,];
+            ConvolutionMatrix = convolutionMatrix.Clone() as short[,];
         }
 
-        public byte this[uint x, uint y]
+        public short this[uint x, uint y]
         {
             get => ConvolutionMatrix[x, y];
             set => ConvolutionMatrix[x, y] = value;

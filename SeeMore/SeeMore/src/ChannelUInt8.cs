@@ -20,6 +20,19 @@ namespace SeeMore
             return clone;
         }
 
+        public override Channel<byte> Add(Channel<byte> other)
+        {
+            ChannelUInt8 outcome = new ChannelUInt8(Width, Height);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    outcome[x, y] = (byte)(this[x, y] + other[x, y]);
+                }
+            }
+            return outcome;
+        }
+
         public override byte[,] ToByteArray() // TODO: remove unnecessary code l8r
         {
             /*byte[,] array = new byte[Width, Height];
@@ -34,14 +47,14 @@ namespace SeeMore
             return array;
         }
 
-        public override double GetMultipliedValue(uint x, uint y, byte factor)
+        public override double GetMultipliedValue(uint x, uint y, double factor)
         {
             return (double)Pixels[x, y] / byte.MaxValue * factor;
         }
 
         protected override byte ConvertFromDouble(double value)
         {
-            return (byte)(value * byte.MaxValue);
+            return (byte)(Math.Abs(value) * byte.MaxValue);
         }
 
         public override void Average(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint neighborhoodSize)

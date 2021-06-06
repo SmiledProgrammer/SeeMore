@@ -17,6 +17,7 @@ namespace SeeMore
         public delegate void FilterOperation(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
 
         public abstract Image<T> Clone();
+        public abstract Image<T> Add(Image<T> other);
         public abstract ImageRGB<T> ToRGB();
         public abstract ImageHSV<T> ToHSV();
         public abstract ImageCMYK<T> ToCMYK();
@@ -31,7 +32,7 @@ namespace SeeMore
         protected abstract void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
         protected abstract void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
 
-        public Image<T> Filter(FilterType filter, Kernel kernel, EdgeHandling edgeHandling)
+        public Image<T> Filter(FilterType filter, Kernel kernel, EdgeHandling edgeHandling = EdgeHandling.MIRROR_EXTENSION)
         {
             uint size = kernel.Size;
             uint range = size / 2;
@@ -58,6 +59,15 @@ namespace SeeMore
                 }
             }
             return result;
+        }
+
+        public ImageGray<T> Sobel()
+        {
+            ImageGray<T> input = Clone().ToGray();
+            Image<T> verticalSobel = input.Filter(FilterType.AVERAGE, KernelFactory.SobelX());
+            Image<T> horizontalSobel = input.Filter(FilterType.AVERAGE, KernelFactory.SobelY());
+            ImageGray<T> outcome = (ImageGray<T>)verticalSobel.Add(horizontalSobel);
+            return outcome;
         }
 
         private void GetFilterArea(EdgeHandling edgeHandling, uint range, out uint lowerX, out uint upperX, out uint lowerY, out uint upperY)

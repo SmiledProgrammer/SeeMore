@@ -20,6 +20,16 @@ namespace SeeMore
             return clone;
         }
 
+        public override Image<T> Add(Image<T> other)
+        {
+            ImageRGB<T> outcome = (ImageRGB<T>)ImageFactory.Create<T>(Width, Height, GetColorModel());
+            ImageRGB<T> otherRGB = other.ToRGB();
+            outcome.R = R.Add(otherRGB.R);
+            outcome.G = G.Add(otherRGB.G);
+            outcome.B = B.Add(otherRGB.B);
+            return outcome;
+        }
+
         public override ImageRGB<T> ToRGB()
         {
             return (ImageRGB<T>)Clone();

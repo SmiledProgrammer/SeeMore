@@ -13,8 +13,9 @@
         }
 
         public abstract Channel<T> Clone();
+        public abstract Channel<T> Add(Channel<T> other);
         public abstract byte[,] ToByteArray();
-        public abstract double GetMultipliedValue(uint x, uint y, byte factor);
+        public abstract double GetMultipliedValue(uint x, uint y, double factor);
         protected abstract T ConvertFromDouble(double value);
 
         public abstract void Average(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint neighborhoodSize);

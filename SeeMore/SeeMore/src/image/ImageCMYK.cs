@@ -22,6 +22,17 @@ namespace SeeMore
             return clone;
         }
 
+        public override Image<T> Add(Image<T> other)
+        {
+            ImageCMYK<T> outcome = (ImageCMYK<T>)ImageFactory.Create<T>(Width, Height, GetColorModel());
+            ImageCMYK<T> otherCMYK = other.ToCMYK();
+            outcome.C = C.Add(otherCMYK.C);
+            outcome.M = M.Add(otherCMYK.M);
+            outcome.Y = Y.Add(otherCMYK.Y);
+            outcome.K = K.Add(otherCMYK.K);
+            return outcome;
+        }
+
         public override ImageHSV<T> ToHSV()
         {
             return ToRGB().ToHSV();
