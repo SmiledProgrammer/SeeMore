@@ -3,28 +3,42 @@
     public class Kernel
     {
         public uint Size { get; }
-        private short[,] ConvolutionMatrix;
+        private double[,] ConvolutionMatrix;
 
         internal Kernel(KernelSize size)
         {
             Size = (uint)size;
-            ConvolutionMatrix = new short[Size, Size];
+            ConvolutionMatrix = new double[Size, Size];
+            uint count = Size * Size;
             for (uint x = 0; x < Size; x++)
             {
                 for (uint y = 0; y < Size; y++)
                 {
-                    ConvolutionMatrix[x, y] = 1;
+                    ConvolutionMatrix[x, y] = 1.0 / count;
                 }
             }
         }
 
-        internal Kernel(short[,] convolutionMatrix, uint size)
+        internal Kernel(double[,] convolutionMatrix, uint size)
         {
             Size = size;
-            ConvolutionMatrix = convolutionMatrix.Clone() as short[,];
+            ConvolutionMatrix = convolutionMatrix.Clone() as double[,];
         }
 
-        public short this[uint x, uint y]
+        internal Kernel Multiply(double factor)
+        {
+            Kernel multipliedKernel = new Kernel(ConvolutionMatrix, Size);
+            for (uint x = 0; x < Size; x++)
+            {
+                for (uint y = 0; y < Size; y++)
+                {
+                    multipliedKernel.ConvolutionMatrix[x, y] = ConvolutionMatrix[x, y] * factor;
+                }
+            }
+            return multipliedKernel;
+        }
+
+        public double this[uint x, uint y]
         {
             get => ConvolutionMatrix[x, y];
             set => ConvolutionMatrix[x, y] = value;

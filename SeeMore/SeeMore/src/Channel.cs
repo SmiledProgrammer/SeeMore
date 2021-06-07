@@ -18,11 +18,11 @@
         public abstract double GetMultipliedValue(uint x, uint y, double factor);
         protected abstract T ConvertFromDouble(double value);
 
-        public abstract void Average(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint neighborhoodSize);
-        public abstract void Median(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint neighborhoodSize);
-        public abstract void Maximum(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint neighborhoodSize);
-        public abstract void Minimum(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint neighborhoodSize);
-        public abstract void Range(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint neighborhoodSize);
+        public abstract void Average(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize);
+        public abstract void Median(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize);
+        public abstract void Maximum(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize);
+        public abstract void Minimum(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize);
+        public abstract void Range(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize);
 
         public T this[int x, int y]
         {

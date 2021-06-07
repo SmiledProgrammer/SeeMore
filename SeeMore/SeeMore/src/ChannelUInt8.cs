@@ -57,25 +57,23 @@ namespace SeeMore
             return (byte)(Math.Abs(value) * byte.MaxValue);
         }
 
-        public override void Average(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint neighborhoodSize)
+        public override void Average(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
         {
             ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
             double sum = 0;
-            byte count = 0;
             Action<double> filterFunction = (p) =>
             {
                 sum += p;
-                count++;
             };
             kernelFunction(castedOriginalChannel, x, y, filterFunction);
-            byte average = ConvertFromDouble(sum / count);
+            byte average = ConvertFromDouble(sum);
             Pixels[x, y] = average;
         }
 
-        public override void Median(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint neighborhoodSize)
+        public override void Median(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
         {
             ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
-            byte[] pixels = new byte[neighborhoodSize * neighborhoodSize];
+            byte[] pixels = new byte[kernelSize * kernelSize];
             byte count = 0;
             Action<double> filterFunction = (p) =>
             {
@@ -88,7 +86,7 @@ namespace SeeMore
             Pixels[x, y] = median;
         }
 
-        public override void Maximum(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint neighborhoodSize)
+        public override void Maximum(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
         {
             ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
             double max = 0.0;
@@ -103,7 +101,7 @@ namespace SeeMore
             Pixels[x, y] = ConvertFromDouble(max);
         }
 
-        public override void Minimum(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint neighborhoodSize)
+        public override void Minimum(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
         {
             ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
             double min = double.MaxValue;
@@ -118,7 +116,7 @@ namespace SeeMore
             Pixels[x, y] = ConvertFromDouble(min);
         }
 
-        public override void Range(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint neighborhoodSize)
+        public override void Range(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
         {
             ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
             double max = 0.0;

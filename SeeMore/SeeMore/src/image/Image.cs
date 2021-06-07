@@ -64,8 +64,8 @@ namespace SeeMore
         public ImageGray<T> Sobel()
         {
             ImageGray<T> input = Clone().ToGray();
-            Image<T> verticalSobel = input.Filter(FilterType.AVERAGE, KernelFactory.SobelX());
-            Image<T> horizontalSobel = input.Filter(FilterType.AVERAGE, KernelFactory.SobelY());
+            Image<T> verticalSobel = input.Filter(FilterType.AVERAGE, KernelFactory.SobelVertical());
+            Image<T> horizontalSobel = input.Filter(FilterType.AVERAGE, KernelFactory.SobelHorizontal());
             ImageGray<T> outcome = (ImageGray<T>)verticalSobel.Add(horizontalSobel);
             return outcome;
         }
