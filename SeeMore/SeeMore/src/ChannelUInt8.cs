@@ -33,16 +33,8 @@ namespace SeeMore
             return outcome;
         }
 
-        public override byte[,] ToByteArray() // TODO: remove unnecessary code l8r
+        public override byte[,] ToByteArray()
         {
-            /*byte[,] array = new byte[Width, Height];
-            for (uint x = 0; x < Width; x++)
-            {
-                for (uint y = 0; y < Height; y++)
-                {
-                    array[x, y] = Pixels[x, y];
-                }
-            }*/
             byte[,] array = Pixels.Clone() as byte[,];
             return array;
         }
@@ -55,85 +47,6 @@ namespace SeeMore
         protected override byte ConvertFromDouble(double value)
         {
             return (byte)(Math.Abs(value) * byte.MaxValue);
-        }
-
-        public override void Average(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
-        {
-            ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
-            double sum = 0;
-            Action<double> filterFunction = (p) =>
-            {
-                sum += p;
-            };
-            kernelFunction(castedOriginalChannel, x, y, filterFunction);
-            byte average = ConvertFromDouble(sum);
-            Pixels[x, y] = average;
-        }
-
-        public override void Median(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
-        {
-            ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
-            byte[] pixels = new byte[kernelSize * kernelSize];
-            byte count = 0;
-            Action<double> filterFunction = (p) =>
-            {
-                pixels[count] = ConvertFromDouble(p);
-                count++;
-            };
-            kernelFunction(castedOriginalChannel, x, y, filterFunction);
-            Array.Sort(pixels);
-            byte median = pixels[count / 2];
-            Pixels[x, y] = median;
-        }
-
-        public override void Maximum(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
-        {
-            ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
-            double max = 0.0;
-            Action<double> filterFunction = (p) =>
-            {
-                if (p >= max)
-                {
-                    max = p;
-                }
-            };
-            kernelFunction(castedOriginalChannel, x, y, filterFunction);
-            Pixels[x, y] = ConvertFromDouble(max);
-        }
-
-        public override void Minimum(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
-        {
-            ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
-            double min = double.MaxValue;
-            Action<double> filterFunction = (p) =>
-            {
-                if (p <= min)
-                {
-                    min = p;
-                }
-            };
-            kernelFunction(castedOriginalChannel, x, y, filterFunction);
-            Pixels[x, y] = ConvertFromDouble(min);
-        }
-
-        public override void Range(Channel<byte> originalChannel, Image<byte>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
-        {
-            ChannelUInt8 castedOriginalChannel = (ChannelUInt8)originalChannel;
-            double max = 0.0;
-            double min = double.MaxValue;
-            Action<double> filterFunction = (p) =>
-            {
-                if (p >= max)
-                {
-                    max = p;
-                }
-                if (p <= min)
-                {
-                    min = p;
-                }
-            };
-            kernelFunction(castedOriginalChannel, x, y, filterFunction);
-            Pixels[x, y] = (byte)(max - min);
         }
     }
 }

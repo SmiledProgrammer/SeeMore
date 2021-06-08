@@ -1,0 +1,60 @@
+﻿using System;
+
+namespace SeeMore
+{
+    public class ChannelUInt16 : Channel<ushort>
+    {
+        public ChannelUInt16(uint width, uint height) : base(width, height)
+        { }
+
+        public override Channel<ushort> Clone()
+        {
+            ChannelUInt16 clone = new ChannelUInt16(Width, Height);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    clone[x, y] = Pixels[x, y];
+                }
+            }
+            return clone;
+        }
+
+        public override Channel<ushort> Add(Channel<ushort> other)
+        {
+            ChannelUInt16 outcome = new ChannelUInt16(Width, Height);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    outcome[x, y] = (ushort)(this[x, y] + other[x, y]);
+                }
+            }
+            return outcome;
+        }
+
+        public override byte[,] ToByteArray()
+        {
+            byte[,] array = new byte[Width, Height];
+            int divider = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
+            for (uint x = 0; x < Width; x++)
+            {
+                for (uint y = 0; y < Height; y++)
+                {
+                    array[x, y] = (byte)(Pixels[x, y] / divider);
+                }
+            }
+            return array;
+        }
+
+        public override double GetMultipliedValue(uint x, uint y, double factor)
+        {
+            return (double)Pixels[x, y] / ushort.MaxValue * factor;
+        }
+
+        protected override ushort ConvertFromDouble(double value)
+        {
+            return (ushort)(Math.Abs(value) * ushort.MaxValue);
+        }
+    }
+}

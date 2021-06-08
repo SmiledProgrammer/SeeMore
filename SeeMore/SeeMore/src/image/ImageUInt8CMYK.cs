@@ -21,9 +21,9 @@
                     byte m = M[x, y];
                     byte ye = Y[x, y];
                     byte k = K[x, y];
-                    rgbImage.R[x, y] = (byte)(255 * (1 - (c / 255.0)) * (1 - k / 255.0));
-                    rgbImage.G[x, y] = (byte)(255 * (1 - (m / 255.0)) * (1 - k / 255.0));
-                    rgbImage.B[x, y] = (byte)(255 * (1 - (ye / 255.0)) * (1 - k / 255.0));
+                    rgbImage.R[x, y] = (byte)(byte.MaxValue * (1 - ((double)c / byte.MaxValue)) * (1 - (double)k / byte.MaxValue));
+                    rgbImage.G[x, y] = (byte)(byte.MaxValue * (1 - ((double)m / byte.MaxValue)) * (1 - (double)k / byte.MaxValue));
+                    rgbImage.B[x, y] = (byte)(byte.MaxValue * (1 - ((double)ye / byte.MaxValue)) * (1 - (double)k / byte.MaxValue));
                 }
             }
             return rgbImage;

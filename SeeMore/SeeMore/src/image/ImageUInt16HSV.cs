@@ -1,24 +1,25 @@
 ﻿namespace SeeMore
 {
-    public class ImageUInt8HSV : ImageHSV<byte>
+    public class ImageUInt16HSV : ImageHSV<ushort>
     {
-        public ImageUInt8HSV(uint width, uint height) : base(width, height)
+        public ImageUInt16HSV(uint width, uint height) : base(width, height)
         {
-            H = new ChannelUInt8(width, height);
-            S = new ChannelUInt8(width, height);
-            V = new ChannelUInt8(width, height);
+            H = new ChannelUInt16(width, height);
+            S = new ChannelUInt16(width, height);
+            V = new ChannelUInt16(width, height);
         }
 
-        public override ImageRGB<byte> ToRGB()
+        public override ImageRGB<ushort> ToRGB()
         {
-            ImageRGB<byte> rgbImage = new ImageUInt8RGB(Width, Height);
+            ImageRGB<ushort> rgbImage = new ImageUInt16RGB(Width, Height);
+            int multiplier = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    byte h = H[x, y];
-                    byte s = S[x, y];
-                    byte v = V[x, y];
+                    ushort h = H[x, y];
+                    ushort s = S[x, y];
+                    ushort v = V[x, y];
                     if (s == 0)
                     {
                         rgbImage.R[x, y] = v;
@@ -26,11 +27,11 @@
                         rgbImage.B[x, y] = v;
                         continue;
                     }
-                    byte region = (byte)(h / 43);
-                    byte remainder = (byte)((h - (region * 43)) * 6);
-                    byte p = (byte)((v * (byte.MaxValue - s)) >> 8);
-                    byte q = (byte)((v * (byte.MaxValue - ((s * remainder) >> 8))) >> 8);
-                    byte t = (byte)((v * (byte.MaxValue - ((s * (byte.MaxValue - remainder)) >> 8))) >> 8);
+                    ushort region = (ushort)(h / (43 * multiplier));
+                    ushort remainder = (ushort)((h - (region * 43* multiplier)) * 6);
+                    ushort p = (ushort)((v * (ushort.MaxValue - s)) >> 16);
+                    ushort q = (ushort)((v * (ushort.MaxValue - ((s * remainder) >> 16))) >> 16);
+                    ushort t = (ushort)((v * (ushort.MaxValue - ((s * (ushort.MaxValue - remainder)) >> 16))) >> 16);
                     switch (region)
                     {
                         case 0:
@@ -71,12 +72,12 @@
 
         public override ImageUInt8RGB ToByteRGBImage()
         {
-            return (ImageUInt8RGB)ToRGB();
+            return ToRGB().ToByteRGBImage();
         }
 
         public override DataType GetDataType()
         {
-            return DataType.UInt8;
+            return DataType.UInt16;
         }
     }
 }

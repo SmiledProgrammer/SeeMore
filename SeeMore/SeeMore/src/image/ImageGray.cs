@@ -24,9 +24,40 @@
             return outcome;
         }
 
+        public override ImageRGB<T> ToRGB()
+        {
+            ImageRGB<T> result = (ImageRGB<T>)ImageFactory.Create<T>(Width, Height, ColorModel.RGB);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    result.R[x, y] = Gray[x, y];
+                    result.G[x, y] = Gray[x, y];
+                    result.B[x, y] = Gray[x, y];
+                }
+            }
+            return result;
+        }
+
         public override ImageHSV<T> ToHSV()
         {
             return ToRGB().ToHSV();
+        }
+
+        public override ImageCMYK<T> ToCMYK()
+        {
+            ImageCMYK<T> result = (ImageCMYK<T>)ImageFactory.Create<T>(Width, Height, ColorModel.CMYK);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    result.C[x, y] = Gray[x, y];
+                    result.M[x, y] = Gray[x, y];
+                    result.Y[x, y] = Gray[x, y];
+                    result.K[x, y] = Gray[x, y];
+                }
+            }
+            return result;
         }
 
         public override ImageGray<T> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)

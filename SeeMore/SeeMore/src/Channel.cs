@@ -1,4 +1,6 @@
-﻿namespace SeeMore
+﻿using System;
+
+namespace SeeMore
 {
     public abstract class Channel<T>
     {
@@ -18,11 +20,79 @@
         public abstract double GetMultipliedValue(uint x, uint y, double factor);
         protected abstract T ConvertFromDouble(double value);
 
-        public abstract void Average(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize);
-        public abstract void Median(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize);
-        public abstract void Maximum(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize);
-        public abstract void Minimum(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize);
-        public abstract void Range(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize);
+        public void Average(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
+        {
+            double sum = 0;
+            Action<double> filterFunction = (p) =>
+            {
+                sum += p;
+            };
+            kernelFunction(originalChannel, x, y, filterFunction);
+            T average = ConvertFromDouble(sum);
+            Pixels[x, y] = average;
+        }
+
+        public void Median(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
+        {
+            T[] pixels = new T[kernelSize * kernelSize];
+            byte count = 0;
+            Action<double> filterFunction = (p) =>
+            {
+                pixels[count] = ConvertFromDouble(p);
+                count++;
+            };
+            kernelFunction(originalChannel, x, y, filterFunction);
+            Array.Sort(pixels);
+            T median = pixels[count / 2];
+            Pixels[x, y] = median;
+        }
+
+        public void Maximum(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
+        {
+            double max = 0.0;
+            Action<double> filterFunction = (p) =>
+            {
+                if (p >= max)
+                {
+                    max = p;
+                }
+            };
+            kernelFunction(originalChannel, x, y, filterFunction);
+            Pixels[x, y] = ConvertFromDouble(max);
+        }
+
+        public void Minimum(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
+        {
+            double min = double.MaxValue;
+            Action<double> filterFunction = (p) =>
+            {
+                if (p <= min)
+                {
+                    min = p;
+                }
+            };
+            kernelFunction(originalChannel, x, y, filterFunction);
+            Pixels[x, y] = ConvertFromDouble(min);
+        }
+
+        public void Range(Channel<T> originalChannel, Image<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
+        {
+            double max = 0.0;
+            double min = double.MaxValue;
+            Action<double> filterFunction = (p) =>
+            {
+                if (p >= max)
+                {
+                    max = p;
+                }
+                if (p <= min)
+                {
+                    min = p;
+                }
+            };
+            kernelFunction(originalChannel, x, y, filterFunction);
+            Pixels[x, y] = ConvertFromDouble(max - min);
+        }
 
         public T this[int x, int y]
         {

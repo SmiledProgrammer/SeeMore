@@ -31,7 +31,7 @@ namespace SeeMore
                         continue;
                     }
                     byte diff = (byte)(max - min);
-                    byte saturation = (byte)(255 * (long)diff / max);
+                    byte saturation = (byte)(byte.MaxValue * (long)diff / max);
                     hsvImage.S[x, y] = saturation;
                     if (saturation == 0)
                     {
@@ -65,14 +65,14 @@ namespace SeeMore
                         cmykImage.C[x, y] = 0;
                         cmykImage.M[x, y] = 0;
                         cmykImage.Y[x, y] = 0;
-                        cmykImage.K[x, y] = 255;
+                        cmykImage.K[x, y] = byte.MaxValue;
                         continue;
                     }
-                    double k = 1.0 - (max / 255.0);
-                    cmykImage.K[x, y] = (byte)(255 * k);
-                    cmykImage.C[x, y] = (byte)(255 * ((1 - (r / 255.0) - k) / (1 - k)));
-                    cmykImage.M[x, y] = (byte)(255 * ((1 - (g / 255.0) - k) / (1 - k)));
-                    cmykImage.Y[x, y] = (byte)(255 * ((1 - (b / 255.0) - k) / (1 - k)));
+                    double k = 1.0 - ((double)max / byte.MaxValue);
+                    cmykImage.K[x, y] = (byte)(byte.MaxValue * k);
+                    cmykImage.C[x, y] = (byte)(byte.MaxValue * ((1 - ((double)r / byte.MaxValue) - k) / (1 - k)));
+                    cmykImage.M[x, y] = (byte)(byte.MaxValue * ((1 - ((double)g / byte.MaxValue) - k) / (1 - k)));
+                    cmykImage.Y[x, y] = (byte)(byte.MaxValue * ((1 - ((double)b / byte.MaxValue) - k) / (1 - k)));
                 }
             }
             return cmykImage;
