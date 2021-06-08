@@ -33,6 +33,22 @@ namespace SeeMore
             return outcome;
         }
 
+        public override void Multiply(double factor)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    double newValue = this[x, y] * factor;
+                    if (newValue > ushort.MaxValue + 1)
+                    {
+                        newValue = ushort.MaxValue;
+                    }
+                    this[x, y] = (ushort)newValue;
+                }
+            }
+        }
+
         public override byte[,] ToByteArray()
         {
             byte[,] array = new byte[Width, Height];
@@ -47,7 +63,7 @@ namespace SeeMore
             return array;
         }
 
-        public override double GetMultipliedValue(uint x, uint y, double factor)
+        internal override double GetMultipliedValue(uint x, uint y, double factor)
         {
             return (double)Pixels[x, y] / ushort.MaxValue * factor;
         }

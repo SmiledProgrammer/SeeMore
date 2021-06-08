@@ -69,9 +69,35 @@
             return rgbImage;
         }
 
-        public override ImageUInt8RGB ToByteRGBImage()
+        public override Image<byte> ToUInt8()
         {
-            return (ImageUInt8RGB)ToRGB();
+            return (ImageUInt8HSV)Clone();
+        }
+
+        public override Image<ushort> ToUInt16()
+        {
+            ImageUInt16HSV uint16Image = (ImageUInt16HSV)ImageFactory.Create<ushort>(Width, Height, GetColorModel());
+            int multiplier = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    uint16Image.H[x, y] = (ushort)(H[x, y] * multiplier);
+                    uint16Image.S[x, y] = (ushort)(S[x, y] * multiplier);
+                    uint16Image.V[x, y] = (ushort)(V[x, y] * multiplier);
+                }
+            }
+            return uint16Image;
+        }
+
+        public override Image<uint> ToUInt32()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Image<double> ToDouble()
+        {
+            throw new System.NotImplementedException();
         }
 
         public override DataType GetDataType()

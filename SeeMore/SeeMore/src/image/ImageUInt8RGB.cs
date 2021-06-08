@@ -78,9 +78,35 @@ namespace SeeMore
             return cmykImage;
         }
 
-        public override ImageUInt8RGB ToByteRGBImage()
+        public override Image<byte> ToUInt8()
         {
             return (ImageUInt8RGB)Clone();
+        }
+
+        public override Image<ushort> ToUInt16()
+        {
+            ImageUInt16RGB uint16Image = (ImageUInt16RGB)ImageFactory.Create<ushort>(Width, Height, GetColorModel());
+            int multiplier = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    uint16Image.R[x, y] = (ushort)(R[x, y] * multiplier);
+                    uint16Image.G[x, y] = (ushort)(G[x, y] * multiplier);
+                    uint16Image.B[x, y] = (ushort)(B[x, y] * multiplier);
+                }
+            }
+            return uint16Image;
+        }
+
+        public override Image<uint> ToUInt32()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Image<double> ToDouble()
+        {
+            throw new NotImplementedException();
         }
 
         public override DataType GetDataType()

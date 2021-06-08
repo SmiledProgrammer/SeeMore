@@ -45,31 +45,10 @@ namespace SeeMore
 
         public override ImageGray<T> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
         {
-            ImageGray<T> grayImage = (ImageGray<T>)ImageFactory.Create<T>(Width, Height, ColorModel.GRAY);
-            Func<double, double, double, double, double> conversionFunction;
-            switch (method)
-            {
-                case GrayscaleConversionMethod.GEOMETRIC_MEAN:
-                    conversionFunction = (c, m, y, k) => Math.Pow(c * m * y * k, 1.0 / 4.0);
-                    break;
-                case GrayscaleConversionMethod.HARMONIC_MEAN:
-                    conversionFunction = (c, m, y, k) => 4.0 / (1.0 / c + 1.0 / m + 1.0 / y + 1.0 / k);
-                    break;
-                default:
-                    conversionFunction = (c, m, y, k) => (c + m + y + k) / 4.0;
-                    break;
-            }
-            for (int x = 0; x < Width; x++)
-            {
-                for (int y = 0; y < Height; y++)
-                {
-                    grayImage.SetPixelValueFromDouble(x, y, conversionFunction(Convert.ToDouble(C.Pixels[x, y]), Convert.ToDouble(M.Pixels[x, y]), Convert.ToDouble(Y.Pixels[x, y]), Convert.ToDouble(K.Pixels[x, y])));
-                }
-            }
-            return grayImage;
+            return ToRGB().ToGray(method);
         }
 
-        protected override void Average(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Average(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
@@ -79,7 +58,7 @@ namespace SeeMore
             castedOutputImage.K.Average(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Median(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Median(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
@@ -89,7 +68,7 @@ namespace SeeMore
             castedOutputImage.K.Median(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Maximum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Maximum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
@@ -99,7 +78,7 @@ namespace SeeMore
             castedOutputImage.K.Maximum(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
@@ -109,7 +88,7 @@ namespace SeeMore
             castedOutputImage.K.Minimum(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
-        protected override void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
@@ -121,7 +100,7 @@ namespace SeeMore
 
         public override ColorModel GetColorModel()
         {
-            return ColorModel.RGB;
+            return ColorModel.CMYK;
         }
     }
 }

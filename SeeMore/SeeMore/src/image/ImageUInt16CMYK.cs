@@ -29,9 +29,36 @@
             return rgbImage;
         }
 
-        public override ImageUInt8RGB ToByteRGBImage()
+        public override Image<byte> ToUInt8()
         {
-            return ToRGB().ToByteRGBImage();
+            ImageUInt8CMYK uint8Image = new ImageUInt8CMYK(Width, Height);
+            int divider = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    uint8Image.C[x, y] = (byte)(C[x, y] / divider);
+                    uint8Image.M[x, y] = (byte)(M[x, y] / divider);
+                    uint8Image.Y[x, y] = (byte)(Y[x, y] / divider);
+                    uint8Image.K[x, y] = (byte)(K[x, y] / divider);
+                }
+            }
+            return uint8Image;
+        }
+
+        public override Image<ushort> ToUInt16()
+        {
+            return (ImageUInt16CMYK)Clone();
+        }
+
+        public override Image<uint> ToUInt32()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Image<double> ToDouble()
+        {
+            throw new System.NotImplementedException();
         }
 
         public override DataType GetDataType()

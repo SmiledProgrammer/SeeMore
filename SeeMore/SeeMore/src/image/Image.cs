@@ -13,24 +13,35 @@ namespace SeeMore
             Height = height;
         }
 
-        public delegate void KernelFunction(Channel<T> channel, uint x, uint y, Action<double> filterFunction);
-        public delegate void FilterOperation(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        internal delegate void KernelFunction(Channel<T> channel, uint x, uint y, Action<double> filterFunction);
+        internal delegate void FilterOperation(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
 
         public abstract Image<T> Clone();
         public abstract Image<T> Add(Image<T> other);
+
         public abstract ImageRGB<T> ToRGB();
         public abstract ImageHSV<T> ToHSV();
         public abstract ImageCMYK<T> ToCMYK();
         public abstract ImageGray<T> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN);
-        public abstract ImageUInt8RGB ToByteRGBImage();
+
+        public abstract Image<byte> ToUInt8();
+        public abstract Image<ushort> ToUInt16();
+        public abstract Image<uint> ToUInt32();
+        public abstract Image<double> ToDouble();
+
         public abstract DataType GetDataType();
         public abstract ColorModel GetColorModel();
 
-        protected abstract void Average(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
-        protected abstract void Median(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
-        protected abstract void Maximum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
-        protected abstract void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
-        protected abstract void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        internal abstract void Average(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        internal abstract void Median(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        internal abstract void Maximum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        internal abstract void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+        internal abstract void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage);
+
+        public ImageUInt8RGB ToByteRGBImage()
+        {
+            return (ImageUInt8RGB)ToRGB().ToUInt8();
+        }
 
         public Image<T> Filter(FilterType filter, Kernel kernel, EdgeHandling edgeHandling = EdgeHandling.MIRROR_EXTENSION)
         {

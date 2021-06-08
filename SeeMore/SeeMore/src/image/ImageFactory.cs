@@ -5,7 +5,7 @@ namespace SeeMore
 {
     public static class ImageFactory
     {
-        private static string WrongTypeExceptionMessage = "Neighborhood range cannot be greater than image size.";
+        private static string WrongTypeExceptionMessage = "Not supported image data type.";
 
         public static Image<T> Create<T>(uint width, uint height, ColorModel model = ColorModel.RGB)
         {
@@ -16,8 +16,8 @@ namespace SeeMore
                     switch (type)
                     {
                         case "System.Byte":  return new ImageUInt8RGB(width, height) as Image<T>;
-                        case "System.Int16": return new ImageUInt16RGB(width, height) as Image<T>;
-                        case "System.Int32": return null;
+                        case "System.UInt16": return new ImageUInt16RGB(width, height) as Image<T>;
+                        case "System.UInt32": return null;
                         case "System.Double": return null;
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
@@ -25,8 +25,8 @@ namespace SeeMore
                     switch (type)
                     {
                         case "System.Byte": return new ImageUInt8HSV(width, height) as Image<T>;
-                        case "System.Int16": return new ImageUInt16HSV(width, height) as Image<T>;
-                        case "System.Int32": return null; //TODO
+                        case "System.UInt16": return new ImageUInt16HSV(width, height) as Image<T>;
+                        case "System.UInt32": return null; //TODO
                         case "System.Double": return null; //TODO
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
@@ -34,8 +34,8 @@ namespace SeeMore
                     switch (type)
                     {
                         case "System.Byte": return new ImageUInt8CMYK(width, height) as Image<T>;
-                        case "System.Int16": return new ImageUInt16CMYK(width, height) as Image<T>;
-                        case "System.Int32": return null; //TODO
+                        case "System.UInt16": return new ImageUInt16CMYK(width, height) as Image<T>;
+                        case "System.UInt32": return null; //TODO
                         case "System.Double": return null; //TODO
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
@@ -43,8 +43,8 @@ namespace SeeMore
                     switch (type)
                     {
                         case "System.Byte": return new ImageUInt8Gray(width, height) as Image<T>;
-                        case "System.Int16": return new ImageUInt16Gray(width, height) as Image<T>;
-                        case "System.Int32": return null; //TODO
+                        case "System.UInt16": return new ImageUInt16Gray(width, height) as Image<T>;
+                        case "System.UInt32": return null; //TODO
                         case "System.Double": return null; //TODO
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }

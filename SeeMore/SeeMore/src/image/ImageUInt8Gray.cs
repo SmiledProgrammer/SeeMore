@@ -12,9 +12,33 @@
             Gray[x, y] = (byte)value;
         }
 
-        public override ImageUInt8RGB ToByteRGBImage()
+        public override Image<byte> ToUInt8()
         {
-            return (ImageUInt8RGB)ToRGB();
+            return (ImageUInt8Gray)Clone();
+        }
+
+        public override Image<ushort> ToUInt16()
+        {
+            ImageUInt16Gray uint16Image = (ImageUInt16Gray)ImageFactory.Create<ushort>(Width, Height, GetColorModel());
+            int multiplier = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    uint16Image.Gray[x, y] = (ushort)(Gray[x, y] * multiplier);
+                }
+            }
+            return uint16Image;
+        }
+
+        public override Image<uint> ToUInt32()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Image<double> ToDouble()
+        {
+            throw new System.NotImplementedException();
         }
 
         public override DataType GetDataType()
