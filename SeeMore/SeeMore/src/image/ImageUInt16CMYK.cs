@@ -53,7 +53,19 @@
 
         public override Image<uint> ToUInt32()
         {
-            throw new System.NotImplementedException();
+            ImageUInt32CMYK uint32Image = (ImageUInt32CMYK)ImageFactory.Create<uint>(Width, Height, GetColorModel());
+            long multiplier = ((long)uint.MaxValue + 1) / (ushort.MaxValue + 1);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    uint32Image.C[x, y] = (uint)(C[x, y] * multiplier);
+                    uint32Image.M[x, y] = (uint)(M[x, y] * multiplier);
+                    uint32Image.Y[x, y] = (uint)(Y[x, y] * multiplier);
+                    uint32Image.K[x, y] = (uint)(K[x, y] * multiplier);
+                }
+            }
+            return uint32Image;
         }
 
         public override Image<double> ToDouble()

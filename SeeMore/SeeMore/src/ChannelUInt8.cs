@@ -27,7 +27,12 @@ namespace SeeMore
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    outcome[x, y] = (byte)(this[x, y] + other[x, y]);
+                    int newValue = this[x, y] + other[x, y];
+                    if (newValue > byte.MaxValue + 1)
+                    {
+                        newValue = byte.MaxValue;
+                    }
+                    outcome[x, y] = (byte)newValue;
                 }
             }
             return outcome;

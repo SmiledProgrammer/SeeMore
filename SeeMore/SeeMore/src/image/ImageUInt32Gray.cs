@@ -1,21 +1,21 @@
 ﻿namespace SeeMore
 {
-    public class ImageUInt16Gray : ImageGray<ushort>
+    public class ImageUInt32Gray : ImageGray<uint>
     {
-        public ImageUInt16Gray(uint width, uint height) : base(width, height)
+        public ImageUInt32Gray(uint width, uint height) : base(width, height)
         {
-            Gray = new ChannelUInt16(width, height);
+            Gray = new ChannelUInt32(width, height);
         }
 
         public override void SetPixelValueFromDouble(int x, int y, double value)
         {
-            Gray[x, y] = (ushort)value;
+            Gray[x, y] = (uint)value;
         }
 
         public override Image<byte> ToUInt8()
         {
             ImageUInt8Gray uint8Image = new ImageUInt8Gray(Width, Height);
-            int divider = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
+            long divider = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
@@ -28,21 +28,21 @@
 
         public override Image<ushort> ToUInt16()
         {
-            return (ImageUInt16Gray)Clone();
-        }
-
-        public override Image<uint> ToUInt32()
-        {
-            ImageUInt32Gray uint32Image = (ImageUInt32Gray)ImageFactory.Create<uint>(Width, Height, GetColorModel());
-            long multiplier = ((long)uint.MaxValue + 1) / (ushort.MaxValue + 1);
+            ImageUInt16Gray uint16Image = new ImageUInt16Gray(Width, Height);
+            long divider = ((long)uint.MaxValue + 1) / (ushort.MaxValue + 1);
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    uint32Image.Gray[x, y] = (uint)(Gray[x, y] * multiplier);
+                    uint16Image.Gray[x, y] = (ushort)(Gray[x, y] / divider);
                 }
             }
-            return uint32Image;
+            return uint16Image;
+        }
+
+        public override Image<uint> ToUInt32()
+        {
+            return (ImageUInt32Gray)Clone();
         }
 
         public override Image<double> ToDouble()
@@ -52,7 +52,7 @@
 
         public override DataType GetDataType()
         {
-            return DataType.UInt16;
+            return DataType.UInt32;
         }
     }
 }

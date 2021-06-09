@@ -101,7 +101,18 @@ namespace SeeMore
 
         public override Image<uint> ToUInt32()
         {
-            throw new NotImplementedException();
+            ImageUInt32RGB uint32Image = (ImageUInt32RGB)ImageFactory.Create<uint>(Width, Height, GetColorModel());
+            long multiplier = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    uint32Image.R[x, y] = (uint)(R[x, y] * multiplier);
+                    uint32Image.G[x, y] = (uint)(G[x, y] * multiplier);
+                    uint32Image.B[x, y] = (uint)(B[x, y] * multiplier);
+                }
+            }
+            return uint32Image;
         }
 
         public override Image<double> ToDouble()

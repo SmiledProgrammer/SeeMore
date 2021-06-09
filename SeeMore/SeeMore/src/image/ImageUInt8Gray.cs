@@ -33,7 +33,16 @@
 
         public override Image<uint> ToUInt32()
         {
-            throw new System.NotImplementedException();
+            ImageUInt32Gray uint32Image = (ImageUInt32Gray)ImageFactory.Create<uint>(Width, Height, GetColorModel());
+            long multiplier = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    uint32Image.Gray[x, y] = (uint)(Gray[x, y] * multiplier);
+                }
+            }
+            return uint32Image;
         }
 
         public override Image<double> ToDouble()

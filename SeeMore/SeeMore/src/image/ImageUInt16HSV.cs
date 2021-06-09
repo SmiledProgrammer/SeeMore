@@ -93,7 +93,18 @@
 
         public override Image<uint> ToUInt32()
         {
-            throw new System.NotImplementedException();
+            ImageUInt32HSV uint32Image = (ImageUInt32HSV)ImageFactory.Create<uint>(Width, Height, GetColorModel());
+            long multiplier = ((long)uint.MaxValue + 1) / (ushort.MaxValue + 1);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    uint32Image.H[x, y] = (uint)(H[x, y] * multiplier);
+                    uint32Image.S[x, y] = (uint)(S[x, y] * multiplier);
+                    uint32Image.V[x, y] = (uint)(V[x, y] * multiplier);
+                }
+            }
+            return uint32Image;
         }
 
         public override Image<double> ToDouble()

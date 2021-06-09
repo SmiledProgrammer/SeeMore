@@ -2,14 +2,14 @@
 
 namespace SeeMore
 {
-    public class ChannelUInt16 : Channel<ushort>
+    public class ChannelUInt32 : Channel<uint>
     {
-        public ChannelUInt16(uint width, uint height) : base(width, height)
+        public ChannelUInt32(uint width, uint height) : base(width, height)
         { }
 
-        public override Channel<ushort> Clone()
+        public override Channel<uint> Clone()
         {
-            ChannelUInt16 clone = new ChannelUInt16(Width, Height);
+            ChannelUInt32 clone = new ChannelUInt32(Width, Height);
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
@@ -20,19 +20,19 @@ namespace SeeMore
             return clone;
         }
 
-        public override Channel<ushort> Add(Channel<ushort> other)
+        public override Channel<uint> Add(Channel<uint> other)
         {
-            ChannelUInt16 outcome = new ChannelUInt16(Width, Height);
+            ChannelUInt32 outcome = new ChannelUInt32(Width, Height);
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    int newValue = this[x, y] + other[x, y];
-                    if (newValue > ushort.MaxValue + 1)
+                    long newValue = (long)this[x, y] + other[x, y];
+                    if (newValue > (long)uint.MaxValue + 1)
                     {
-                        newValue = ushort.MaxValue;
+                        newValue = uint.MaxValue;
                     }
-                    outcome[x, y] = (ushort)newValue;
+                    outcome[x, y] = (uint)newValue;
                 }
             }
             return outcome;
@@ -45,11 +45,11 @@ namespace SeeMore
                 for (int y = 0; y < Height; y++)
                 {
                     double newValue = this[x, y] * factor;
-                    if (newValue > ushort.MaxValue + 1)
+                    if (newValue > (long)uint.MaxValue + 1)
                     {
-                        newValue = ushort.MaxValue;
+                        newValue = uint.MaxValue;
                     }
-                    this[x, y] = (ushort)newValue;
+                    this[x, y] = (uint)newValue;
                 }
             }
         }
@@ -57,7 +57,7 @@ namespace SeeMore
         public override byte[,] ToByteArray()
         {
             byte[,] array = new byte[Width, Height];
-            int divider = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
+            long divider = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
             for (uint x = 0; x < Width; x++)
             {
                 for (uint y = 0; y < Height; y++)
@@ -70,12 +70,12 @@ namespace SeeMore
 
         internal override double GetMultipliedValue(uint x, uint y, double factor)
         {
-            return (double)Pixels[x, y] / ushort.MaxValue * factor;
+            return (double)Pixels[x, y] / uint.MaxValue * factor;
         }
 
-        protected override ushort ConvertFromDouble(double value)
+        protected override uint ConvertFromDouble(double value)
         {
-            return (ushort)(Math.Abs(value) * ushort.MaxValue);
+            return (uint)(Math.Abs(value) * uint.MaxValue);
         }
     }
 }

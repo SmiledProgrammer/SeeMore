@@ -1,24 +1,25 @@
 ﻿namespace SeeMore
 {
-    public class ImageUInt8HSV : ImageHSV<byte>
+    public class ImageUInt32HSV : ImageHSV<uint>
     {
-        public ImageUInt8HSV(uint width, uint height) : base(width, height)
+        public ImageUInt32HSV(uint width, uint height) : base(width, height)
         {
-            H = new ChannelUInt8(width, height);
-            S = new ChannelUInt8(width, height);
-            V = new ChannelUInt8(width, height);
+            H = new ChannelUInt32(width, height);
+            S = new ChannelUInt32(width, height);
+            V = new ChannelUInt32(width, height);
         }
 
-        public override ImageRGB<byte> ToRGB()
+        public override ImageRGB<uint> ToRGB()
         {
-            ImageRGB<byte> rgbImage = new ImageUInt8RGB(Width, Height);
+            ImageRGB<uint> rgbImage = new ImageUInt32RGB(Width, Height);
+            long multiplier = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    byte h = H[x, y];
-                    byte s = S[x, y];
-                    byte v = V[x, y];
+                    uint h = H[x, y];
+                    uint s = S[x, y];
+                    uint v = V[x, y];
                     if (s == 0)
                     {
                         rgbImage.R[x, y] = v;
@@ -26,11 +27,11 @@
                         rgbImage.B[x, y] = v;
                         continue;
                     }
-                    byte region = (byte)(h / 43);
-                    byte remainder = (byte)((h - (region * 43)) * 6);
-                    byte p = (byte)((v * (byte.MaxValue - s)) >> 8);
-                    byte q = (byte)((v * (byte.MaxValue - ((s * remainder) >> 8))) >> 8);
-                    byte t = (byte)((v * (byte.MaxValue - ((s * (byte.MaxValue - remainder)) >> 8))) >> 8);
+                    uint region = (uint)(h / (43 * multiplier));
+                    uint remainder = (uint)((h - (region * 43* multiplier)) * 6);
+                    uint p = ((v * (uint.MaxValue - s)) >> 16);
+                    uint q = ((v * (uint.MaxValue - ((s * remainder) >> 16))) >> 16);
+                    uint t = ((v * (uint.MaxValue - ((s * (uint.MaxValue - remainder)) >> 16))) >> 16);
                     switch (region)
                     {
                         case 0:
@@ -71,20 +72,31 @@
 
         public override Image<byte> ToUInt8()
         {
-            return (ImageUInt8HSV)Clone();
-        }
-
-        public override Image<ushort> ToUInt16()
-        {
-            ImageUInt16HSV uint16Image = (ImageUInt16HSV)ImageFactory.Create<ushort>(Width, Height, GetColorModel());
-            int multiplier = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
+            ImageUInt8HSV uint8Image = new ImageUInt8HSV(Width, Height);
+            long divider = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    uint16Image.H[x, y] = (ushort)(H[x, y] * multiplier);
-                    uint16Image.S[x, y] = (ushort)(S[x, y] * multiplier);
-                    uint16Image.V[x, y] = (ushort)(V[x, y] * multiplier);
+                    uint8Image.H[x, y] = (byte)(H[x, y] / divider);
+                    uint8Image.S[x, y] = (byte)(S[x, y] / divider);
+                    uint8Image.V[x, y] = (byte)(V[x, y] / divider);
+                }
+            }
+            return uint8Image;
+        }
+
+        public override Image<ushort> ToUInt16()
+        {
+            ImageUInt16HSV uint16Image = new ImageUInt16HSV(Width, Height);
+            long divider = ((long)uint.MaxValue + 1) / (ushort.MaxValue + 1);
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    uint16Image.H[x, y] = (ushort)(H[x, y] / divider);
+                    uint16Image.S[x, y] = (ushort)(S[x, y] / divider);
+                    uint16Image.V[x, y] = (ushort)(V[x, y] / divider);
                 }
             }
             return uint16Image;
@@ -92,18 +104,7 @@
 
         public override Image<uint> ToUInt32()
         {
-            ImageUInt32HSV uint32Image = (ImageUInt32HSV)ImageFactory.Create<uint>(Width, Height, GetColorModel());
-            long multiplier = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
-            for (int x = 0; x < Width; x++)
-            {
-                for (int y = 0; y < Height; y++)
-                {
-                    uint32Image.H[x, y] = (uint)(H[x, y] * multiplier);
-                    uint32Image.S[x, y] = (uint)(S[x, y] * multiplier);
-                    uint32Image.V[x, y] = (uint)(V[x, y] * multiplier);
-                }
-            }
-            return uint32Image;
+            return (ImageUInt32HSV)Clone();
         }
 
         public override Image<double> ToDouble()
@@ -113,7 +114,7 @@
 
         public override DataType GetDataType()
         {
-            return DataType.UInt8;
+            return DataType.UInt32;
         }
     }
 }
