@@ -28,7 +28,7 @@ namespace SeeMore
                 for (int y = 0; y < Height; y++)
                 {
                     int newValue = this[x, y] + other[x, y];
-                    if (newValue > byte.MaxValue + 1)
+                    if (newValue > byte.MaxValue)
                     {
                         newValue = byte.MaxValue;
                     }
@@ -45,7 +45,7 @@ namespace SeeMore
                 for (int y = 0; y < Height; y++)
                 {
                     double newValue = this[x, y] * factor;
-                    if (newValue > byte.MaxValue + 1)
+                    if (newValue > byte.MaxValue)
                     {
                         newValue = byte.MaxValue;
                     }

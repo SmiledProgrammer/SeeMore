@@ -28,7 +28,7 @@ namespace SeeMore
                 for (int y = 0; y < Height; y++)
                 {
                     int newValue = this[x, y] + other[x, y];
-                    if (newValue > ushort.MaxValue + 1)
+                    if (newValue > ushort.MaxValue)
                     {
                         newValue = ushort.MaxValue;
                     }
@@ -45,7 +45,7 @@ namespace SeeMore
                 for (int y = 0; y < Height; y++)
                 {
                     double newValue = this[x, y] * factor;
-                    if (newValue > ushort.MaxValue + 1)
+                    if (newValue > ushort.MaxValue)
                     {
                         newValue = ushort.MaxValue;
                     }
