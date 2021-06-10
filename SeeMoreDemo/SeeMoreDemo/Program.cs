@@ -10,10 +10,13 @@ namespace SeeMoreDemo
             string outputFile = "D:/Pulpit/Pliki szkolne/Semestr 4/Projekt Indywidualny/Output/output.png";
             var image = ImageFactory.LoadFromFile(inputFile);
             var outcome = image
-                .ToRGB().ToUInt32().ToUInt16().ToUInt32().ToUInt8()
-                .ToHSV().ToUInt32().ToUInt16().ToUInt32().ToUInt8()
-                .ToCMYK().ToUInt32().ToUInt16().ToUInt32().ToUInt8()
-                .ToGray(GrayscaleConversionMethod.HARMONIC_MEAN).ToUInt32().ToUInt16().ToUInt32().ToUInt8();
+                .ToRGB().ToDouble().ToUInt8().ToUInt16().ToDouble().ToUInt16().ToUInt32().ToDouble().ToDouble().ToUInt32().ToUInt32().ToUInt16().ToUInt16().ToUInt8().ToUInt8().ToUInt32().ToUInt8()
+                .ToHSV().ToDouble().ToUInt8().ToUInt16().ToDouble().ToUInt16().ToUInt32().ToDouble().ToDouble().ToUInt32().ToUInt32().ToUInt16().ToUInt16().ToUInt8().ToUInt8().ToUInt32().ToUInt8()
+                .ToCMYK().ToDouble().ToUInt8().ToUInt16().ToDouble().ToUInt16().ToUInt32().ToDouble().ToDouble().ToUInt32().ToUInt32().ToUInt16().ToUInt16().ToUInt8().ToUInt8().ToUInt32().ToUInt8()
+                .ToRGB().ToHSV().ToRGB().ToCMYK().ToRGB()
+                .ToUInt16().ToHSV().ToRGB().ToCMYK().ToRGB()
+                .ToUInt32().ToHSV().ToRGB().ToCMYK().ToRGB()
+                .ToDouble().ToHSV().ToRGB().ToCMYK().ToRGB();
             //outcome.R.Multiply(2.0);
             //outcome.G.Multiply(2.0);
             //outcome.B.Multiply(2.0);

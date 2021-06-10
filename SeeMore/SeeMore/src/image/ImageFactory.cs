@@ -10,7 +10,6 @@ namespace SeeMore
         public static Image<T> Create<T>(uint width, uint height, ColorModel model = ColorModel.RGB)
         {
             string type = typeof(T).FullName;
-            Console.WriteLine(type);
             switch (model)
             {
                 case ColorModel.RGB:
@@ -19,7 +18,7 @@ namespace SeeMore
                         case "System.Byte":  return new ImageUInt8RGB(width, height) as Image<T>;
                         case "System.UInt16": return new ImageUInt16RGB(width, height) as Image<T>;
                         case "System.UInt32": return new ImageUInt32RGB(width, height) as Image<T>;
-                        case "System.Double": return null;
+                        case "System.Double": return new ImageDoubleRGB(width, height) as Image<T>;
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
                 case ColorModel.HSV:
@@ -28,7 +27,7 @@ namespace SeeMore
                         case "System.Byte": return new ImageUInt8HSV(width, height) as Image<T>;
                         case "System.UInt16": return new ImageUInt16HSV(width, height) as Image<T>;
                         case "System.UInt32": return new ImageUInt32HSV(width, height) as Image<T>;
-                        case "System.Double": return null; //TODO
+                        case "System.Double": return new ImageDoubleHSV(width, height) as Image<T>;
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
                 case ColorModel.CMYK:
@@ -37,7 +36,7 @@ namespace SeeMore
                         case "System.Byte": return new ImageUInt8CMYK(width, height) as Image<T>;
                         case "System.UInt16": return new ImageUInt16CMYK(width, height) as Image<T>;
                         case "System.UInt32": return new ImageUInt32CMYK(width, height) as Image<T>;
-                        case "System.Double": return null; //TODO
+                        case "System.Double": return new ImageDoubleCMYK(width, height) as Image<T>;
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
                 case ColorModel.GRAY:
@@ -46,7 +45,7 @@ namespace SeeMore
                         case "System.Byte": return new ImageUInt8Gray(width, height) as Image<T>;
                         case "System.UInt16": return new ImageUInt16Gray(width, height) as Image<T>;
                         case "System.UInt32": return new ImageUInt32Gray(width, height) as Image<T>;
-                        case "System.Double": return null; //TODO
+                        case "System.Double": return new ImageDoubleGray(width, height) as Image<T>;
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
             }

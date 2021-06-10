@@ -70,7 +70,19 @@
 
         public override Image<double> ToDouble()
         {
-            throw new System.NotImplementedException();
+            ImageDoubleCMYK doubleImage = (ImageDoubleCMYK)ImageFactory.Create<double>(Width, Height, GetColorModel());
+            double divider = byte.MaxValue + 1;
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    doubleImage.C[x, y] = C[x, y] / divider;
+                    doubleImage.M[x, y] = M[x, y] / divider;
+                    doubleImage.Y[x, y] = Y[x, y] / divider;
+                    doubleImage.K[x, y] = K[x, y] / divider;
+                }
+            }
+            return doubleImage;
         }
 
         public override DataType GetDataType()

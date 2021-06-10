@@ -47,7 +47,16 @@
 
         public override Image<double> ToDouble()
         {
-            throw new System.NotImplementedException();
+            ImageDoubleGray doubleImage = (ImageDoubleGray)ImageFactory.Create<double>(Width, Height, GetColorModel());
+            double divider = ushort.MaxValue + 1;
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    doubleImage.Gray[x, y] = Gray[x, y] / divider;
+                }
+            }
+            return doubleImage;
         }
 
         public override DataType GetDataType()

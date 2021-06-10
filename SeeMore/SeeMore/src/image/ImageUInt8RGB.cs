@@ -117,7 +117,18 @@ namespace SeeMore
 
         public override Image<double> ToDouble()
         {
-            throw new NotImplementedException();
+            ImageDoubleRGB doubleImage = (ImageDoubleRGB)ImageFactory.Create<double>(Width, Height, GetColorModel());
+            double divider = byte.MaxValue + 1;
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    doubleImage.R[x, y] = R[x, y] / divider;
+                    doubleImage.G[x, y] = G[x, y] / divider;
+                    doubleImage.B[x, y] = B[x, y] / divider;
+                }
+            }
+            return doubleImage;
         }
 
         public override DataType GetDataType()

@@ -12,21 +12,7 @@
 
         public override ImageRGB<ushort> ToRGB()
         {
-            ImageRGB<ushort> rgbImage = new ImageUInt16RGB(Width, Height);
-            for (int x = 0; x < Width; x++)
-            {
-                for (int y = 0; y < Height; y++)
-                {
-                    ushort c = C[x, y];
-                    ushort m = M[x, y];
-                    ushort ye = Y[x, y];
-                    ushort k = K[x, y];
-                    rgbImage.R[x, y] = (ushort)(ushort.MaxValue * (1 - ((double)c / ushort.MaxValue)) * (1 - (double)k / ushort.MaxValue));
-                    rgbImage.G[x, y] = (ushort)(ushort.MaxValue * (1 - ((double)m / ushort.MaxValue)) * (1 - (double)k / ushort.MaxValue));
-                    rgbImage.B[x, y] = (ushort)(ushort.MaxValue * (1 - ((double)ye / ushort.MaxValue)) * (1 - (double)k / ushort.MaxValue));
-                }
-            }
-            return rgbImage;
+            return (ImageUInt16RGB)ToDouble().ToRGB().ToUInt16();
         }
 
         public override Image<byte> ToUInt8()
@@ -70,7 +56,19 @@
 
         public override Image<double> ToDouble()
         {
-            throw new System.NotImplementedException();
+            ImageDoubleCMYK doubleImage = (ImageDoubleCMYK)ImageFactory.Create<double>(Width, Height, GetColorModel());
+            double divider = ushort.MaxValue + 1;
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    doubleImage.C[x, y] = C[x, y] / divider;
+                    doubleImage.M[x, y] = M[x, y] / divider;
+                    doubleImage.Y[x, y] = Y[x, y] / divider;
+                    doubleImage.K[x, y] = K[x, y] / divider;
+                }
+            }
+            return doubleImage;
         }
 
         public override DataType GetDataType()

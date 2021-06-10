@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SeeMore
+﻿namespace SeeMore
 {
     public class ImageUInt32RGB : ImageRGB<uint>
     {
@@ -13,70 +11,12 @@ namespace SeeMore
 
         public override ImageHSV<uint> ToHSV()
         {
-            ImageHSV<uint> hsvImage = new ImageUInt32HSV(Width, Height);
-            long multiplier = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
-            for (int x = 0; x < Width; x++)
-            {
-                for (int y = 0; y < Height; y++)
-                {
-                    uint r = R[x, y];
-                    uint g = G[x, y];
-                    uint b = B[x, y];
-                    uint min = Math.Min(r, Math.Min(g, b));
-                    uint max = Math.Max(r, Math.Max(g, b));
-                    hsvImage.V[x, y] = max;
-                    if (max == 0)
-                    {
-                        hsvImage.S[x, y] = 0;
-                        hsvImage.H[x, y] = 0;
-                        continue;
-                    }
-                    uint diff = max - min;
-                    uint saturation = (uint)(uint.MaxValue * (long)diff / max);
-                    hsvImage.S[x, y] = saturation;
-                    if (saturation == 0)
-                    {
-                        hsvImage.H[x, y] = 0;
-                        continue;
-                    }
-                    if (max == r)
-                        hsvImage.H[x, y] = (uint)(43 * (g - b) / diff * multiplier);
-                    else if (max == g)
-                        hsvImage.H[x, y] = (uint)((85 + 43 * (b - r) / diff) * multiplier);
-                    else
-                        hsvImage.H[x, y] = (uint)((171 + 43 * (r - g) / diff) * multiplier);
-                }
-            }
-            return hsvImage;
+            return (ImageUInt32HSV)ToDouble().ToHSV().ToUInt32();
         }
 
         public override ImageCMYK<uint> ToCMYK()
         {
-            ImageCMYK<uint> cmykImage = new ImageUInt32CMYK(Width, Height);
-            for (int x = 0; x < Width; x++)
-            {
-                for (int y = 0; y < Height; y++)
-                {
-                    uint r = R[x, y];
-                    uint g = G[x, y];
-                    uint b = B[x, y];
-                    uint max = Math.Max(r, Math.Max(g, b));
-                    if (max == 0)
-                    {
-                        cmykImage.C[x, y] = 0;
-                        cmykImage.M[x, y] = 0;
-                        cmykImage.Y[x, y] = 0;
-                        cmykImage.K[x, y] = ushort.MaxValue;
-                        continue;
-                    }
-                    double k = 1 - ((double)max / uint.MaxValue);
-                    cmykImage.K[x, y] = (uint)(uint.MaxValue * k);
-                    cmykImage.C[x, y] = (uint)(uint.MaxValue * ((1 - ((double)r / uint.MaxValue) - k) / (1 - k)));
-                    cmykImage.M[x, y] = (uint)(uint.MaxValue * ((1 - ((double)g / uint.MaxValue) - k) / (1 - k)));
-                    cmykImage.Y[x, y] = (uint)(uint.MaxValue * ((1 - ((double)b / uint.MaxValue) - k) / (1 - k)));
-                }
-            }
-            return cmykImage;
+            return (ImageUInt32CMYK)ToDouble().ToCMYK().ToUInt32();
         }
 
         public override Image<byte> ToUInt8()
@@ -118,7 +58,18 @@ namespace SeeMore
 
         public override Image<double> ToDouble()
         {
-            throw new NotImplementedException();
+            ImageDoubleRGB doubleImage = (ImageDoubleRGB)ImageFactory.Create<double>(Width, Height, GetColorModel());
+            double divider = (double)uint.MaxValue + 1;
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    doubleImage.R[x, y] = R[x, y] / divider;
+                    doubleImage.G[x, y] = G[x, y] / divider;
+                    doubleImage.B[x, y] = B[x, y] / divider;
+                }
+            }
+            return doubleImage;
         }
 
         public override DataType GetDataType()
