@@ -2,7 +2,7 @@
 
 namespace SeeMore
 {
-    public class ImageDoubleRGB : ImageRGB<double>
+    internal class ImageDoubleRGB : ImageRGB<double>
     {
         public ImageDoubleRGB(uint width, uint height) : base(width, height)
         {
@@ -11,7 +11,7 @@ namespace SeeMore
             B = new ChannelDouble(width, height);
         }
 
-        public override ImageHSV<double> ToHSV()
+        public override Image ToHSV()
         {
             ImageHSV<double> hsvImage = new ImageDoubleHSV(Width, Height);
             for (int x = 0; x < Width; x++)
@@ -60,7 +60,7 @@ namespace SeeMore
             return hsvImage;
         }
 
-        public override ImageCMYK<double> ToCMYK()
+        public override Image ToCMYK()
         {
             ImageCMYK<double> cmykImage = new ImageDoubleCMYK(Width, Height);
             for (int x = 0; x < Width; x++)
@@ -81,7 +81,7 @@ namespace SeeMore
             return cmykImage;
         }
 
-        public override Image<byte> ToUInt8()
+        public override Image ToUInt8()
         {
             ImageUInt8RGB uint8Image = new ImageUInt8RGB(Width, Height);
             double multiplier = (double)byte.MaxValue + 1;
@@ -97,7 +97,7 @@ namespace SeeMore
             return uint8Image;
         }
 
-        public override Image<ushort> ToUInt16()
+        public override Image ToUInt16()
         {
             ImageUInt16RGB uint16Image = new ImageUInt16RGB(Width, Height);
             double multiplier = (double)ushort.MaxValue + 1;
@@ -113,7 +113,7 @@ namespace SeeMore
             return uint16Image;
         }
 
-        public override Image<uint> ToUInt32()
+        public override Image ToUInt32()
         {
             ImageUInt32RGB uint32Image = new ImageUInt32RGB(Width, Height);
             double multiplier = (double)uint.MaxValue + 1;
@@ -129,7 +129,7 @@ namespace SeeMore
             return uint32Image;
         }
 
-        public override Image<double> ToDouble()
+        public override Image ToDouble()
         {
             return (ImageDoubleRGB)Clone();
         }

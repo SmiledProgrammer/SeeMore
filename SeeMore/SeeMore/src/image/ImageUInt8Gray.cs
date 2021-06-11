@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public class ImageUInt8Gray : ImageGray<byte>
+    internal class ImageUInt8Gray : ImageGray<byte>
     {
         public ImageUInt8Gray(uint width, uint height) : base(width, height)
         {
@@ -12,14 +12,14 @@
             Gray[x, y] = (byte)value;
         }
 
-        public override Image<byte> ToUInt8()
+        public override Image ToUInt8()
         {
-            return (ImageUInt8Gray)Clone();
+            return Clone();
         }
 
-        public override Image<ushort> ToUInt16()
+        public override Image ToUInt16()
         {
-            ImageUInt16Gray uint16Image = (ImageUInt16Gray)ImageFactory.Create<ushort>(Width, Height, GetColorModel());
+            ImageUInt16Gray uint16Image = new ImageUInt16Gray(Width, Height);
             int multiplier = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
             for (int x = 0; x < Width; x++)
             {
@@ -31,9 +31,9 @@
             return uint16Image;
         }
 
-        public override Image<uint> ToUInt32()
+        public override Image ToUInt32()
         {
-            ImageUInt32Gray uint32Image = (ImageUInt32Gray)ImageFactory.Create<uint>(Width, Height, GetColorModel());
+            ImageUInt32Gray uint32Image = new ImageUInt32Gray(Width, Height);
             long multiplier = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
             for (int x = 0; x < Width; x++)
             {
@@ -45,9 +45,9 @@
             return uint32Image;
         }
 
-        public override Image<double> ToDouble()
+        public override Image ToDouble()
         {
-            ImageDoubleGray doubleImage = (ImageDoubleGray)ImageFactory.Create<double>(Width, Height, GetColorModel());
+            ImageDoubleGray doubleImage = new ImageDoubleGray(Width, Height);
             double divider = byte.MaxValue + 1;
             for (int x = 0; x < Width; x++)
             {

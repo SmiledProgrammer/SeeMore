@@ -2,7 +2,7 @@
 
 namespace SeeMore
 {
-    public class ChannelUInt16 : Channel<ushort>
+    internal class ChannelUInt16 : Channel<ushort>
     {
         public ChannelUInt16(uint width, uint height) : base(width, height)
         { }

@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public class ImageDoubleGray : ImageGray<double>
+    internal class ImageDoubleGray : ImageGray<double>
     {
         public ImageDoubleGray(uint width, uint height) : base(width, height)
         {
@@ -12,7 +12,7 @@
             Gray[x, y] = value;
         }
 
-        public override Image<byte> ToUInt8()
+        public override Image ToUInt8()
         {
             ImageUInt8Gray uint8Image = new ImageUInt8Gray(Width, Height);
             double multiplier = (double)byte.MaxValue + 1;
@@ -26,7 +26,7 @@
             return uint8Image;
         }
 
-        public override Image<ushort> ToUInt16()
+        public override Image ToUInt16()
         {
             ImageUInt16Gray uint16Image = new ImageUInt16Gray(Width, Height);
             double multiplier = (double)ushort.MaxValue + 1;
@@ -40,7 +40,7 @@
             return uint16Image;
         }
 
-        public override Image<uint> ToUInt32()
+        public override Image ToUInt32()
         {
             ImageUInt32Gray uint32Image = new ImageUInt32Gray(Width, Height);
             double multiplier = (double)uint.MaxValue + 1;
@@ -54,9 +54,9 @@
             return uint32Image;
         }
 
-        public override Image<double> ToDouble()
+        public override Image ToDouble()
         {
-            return (ImageDoubleGray)Clone();
+            return Clone();
         }
 
         public override DataType GetDataType()

@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace SeeMore
+﻿namespace SeeMore
 {
-    public abstract class ImageCMYK<T> : Image<T>
+    internal abstract class ImageCMYK<T> : GenericImage<T>
     {
         public Channel<T> C { get; set; }
         public Channel<T> M { get; set; }
@@ -12,9 +10,9 @@ namespace SeeMore
         protected ImageCMYK(uint width, uint height) : base(width, height)
         { }
 
-        public override Image<T> Clone()
+        public override Image Clone()
         {
-            ImageCMYK<T> clone = (ImageCMYK<T>)ImageFactory.Create<T>(Width, Height, ColorModel.CMYK);
+            ImageCMYK<T> clone = (ImageCMYK<T>)ImageFactory.Create(Width, Height, ColorModel.CMYK, GetDataType());
             clone.C = C.Clone();
             clone.M = M.Clone();
             clone.Y = Y.Clone();
@@ -22,10 +20,10 @@ namespace SeeMore
             return clone;
         }
 
-        public override Image<T> Add(Image<T> other)
+        internal override GenericImage<T> Add(GenericImage<T> other)
         {
-            ImageCMYK<T> outcome = (ImageCMYK<T>)ImageFactory.Create<T>(Width, Height, GetColorModel());
-            ImageCMYK<T> otherCMYK = other.ToCMYK();
+            ImageCMYK<T> outcome = (ImageCMYK<T>)ImageFactory.Create(Width, Height, GetColorModel(), GetDataType());
+            ImageCMYK<T> otherCMYK = (ImageCMYK<T>)other.ToCMYK();
             outcome.C = C.Add(otherCMYK.C);
             outcome.M = M.Add(otherCMYK.M);
             outcome.Y = Y.Add(otherCMYK.Y);
@@ -33,22 +31,22 @@ namespace SeeMore
             return outcome;
         }
 
-        public override ImageHSV<T> ToHSV()
+        public override Image ToHSV()
         {
             return ToRGB().ToHSV();
         }
 
-        public override ImageCMYK<T> ToCMYK()
+        public override Image ToCMYK()
         {
-            return (ImageCMYK<T>)Clone();
+            return Clone();
         }
 
-        public override ImageGray<T> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
+        public override Image ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
         {
             return ToRGB().ToGray(method);
         }
 
-        internal override void Average(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Average(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
@@ -58,7 +56,7 @@ namespace SeeMore
             castedOutputImage.K.Average(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Median(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Median(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
@@ -68,7 +66,7 @@ namespace SeeMore
             castedOutputImage.K.Median(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Maximum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Maximum(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
@@ -78,7 +76,7 @@ namespace SeeMore
             castedOutputImage.K.Maximum(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Minimum(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;
@@ -88,7 +86,7 @@ namespace SeeMore
             castedOutputImage.K.Minimum(castedOriginalImage.K, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Range(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageCMYK<T> castedOriginalImage = (ImageCMYK<T>)originalImage;
             ImageCMYK<T> castedOutputImage = (ImageCMYK<T>)outputImage;

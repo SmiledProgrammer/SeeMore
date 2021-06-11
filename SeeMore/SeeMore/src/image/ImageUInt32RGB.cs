@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public class ImageUInt32RGB : ImageRGB<uint>
+    internal class ImageUInt32RGB : ImageRGB<uint>
     {
         public ImageUInt32RGB(uint width, uint height) : base(width, height)
         {
@@ -9,17 +9,17 @@
             B = new ChannelUInt32(width, height);
         }
 
-        public override ImageHSV<uint> ToHSV()
+        public override Image ToHSV()
         {
-            return (ImageUInt32HSV)ToDouble().ToHSV().ToUInt32();
+            return ToDouble().ToHSV().ToUInt32();
         }
 
-        public override ImageCMYK<uint> ToCMYK()
+        public override Image ToCMYK()
         {
-            return (ImageUInt32CMYK)ToDouble().ToCMYK().ToUInt32();
+            return ToDouble().ToCMYK().ToUInt32();
         }
 
-        public override Image<byte> ToUInt8()
+        public override Image ToUInt8()
         {
             ImageUInt8RGB uint8Image = new ImageUInt8RGB(Width, Height);
             long divider = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
@@ -35,7 +35,7 @@
             return uint8Image;
         }
 
-        public override Image<ushort> ToUInt16()
+        public override Image ToUInt16()
         {
             ImageUInt16RGB uint16Image = new ImageUInt16RGB(Width, Height);
             long divider = ((long)uint.MaxValue + 1) / (ushort.MaxValue + 1);
@@ -51,14 +51,14 @@
             return uint16Image;
         }
 
-        public override Image<uint> ToUInt32()
+        public override Image ToUInt32()
         {
-            return (ImageUInt32RGB)Clone();
+            return Clone();
         }
 
-        public override Image<double> ToDouble()
+        public override Image ToDouble()
         {
-            ImageDoubleRGB doubleImage = (ImageDoubleRGB)ImageFactory.Create<double>(Width, Height, GetColorModel());
+            ImageDoubleRGB doubleImage = new ImageDoubleRGB(Width, Height);
             double divider = (double)uint.MaxValue + 1;
             for (int x = 0; x < Width; x++)
             {

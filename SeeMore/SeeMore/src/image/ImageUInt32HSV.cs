@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public class ImageUInt32HSV : ImageHSV<uint>
+    internal class ImageUInt32HSV : ImageHSV<uint>
     {
         public ImageUInt32HSV(uint width, uint height) : base(width, height)
         {
@@ -9,12 +9,12 @@
             V = new ChannelUInt32(width, height);
         }
 
-        public override ImageRGB<uint> ToRGB()
+        public override Image ToRGB()
         {
-            return (ImageUInt32RGB)ToDouble().ToRGB().ToUInt32();
+            return ToDouble().ToRGB().ToUInt32();
         }
 
-        public override Image<byte> ToUInt8()
+        public override Image ToUInt8()
         {
             ImageUInt8HSV uint8Image = new ImageUInt8HSV(Width, Height);
             long divider = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
@@ -30,7 +30,7 @@
             return uint8Image;
         }
 
-        public override Image<ushort> ToUInt16()
+        public override Image ToUInt16()
         {
             ImageUInt16HSV uint16Image = new ImageUInt16HSV(Width, Height);
             long divider = ((long)uint.MaxValue + 1) / (ushort.MaxValue + 1);
@@ -46,14 +46,14 @@
             return uint16Image;
         }
 
-        public override Image<uint> ToUInt32()
+        public override Image ToUInt32()
         {
-            return (ImageUInt32HSV)Clone();
+            return Clone();
         }
 
-        public override Image<double> ToDouble()
+        public override Image ToDouble()
         {
-            ImageDoubleHSV doubleImage = (ImageDoubleHSV)ImageFactory.Create<double>(Width, Height, GetColorModel());
+            ImageDoubleHSV doubleImage = new ImageDoubleHSV(Width, Height);
             double divider = (double)uint.MaxValue + 1;
             for (int x = 0; x < Width; x++)
             {

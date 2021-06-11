@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public class ImageDoubleCMYK : ImageCMYK<double>
+    internal class ImageDoubleCMYK : ImageCMYK<double>
     {
         public ImageDoubleCMYK(uint width, uint height) : base(width, height)
         {
@@ -10,7 +10,7 @@
             K = new ChannelDouble(width, height);
         }
 
-        public override ImageRGB<double> ToRGB()
+        public override Image ToRGB()
         {
             ImageRGB<double> rgbImage = new ImageDoubleRGB(Width, Height);
             for (int x = 0; x < Width; x++)
@@ -29,7 +29,7 @@
             return rgbImage;
         }
 
-        public override Image<byte> ToUInt8()
+        public override Image ToUInt8()
         {
             ImageUInt8CMYK uint8Image = new ImageUInt8CMYK(Width, Height);
             double multiplier = (double)byte.MaxValue + 1;
@@ -46,7 +46,7 @@
             return uint8Image;
         }
 
-        public override Image<ushort> ToUInt16()
+        public override Image ToUInt16()
         {
             ImageUInt16CMYK uint16Image = new ImageUInt16CMYK(Width, Height);
             double multiplier = (double)ushort.MaxValue + 1;
@@ -63,7 +63,7 @@
             return uint16Image;
         }
 
-        public override Image<uint> ToUInt32()
+        public override Image ToUInt32()
         {
             ImageUInt32CMYK uint32Image = new ImageUInt32CMYK(Width, Height);
             double multiplier = (double)uint.MaxValue + 1;
@@ -80,9 +80,9 @@
             return uint32Image;
         }
 
-        public override Image<double> ToDouble()
+        public override Image ToDouble()
         {
-            return (ImageDoubleCMYK)Clone();
+            return Clone();
         }
 
         public override DataType GetDataType()

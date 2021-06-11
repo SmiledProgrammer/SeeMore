@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public class ImageUInt8HSV : ImageHSV<byte>
+    internal class ImageUInt8HSV : ImageHSV<byte>
     {
         public ImageUInt8HSV(uint width, uint height) : base(width, height)
         {
@@ -9,7 +9,7 @@
             V = new ChannelUInt8(width, height);
         }
 
-        public override ImageRGB<byte> ToRGB()
+        public override Image ToRGB()
         {
             ImageRGB<byte> rgbImage = new ImageUInt8RGB(Width, Height);
             for (int x = 0; x < Width; x++)
@@ -69,14 +69,14 @@
             return rgbImage;
         }
 
-        public override Image<byte> ToUInt8()
+        public override Image ToUInt8()
         {
-            return (ImageUInt8HSV)Clone();
+            return Clone();
         }
 
-        public override Image<ushort> ToUInt16()
+        public override Image ToUInt16()
         {
-            ImageUInt16HSV uint16Image = (ImageUInt16HSV)ImageFactory.Create<ushort>(Width, Height, GetColorModel());
+            ImageUInt16HSV uint16Image = new ImageUInt16HSV(Width, Height);
             int multiplier = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
             for (int x = 0; x < Width; x++)
             {
@@ -90,9 +90,9 @@
             return uint16Image;
         }
 
-        public override Image<uint> ToUInt32()
+        public override Image ToUInt32()
         {
-            ImageUInt32HSV uint32Image = (ImageUInt32HSV)ImageFactory.Create<uint>(Width, Height, GetColorModel());
+            ImageUInt32HSV uint32Image = new ImageUInt32HSV(Width, Height);
             long multiplier = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
             for (int x = 0; x < Width; x++)
             {
@@ -106,9 +106,9 @@
             return uint32Image;
         }
 
-        public override Image<double> ToDouble()
+        public override Image ToDouble()
         {
-            ImageDoubleHSV doubleImage = (ImageDoubleHSV)ImageFactory.Create<double>(Width, Height, GetColorModel());
+            ImageDoubleHSV doubleImage = new ImageDoubleHSV(Width, Height);
             double divider = byte.MaxValue + 1;
             for (int x = 0; x < Width; x++)
             {

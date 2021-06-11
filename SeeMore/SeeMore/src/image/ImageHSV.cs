@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public abstract class ImageHSV<T> : Image<T>
+    internal abstract class ImageHSV<T> : GenericImage<T>
     {
         public Channel<T> H { get; protected set; }
         public Channel<T> S { get; protected set; }
@@ -9,41 +9,41 @@
         protected ImageHSV(uint width, uint height) : base(width, height)
         { }
 
-        public override Image<T> Clone()
+        public override Image Clone()
         {
-            ImageHSV<T> clone = (ImageHSV<T>)ImageFactory.Create<T>(Width, Height, ColorModel.HSV);
+            ImageHSV<T> clone = (ImageHSV<T>)ImageFactory.Create(Width, Height, ColorModel.HSV, GetDataType());
             clone.H = H.Clone();
             clone.S = S.Clone();
             clone.V = V.Clone();
             return clone;
         }
 
-        public override Image<T> Add(Image<T> other)
+        internal override GenericImage<T> Add(GenericImage<T> other)
         {
-            ImageHSV<T> outcome = (ImageHSV<T>)ImageFactory.Create<T>(Width, Height, GetColorModel());
-            ImageHSV<T> otherHSV = other.ToHSV();
+            ImageHSV<T> outcome = (ImageHSV<T>)ImageFactory.Create(Width, Height, GetColorModel(), GetDataType());
+            ImageHSV<T> otherHSV = (ImageHSV<T>)other.ToHSV();
             outcome.H = H.Add(otherHSV.H);
             outcome.S = S.Add(otherHSV.S);
             outcome.V = V.Add(otherHSV.V);
             return outcome;
         }
 
-        public override ImageHSV<T> ToHSV()
+        public override Image ToHSV()
         {
-            return (ImageHSV<T>)Clone();
+            return Clone();
         }
 
-        public override ImageCMYK<T> ToCMYK()
+        public override Image ToCMYK()
         {
             return ToRGB().ToCMYK();
         }
 
-        public override ImageGray<T> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
+        public override Image ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
         {
             return ToRGB().ToGray(method);
         }
 
-        internal override void Average(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Average(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageHSV<T> castedOriginalImage = (ImageHSV<T>)originalImage;
             ImageHSV<T> castedOutputImage = (ImageHSV<T>)outputImage;
@@ -52,7 +52,7 @@
             castedOutputImage.V.Average(castedOriginalImage.V, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Median(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Median(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageHSV<T> castedOriginalImage = (ImageHSV<T>)originalImage;
             ImageHSV<T> castedOutputImage = (ImageHSV<T>)outputImage;
@@ -61,7 +61,7 @@
             castedOutputImage.V.Median(castedOriginalImage.V, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Maximum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Maximum(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageHSV<T> castedOriginalImage = (ImageHSV<T>)originalImage;
             ImageHSV<T> castedOutputImage = (ImageHSV<T>)outputImage;
@@ -70,7 +70,7 @@
             castedOutputImage.V.Maximum(castedOriginalImage.V, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Minimum(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageHSV<T> castedOriginalImage = (ImageHSV<T>)originalImage;
             ImageHSV<T> castedOutputImage = (ImageHSV<T>)outputImage;
@@ -79,7 +79,7 @@
             castedOutputImage.V.Minimum(castedOriginalImage.V, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Range(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageHSV<T> castedOriginalImage = (ImageHSV<T>)originalImage;
             ImageHSV<T> castedOutputImage = (ImageHSV<T>)outputImage;

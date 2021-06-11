@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public abstract class ImageGray<T> : Image<T>
+    internal abstract class ImageGray<T> : GenericImage<T>
     {
         public Channel<T> Gray { get; set; }
 
@@ -9,24 +9,24 @@
 
         public abstract void SetPixelValueFromDouble(int x, int y, double value);
 
-        public override Image<T> Clone()
+        public override Image Clone()
         {
-            ImageGray<T> clone = (ImageGray<T>)ImageFactory.Create<T>(Width, Height, ColorModel.GRAY);
+            ImageGray<T> clone = (ImageGray<T>)ImageFactory.Create(Width, Height, ColorModel.GRAY, GetDataType());
             clone.Gray = Gray.Clone();
             return clone;
         }
 
-        public override Image<T> Add(Image<T> other)
+        internal override GenericImage<T> Add(GenericImage<T> other)
         {
-            ImageGray<T> outcome = (ImageGray<T>)ImageFactory.Create<T>(Width, Height, GetColorModel());
-            ImageGray<T> otherGray = other.ToGray();
+            ImageGray<T> outcome = (ImageGray<T>)ImageFactory.Create(Width, Height, GetColorModel(), GetDataType());
+            ImageGray<T> otherGray = (ImageGray<T>)other.ToGray();
             outcome.Gray = Gray.Add(otherGray.Gray);
             return outcome;
         }
 
-        public override ImageRGB<T> ToRGB()
+        public override Image ToRGB()
         {
-            ImageRGB<T> result = (ImageRGB<T>)ImageFactory.Create<T>(Width, Height, ColorModel.RGB);
+            ImageRGB<T> result = (ImageRGB<T>)ImageFactory.Create(Width, Height, ColorModel.RGB, GetDataType());
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
@@ -39,14 +39,14 @@
             return result;
         }
 
-        public override ImageHSV<T> ToHSV()
+        public override Image ToHSV()
         {
             return ToRGB().ToHSV();
         }
 
-        public override ImageCMYK<T> ToCMYK()
+        public override Image ToCMYK()
         {
-            ImageCMYK<T> result = (ImageCMYK<T>)ImageFactory.Create<T>(Width, Height, ColorModel.CMYK);
+            ImageCMYK<T> result = (ImageCMYK<T>)ImageFactory.Create(Width, Height, ColorModel.CMYK, GetDataType());
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
@@ -60,40 +60,40 @@
             return result;
         }
 
-        public override ImageGray<T> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
+        public override Image ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
         {
-            return (ImageGray<T>)Clone();
+            return Clone();
         }
 
-        internal override void Average(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Average(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageGray<T> castedOriginalImage = (ImageGray<T>)originalImage;
             ImageGray<T> castedOutputImage = (ImageGray<T>)outputImage;
             castedOutputImage.Gray.Average(castedOriginalImage.Gray, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Median(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Median(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageGray<T> castedOriginalImage = (ImageGray<T>)originalImage;
             ImageGray<T> castedOutputImage = (ImageGray<T>)outputImage;
             castedOutputImage.Gray.Median(castedOriginalImage.Gray, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Maximum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Maximum(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageGray<T> castedOriginalImage = (ImageGray<T>)originalImage;
             ImageGray<T> castedOutputImage = (ImageGray<T>)outputImage;
             castedOutputImage.Gray.Maximum(castedOriginalImage.Gray, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Minimum(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageGray<T> castedOriginalImage = (ImageGray<T>)originalImage;
             ImageGray<T> castedOutputImage = (ImageGray<T>)outputImage;
             castedOutputImage.Gray.Minimum(castedOriginalImage.Gray, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Range(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageGray<T> castedOriginalImage = (ImageGray<T>)originalImage;
             ImageGray<T> castedOutputImage = (ImageGray<T>)outputImage;

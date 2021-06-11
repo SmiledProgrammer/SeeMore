@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public class ImageUInt16RGB : ImageRGB<ushort>
+    internal class ImageUInt16RGB : ImageRGB<ushort>
     {
         public ImageUInt16RGB(uint width, uint height) : base(width, height)
         {
@@ -9,17 +9,17 @@
             B = new ChannelUInt16(width, height);
         }
 
-        public override ImageHSV<ushort> ToHSV()
+        public override Image ToHSV()
         {
-            return (ImageUInt16HSV)ToDouble().ToHSV().ToUInt16();
+            return ToDouble().ToHSV().ToUInt16();
         }
 
-        public override ImageCMYK<ushort> ToCMYK()
+        public override Image ToCMYK()
         {
-            return (ImageUInt16CMYK)ToDouble().ToCMYK().ToUInt16();
+            return ToDouble().ToCMYK().ToUInt16();
         }
 
-        public override Image<byte> ToUInt8()
+        public override Image ToUInt8()
         {
             ImageUInt8RGB uint8Image = new ImageUInt8RGB(Width, Height);
             int divider = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
@@ -35,14 +35,14 @@
             return uint8Image;
         }
 
-        public override Image<ushort> ToUInt16()
+        public override Image ToUInt16()
         {
-            return (ImageUInt16RGB)Clone();
+            return Clone();
         }
 
-        public override Image<uint> ToUInt32()
+        public override Image ToUInt32()
         {
-            ImageUInt32RGB uint32Image = (ImageUInt32RGB)ImageFactory.Create<uint>(Width, Height, GetColorModel());
+            ImageUInt32RGB uint32Image = new ImageUInt32RGB(Width, Height);
             long multiplier = ((long)uint.MaxValue + 1) / (ushort.MaxValue + 1);
             for (int x = 0; x < Width; x++)
             {
@@ -56,9 +56,9 @@
             return uint32Image;
         }
 
-        public override Image<double> ToDouble()
+        public override Image ToDouble()
         {
-            ImageDoubleRGB doubleImage = (ImageDoubleRGB)ImageFactory.Create<double>(Width, Height, GetColorModel());
+            ImageDoubleRGB doubleImage = new ImageDoubleRGB(Width, Height);
             double divider = ushort.MaxValue + 1;
             for (int x = 0; x < Width; x++)
             {

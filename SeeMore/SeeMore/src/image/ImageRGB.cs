@@ -2,7 +2,7 @@
 
 namespace SeeMore
 {
-    public abstract class ImageRGB<T> : Image<T>
+    internal abstract class ImageRGB<T> : GenericImage<T>
     {
         public Channel<T> R { get; set; }
         public Channel<T> G { get; set; }
@@ -11,33 +11,33 @@ namespace SeeMore
         protected ImageRGB(uint width, uint height) : base(width, height)
         { }
 
-        public override Image<T> Clone()
+        public override Image Clone()
         {
-            ImageRGB<T> clone = (ImageRGB<T>)ImageFactory.Create<T>(Width, Height, ColorModel.RGB);
+            ImageRGB<T> clone = (ImageRGB<T>)ImageFactory.Create(Width, Height, ColorModel.RGB, GetDataType());
             clone.R = R.Clone();
             clone.G = G.Clone();
             clone.B = B.Clone();
             return clone;
         }
 
-        public override Image<T> Add(Image<T> other)
+        internal override GenericImage<T> Add(GenericImage<T> other)
         {
-            ImageRGB<T> outcome = (ImageRGB<T>)ImageFactory.Create<T>(Width, Height, GetColorModel());
-            ImageRGB<T> otherRGB = other.ToRGB();
+            ImageRGB<T> outcome = (ImageRGB<T>)ImageFactory.Create(Width, Height, GetColorModel(), GetDataType());
+            ImageRGB<T> otherRGB = (ImageRGB<T>)other.ToRGB();
             outcome.R = R.Add(otherRGB.R);
             outcome.G = G.Add(otherRGB.G);
             outcome.B = B.Add(otherRGB.B);
             return outcome;
         }
 
-        public override ImageRGB<T> ToRGB()
+        public override Image ToRGB()
         {
-            return (ImageRGB<T>)Clone();
+            return Clone();
         }
 
-        public override ImageGray<T> ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
+        public override Image ToGray(GrayscaleConversionMethod method = GrayscaleConversionMethod.ARITHMETIC_MEAN)
         {
-            ImageGray<T> grayImage = (ImageGray<T>)ImageFactory.Create<T>(Width, Height, ColorModel.GRAY);
+            ImageGray<T> grayImage = (ImageGray<T>)ImageFactory.Create(Width, Height, ColorModel.GRAY, GetDataType());
             Func<double, double, double, double> conversionFunction;
             switch (method)
             {
@@ -61,7 +61,7 @@ namespace SeeMore
             return grayImage;
         }
 
-        internal override void Average(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Average(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
@@ -70,7 +70,7 @@ namespace SeeMore
             castedOutputImage.B.Average(castedOriginalImage.B, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Median(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Median(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
@@ -79,7 +79,7 @@ namespace SeeMore
             castedOutputImage.B.Median(castedOriginalImage.B, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Maximum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Maximum(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
@@ -88,7 +88,7 @@ namespace SeeMore
             castedOutputImage.B.Maximum(castedOriginalImage.B, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Minimum(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Minimum(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;
@@ -97,7 +97,7 @@ namespace SeeMore
             castedOutputImage.B.Minimum(castedOriginalImage.B, kernelFunction, x, y, neighborhoodSize);
         }
 
-        internal override void Range(Image<T> originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image<T> outputImage)
+        internal override void Range(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage)
         {
             ImageRGB<T> castedOriginalImage = (ImageRGB<T>)originalImage;
             ImageRGB<T> castedOutputImage = (ImageRGB<T>)outputImage;

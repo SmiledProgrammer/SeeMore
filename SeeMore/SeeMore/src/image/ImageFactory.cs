@@ -5,58 +5,57 @@ namespace SeeMore
 {
     public static class ImageFactory
     {
-        private static string WrongTypeExceptionMessage = "Not supported image data type.";
+        private static readonly string WrongTypeExceptionMessage = "Not supported image data type.";
 
-        public static Image<T> Create<T>(uint width, uint height, ColorModel model = ColorModel.RGB)
+        public static Image Create(uint width, uint height, ColorModel model = ColorModel.RGB, DataType dataType = DataType.UInt8)
         {
-            string type = typeof(T).FullName;
             switch (model)
             {
                 case ColorModel.RGB:
-                    switch (type)
+                    switch (dataType)
                     {
-                        case "System.Byte":  return new ImageUInt8RGB(width, height) as Image<T>;
-                        case "System.UInt16": return new ImageUInt16RGB(width, height) as Image<T>;
-                        case "System.UInt32": return new ImageUInt32RGB(width, height) as Image<T>;
-                        case "System.Double": return new ImageDoubleRGB(width, height) as Image<T>;
+                        case DataType.UInt8: return new ImageUInt8RGB(width, height);
+                        case DataType.UInt16: return new ImageUInt16RGB(width, height);
+                        case DataType.UInt32: return new ImageUInt32RGB(width, height);
+                        case DataType.Double: return new ImageDoubleRGB(width, height);
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
                 case ColorModel.HSV:
-                    switch (type)
+                    switch (dataType)
                     {
-                        case "System.Byte": return new ImageUInt8HSV(width, height) as Image<T>;
-                        case "System.UInt16": return new ImageUInt16HSV(width, height) as Image<T>;
-                        case "System.UInt32": return new ImageUInt32HSV(width, height) as Image<T>;
-                        case "System.Double": return new ImageDoubleHSV(width, height) as Image<T>;
+                        case DataType.UInt8: return new ImageUInt8HSV(width, height);
+                        case DataType.UInt16: return new ImageUInt16HSV(width, height);
+                        case DataType.UInt32: return new ImageUInt32HSV(width, height);
+                        case DataType.Double: return new ImageDoubleHSV(width, height);
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
                 case ColorModel.CMYK:
-                    switch (type)
+                    switch (dataType)
                     {
-                        case "System.Byte": return new ImageUInt8CMYK(width, height) as Image<T>;
-                        case "System.UInt16": return new ImageUInt16CMYK(width, height) as Image<T>;
-                        case "System.UInt32": return new ImageUInt32CMYK(width, height) as Image<T>;
-                        case "System.Double": return new ImageDoubleCMYK(width, height) as Image<T>;
+                        case DataType.UInt8: return new ImageUInt8CMYK(width, height);
+                        case DataType.UInt16: return new ImageUInt16CMYK(width, height);
+                        case DataType.UInt32: return new ImageUInt32CMYK(width, height);
+                        case DataType.Double: return new ImageDoubleCMYK(width, height);
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
                 case ColorModel.GRAY:
-                    switch (type)
+                    switch (dataType)
                     {
-                        case "System.Byte": return new ImageUInt8Gray(width, height) as Image<T>;
-                        case "System.UInt16": return new ImageUInt16Gray(width, height) as Image<T>;
-                        case "System.UInt32": return new ImageUInt32Gray(width, height) as Image<T>;
-                        case "System.Double": return new ImageDoubleGray(width, height) as Image<T>;
+                        case DataType.UInt8: return new ImageUInt8Gray(width, height);
+                        case DataType.UInt16: return new ImageUInt16Gray(width, height);
+                        case DataType.UInt32: return new ImageUInt32Gray(width, height);
+                        case DataType.Double: return new ImageDoubleGray(width, height);
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
             }
             return null;
         }
 
-        public static ImageUInt8RGB LoadFromFile(string filepath)
+        public static Image LoadFromFile(string filepath)
         {
             var image = new MagickImage(filepath);
-            ImageUInt8RGB result = new ImageUInt8RGB((uint)image.Width, (uint)image.Height);
             IPixelCollection<byte> pixelCollection = image.GetPixels();
+            ImageUInt8RGB result = new ImageUInt8RGB((uint)image.Width, (uint)image.Height);
             for (int x = 0; x < image.Width; x++)
             {
                 for (int y = 0; y < image.Height; y++)
@@ -70,8 +69,9 @@ namespace SeeMore
             return result;
         }
 
-        public static void SaveImageToFile(string filepath, ImageUInt8RGB byteRgbImage, MagickFormat format = MagickFormat.Png)
+        public static void SaveImageToFile(string filepath, Image image, MagickFormat format = MagickFormat.Png)
         {
+            ImageUInt8RGB byteRgbImage = (ImageUInt8RGB)image.ToRGB().ToUInt8();
             uint width = byteRgbImage.Width;
             uint height = byteRgbImage.Height;
             byte[,] r = byteRgbImage.R.ToByteArray();

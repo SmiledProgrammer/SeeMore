@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public class ImageUInt32CMYK : ImageCMYK<uint>
+    internal class ImageUInt32CMYK : ImageCMYK<uint>
     {
         public ImageUInt32CMYK(uint width, uint height) : base(width, height)
         {
@@ -10,12 +10,12 @@
             K = new ChannelUInt32(width, height);
         }
 
-        public override ImageRGB<uint> ToRGB()
+        public override Image ToRGB()
         {
-            return (ImageUInt32RGB)ToDouble().ToRGB().ToUInt32();
+            return ToDouble().ToRGB().ToUInt32();
         }
 
-        public override Image<byte> ToUInt8()
+        public override Image ToUInt8()
         {
             ImageUInt8CMYK uint8Image = new ImageUInt8CMYK(Width, Height);
             long divider = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
@@ -32,7 +32,7 @@
             return uint8Image;
         }
 
-        public override Image<ushort> ToUInt16()
+        public override Image ToUInt16()
         {
             ImageUInt16CMYK uint16Image = new ImageUInt16CMYK(Width, Height);
             long divider = ((long)uint.MaxValue + 1) / (ushort.MaxValue + 1);
@@ -49,14 +49,14 @@
             return uint16Image;
         }
 
-        public override Image<uint> ToUInt32()
+        public override Image ToUInt32()
         {
-            return (ImageUInt32CMYK)Clone();
+            return Clone();
         }
 
-        public override Image<double> ToDouble()
+        public override Image ToDouble()
         {
-            ImageDoubleCMYK doubleImage = (ImageDoubleCMYK)ImageFactory.Create<double>(Width, Height, GetColorModel());
+            ImageDoubleCMYK doubleImage = new ImageDoubleCMYK(Width, Height);
             double divider = (double)uint.MaxValue + 1;
             for (int x = 0; x < Width; x++)
             {

@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public class ImageDoubleHSV : ImageHSV<double>
+    internal class ImageDoubleHSV : ImageHSV<double>
     {
         public ImageDoubleHSV(uint width, uint height) : base(width, height)
         {
@@ -9,7 +9,7 @@
             V = new ChannelDouble(width, height);
         }
 
-        public override ImageRGB<double> ToRGB()
+        public override Image ToRGB()
         {
             ImageRGB<double> rgbImage = new ImageDoubleRGB(Width, Height);
             for (int x = 0; x < Width; x++)
@@ -73,7 +73,7 @@
             return rgbImage;
         }
 
-        public override Image<byte> ToUInt8()
+        public override Image ToUInt8()
         {
             ImageUInt8HSV uint8Image = new ImageUInt8HSV(Width, Height);
             double multiplier = (double)byte.MaxValue + 1;
@@ -89,7 +89,7 @@
             return uint8Image;
         }
 
-        public override Image<ushort> ToUInt16()
+        public override Image ToUInt16()
         {
             ImageUInt16HSV uint16Image = new ImageUInt16HSV(Width, Height);
             double multiplier = (double)ushort.MaxValue + 1;
@@ -105,7 +105,7 @@
             return uint16Image;
         }
 
-        public override Image<uint> ToUInt32()
+        public override Image ToUInt32()
         {
             ImageUInt32HSV uint32Image = new ImageUInt32HSV(Width, Height);
             double multiplier = (double)uint.MaxValue + 1;
@@ -121,9 +121,9 @@
             return uint32Image;
         }
 
-        public override Image<double> ToDouble()
+        public override Image ToDouble()
         {
-            return (ImageDoubleHSV)Clone();
+            return Clone();
         }
 
         public override DataType GetDataType()

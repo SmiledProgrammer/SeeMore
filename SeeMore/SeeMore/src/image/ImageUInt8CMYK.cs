@@ -1,6 +1,6 @@
 ﻿namespace SeeMore
 {
-    public class ImageUInt8CMYK : ImageCMYK<byte>
+    internal class ImageUInt8CMYK : ImageCMYK<byte>
     {
         public ImageUInt8CMYK(uint width, uint height) : base(width, height)
         {
@@ -10,7 +10,7 @@
             K = new ChannelUInt8(width, height);
         }
 
-        public override ImageRGB<byte> ToRGB()
+        public override Image ToRGB()
         {
             ImageRGB<byte> rgbImage = new ImageUInt8RGB(Width, Height);
             for (int x = 0; x < Width; x++)
@@ -29,14 +29,14 @@
             return rgbImage;
         }
 
-        public override Image<byte> ToUInt8()
+        public override Image ToUInt8()
         {
-            return (ImageUInt8CMYK)Clone();
+            return Clone();
         }
 
-        public override Image<ushort> ToUInt16()
+        public override Image ToUInt16()
         {
-            ImageUInt16CMYK uint16Image = (ImageUInt16CMYK)ImageFactory.Create<ushort>(Width, Height, GetColorModel());
+            ImageUInt16CMYK uint16Image = new ImageUInt16CMYK(Width, Height);
             int multiplier = (ushort.MaxValue + 1) / (byte.MaxValue + 1);
             for (int x = 0; x < Width; x++)
             {
@@ -51,9 +51,9 @@
             return uint16Image;
         }
 
-        public override Image<uint> ToUInt32()
+        public override Image ToUInt32()
         {
-            ImageUInt32CMYK uint32Image = (ImageUInt32CMYK)ImageFactory.Create<uint>(Width, Height, GetColorModel());
+            ImageUInt32CMYK uint32Image = new ImageUInt32CMYK(Width, Height);
             long multiplier = ((long)uint.MaxValue + 1) / (byte.MaxValue + 1);
             for (int x = 0; x < Width; x++)
             {
@@ -68,9 +68,9 @@
             return uint32Image;
         }
 
-        public override Image<double> ToDouble()
+        public override Image ToDouble()
         {
-            ImageDoubleCMYK doubleImage = (ImageDoubleCMYK)ImageFactory.Create<double>(Width, Height, GetColorModel());
+            ImageDoubleCMYK doubleImage = new ImageDoubleCMYK(Width, Height);
             double divider = byte.MaxValue + 1;
             for (int x = 0; x < Width; x++)
             {
