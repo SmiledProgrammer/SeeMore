@@ -2,10 +2,10 @@
 {
     internal abstract class ImageCMYK<T> : GenericImage<T>
     {
-        public Channel<T> C { get; set; }
-        public Channel<T> M { get; set; }
-        public Channel<T> Y { get; set; }
-        public Channel<T> K { get; set; }
+        public GenericChannel<T> C { get; set; }
+        public GenericChannel<T> M { get; set; }
+        public GenericChannel<T> Y { get; set; }
+        public GenericChannel<T> K { get; set; }
 
         protected ImageCMYK(uint width, uint height) : base(width, height)
         { }
@@ -13,10 +13,10 @@
         public override Image Clone()
         {
             ImageCMYK<T> clone = (ImageCMYK<T>)ImageFactory.Create(Width, Height, ColorModel.CMYK, GetDataType());
-            clone.C = C.Clone();
-            clone.M = M.Clone();
-            clone.Y = Y.Clone();
-            clone.K = K.Clone();
+            clone.C = (GenericChannel<T>)C.Clone();
+            clone.M = (GenericChannel<T>)M.Clone();
+            clone.Y = (GenericChannel<T>)Y.Clone();
+            clone.K = (GenericChannel<T>)K.Clone();
             return clone;
         }
 

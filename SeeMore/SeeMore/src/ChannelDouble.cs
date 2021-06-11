@@ -2,12 +2,12 @@
 
 namespace SeeMore
 {
-    internal class ChannelDouble : Channel<double>
+    internal class ChannelDouble : GenericChannel<double>
     {
         public ChannelDouble(uint width, uint height) : base(width, height)
         { }
 
-        public override Channel<double> Clone()
+        public override Channel Clone()
         {
             ChannelDouble clone = new ChannelDouble(Width, Height);
             for (int x = 0; x < Width; x++)
@@ -20,7 +20,7 @@ namespace SeeMore
             return clone;
         }
 
-        public override Channel<double> Add(Channel<double> other)
+        public override GenericChannel<double> Add(GenericChannel<double> other)
         {
             ChannelDouble outcome = new ChannelDouble(Width, Height);
             for (int x = 0; x < Width; x++)
@@ -40,15 +40,14 @@ namespace SeeMore
 
         public override void Multiply(double factor)
         {
+            factor = Math.Abs(factor);
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
                     double newValue = this[x, y] * factor;
-                    if (newValue > 1.0)
-                    {
-                        newValue = 1.0;
-                    }
+                    if (newValue > 1)
+                        newValue = 1;
                     this[x, y] = newValue;
                 }
             }

@@ -48,7 +48,7 @@ namespace SeeMore
                         default: throw new NotSupportedException(WrongTypeExceptionMessage);
                     }
             }
-            return null;
+            throw new NotSupportedException(WrongTypeExceptionMessage);
         }
 
         public static Image LoadFromFile(string filepath)

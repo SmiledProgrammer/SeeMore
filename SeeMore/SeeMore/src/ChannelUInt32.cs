@@ -2,12 +2,12 @@
 
 namespace SeeMore
 {
-    internal class ChannelUInt32 : Channel<uint>
+    internal class ChannelUInt32 : GenericChannel<uint>
     {
         public ChannelUInt32(uint width, uint height) : base(width, height)
         { }
 
-        public override Channel<uint> Clone()
+        public override Channel Clone()
         {
             ChannelUInt32 clone = new ChannelUInt32(Width, Height);
             for (int x = 0; x < Width; x++)
@@ -20,7 +20,7 @@ namespace SeeMore
             return clone;
         }
 
-        public override Channel<uint> Add(Channel<uint> other)
+        public override GenericChannel<uint> Add(GenericChannel<uint> other)
         {
             ChannelUInt32 outcome = new ChannelUInt32(Width, Height);
             for (int x = 0; x < Width; x++)
@@ -40,15 +40,14 @@ namespace SeeMore
 
         public override void Multiply(double factor)
         {
+            factor = Math.Abs(factor);
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
                     double newValue = this[x, y] * factor;
                     if (newValue > uint.MaxValue)
-                    {
                         newValue = uint.MaxValue;
-                    }
                     this[x, y] = (uint)newValue;
                 }
             }

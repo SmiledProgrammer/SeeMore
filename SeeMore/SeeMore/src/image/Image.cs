@@ -26,6 +26,7 @@
         public abstract Image Filter(Kernel kernel, FilterType filter = FilterType.AVERAGE, EdgeHandling edgeHandling = EdgeHandling.MIRROR_EXTENSION);
         public abstract Image Sobel();
 
+        public abstract Channel GetChannel(ChannelType type);
         public abstract DataType GetDataType();
         public abstract ColorModel GetColorModel();
     }

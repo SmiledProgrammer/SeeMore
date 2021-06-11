@@ -4,9 +4,9 @@ namespace SeeMore
 {
     internal abstract class ImageRGB<T> : GenericImage<T>
     {
-        public Channel<T> R { get; set; }
-        public Channel<T> G { get; set; }
-        public Channel<T> B { get; set; }
+        public GenericChannel<T> R { get; set; }
+        public GenericChannel<T> G { get; set; }
+        public GenericChannel<T> B { get; set; }
 
         protected ImageRGB(uint width, uint height) : base(width, height)
         { }
@@ -14,9 +14,9 @@ namespace SeeMore
         public override Image Clone()
         {
             ImageRGB<T> clone = (ImageRGB<T>)ImageFactory.Create(Width, Height, ColorModel.RGB, GetDataType());
-            clone.R = R.Clone();
-            clone.G = G.Clone();
-            clone.B = B.Clone();
+            clone.R = (GenericChannel<T>)R.Clone();
+            clone.G = (GenericChannel<T>)G.Clone();
+            clone.B = (GenericChannel<T>)B.Clone();
             return clone;
         }
 

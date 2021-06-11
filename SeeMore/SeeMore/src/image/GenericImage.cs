@@ -7,7 +7,7 @@ namespace SeeMore
         protected GenericImage(uint width, uint height) : base(width, height)
         { }
 
-        internal delegate void KernelFunction(Channel<T> channel, uint x, uint y, Action<double> filterFunction);
+        internal delegate void KernelFunction(GenericChannel<T> channel, uint x, uint y, Action<double> filterFunction);
         internal delegate void FilterOperation(Image originalImage, KernelFunction kernelFunction, uint neighborhoodSize, uint x, uint y, Image outputImage);
 
         internal abstract GenericImage<T> Add(GenericImage<T> other);
@@ -54,6 +54,60 @@ namespace SeeMore
             GenericImage<T> horizontalSobel = (GenericImage <T>)input.Filter(KernelFactory.SobelHorizontal(), FilterType.AVERAGE);
             GenericImage<T> outcome = verticalSobel.Add(horizontalSobel);
             return outcome;
+        }
+
+        public override Channel GetChannel(ChannelType type)
+        {
+            int channelCode = (int)type % 10;
+            int desiredColorModelCode = (int)type / 10;
+            int currentColorModelCode = (int)GetColorModel();
+            if (desiredColorModelCode == currentColorModelCode)
+            {
+                switch (GetColorModel())
+                {
+                    case ColorModel.RGB:
+                        switch (channelCode)
+                        {
+                            case 0: return ((ImageRGB<T>)this).R;
+                            case 1: return ((ImageRGB<T>)this).G;
+                            case 2: return ((ImageRGB<T>)this).B;
+                            default: throw new InvalidOperationException();
+                        }
+                    case ColorModel.HSV:
+                        switch (channelCode)
+                        {
+                            case 0: return ((ImageHSV<T>)this).H;
+                            case 1: return ((ImageHSV<T>)this).S;
+                            case 2: return ((ImageHSV<T>)this).V;
+                            default: throw new InvalidOperationException();
+                        }
+                    case ColorModel.CMYK:
+                        switch (channelCode)
+                        {
+                            case 0: return ((ImageCMYK<T>)this).C;
+                            case 1: return ((ImageCMYK<T>)this).M;
+                            case 2: return ((ImageCMYK<T>)this).Y;
+                            case 3: return ((ImageCMYK<T>)this).K;
+                            default: throw new InvalidOperationException();
+                        }
+                    case ColorModel.GRAY:
+                        if (channelCode == 0)
+                            return ((ImageGray<T>)this).Gray;
+                        else
+                            throw new InvalidOperationException();
+                }
+                throw new InvalidOperationException();
+            }
+            else
+            {
+                string channelName = type.ToString("g");
+                string currentColorModelName = GetColorModel().ToString("g");
+                string desiredColorModelName = ((ColorModel)desiredColorModelCode).ToString("g");
+                throw new InvalidOperationException(
+                    $"Cannot get desired channel \"{channelName}\" because color model of the image is {currentColorModelName}.\n" +
+                    $"Convert the image to {desiredColorModelName} first, using: To{desiredColorModelName}()."
+                    );
+            }
         }
 
         private void GetFilterArea(EdgeHandling edgeHandling, uint range, out uint lowerX, out uint upperX, out uint lowerY, out uint upperY)

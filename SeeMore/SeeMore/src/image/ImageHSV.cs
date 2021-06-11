@@ -2,9 +2,9 @@
 {
     internal abstract class ImageHSV<T> : GenericImage<T>
     {
-        public Channel<T> H { get; protected set; }
-        public Channel<T> S { get; protected set; }
-        public Channel<T> V { get; protected set; }
+        public GenericChannel<T> H { get; protected set; }
+        public GenericChannel<T> S { get; protected set; }
+        public GenericChannel<T> V { get; protected set; }
 
         protected ImageHSV(uint width, uint height) : base(width, height)
         { }
@@ -12,9 +12,9 @@
         public override Image Clone()
         {
             ImageHSV<T> clone = (ImageHSV<T>)ImageFactory.Create(Width, Height, ColorModel.HSV, GetDataType());
-            clone.H = H.Clone();
-            clone.S = S.Clone();
-            clone.V = V.Clone();
+            clone.H = (GenericChannel<T>)H.Clone();
+            clone.S = (GenericChannel<T>)S.Clone();
+            clone.V = (GenericChannel<T>)V.Clone();
             return clone;
         }
 

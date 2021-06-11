@@ -2,9 +2,9 @@
 {
     public enum ColorModel
     {
-        RGB,
-        HSV,
-        CMYK,
-        GRAY
+        RGB = 0,
+        HSV = 1,
+        CMYK = 2,
+        GRAY = 3
     }
 }

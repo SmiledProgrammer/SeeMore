@@ -2,7 +2,7 @@
 {
     internal abstract class ImageGray<T> : GenericImage<T>
     {
-        public Channel<T> Gray { get; set; }
+        public GenericChannel<T> Gray { get; set; }
 
         protected ImageGray(uint width, uint height) : base(width, height)
         { }
@@ -12,7 +12,7 @@
         public override Image Clone()
         {
             ImageGray<T> clone = (ImageGray<T>)ImageFactory.Create(Width, Height, ColorModel.GRAY, GetDataType());
-            clone.Gray = Gray.Clone();
+            clone.Gray = (GenericChannel<T>)Gray.Clone();
             return clone;
         }
 
