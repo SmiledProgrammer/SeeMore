@@ -74,7 +74,8 @@ namespace SeeMore
 
         protected override uint ConvertFromDouble(double value)
         {
-            return (uint)(Math.Abs(value) * uint.MaxValue);
+            value = Math.Min(1.0, Math.Max(0.0, value));
+            return (uint)(value * uint.MaxValue);
         }
     }
 }

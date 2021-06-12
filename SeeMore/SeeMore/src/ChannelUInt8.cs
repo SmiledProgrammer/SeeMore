@@ -66,7 +66,8 @@ namespace SeeMore
 
         protected override byte ConvertFromDouble(double value)
         {
-            return (byte)(Math.Abs(value) * byte.MaxValue);
+            value = Math.Min(1.0, Math.Max(0.0, value));
+            return (byte)(value * byte.MaxValue);
         }
     }
 }

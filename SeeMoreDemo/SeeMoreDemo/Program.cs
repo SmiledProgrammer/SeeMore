@@ -20,13 +20,9 @@ namespace SeeMoreDemo
         {
             string inputFile = "D:/Pulpit/Pliki szkolne/Semestr 4/Projekt Indywidualny/SeeMore/SeeMoreDemo/SeeMoreDemo/resources/lenna.png";
             string outputFile = "D:/Pulpit/Pliki szkolne/Semestr 4/Projekt Indywidualny/Output/output.png";
-            var image = ImageFactory.LoadFromFile(inputFile);
-            var outcome = image;
+            Image image = ImageFactory.LoadFromFile(inputFile);
             TestConvertions(image);
-            outcome = outcome.ToHSV();
-            outcome.GetChannel(ChannelType.S).Multiply(1.3);
-            outcome = outcome.ToRGB();
-            outcome.GetChannel(ChannelType.G).Multiply(2.0);
+            Image outcome = image.Filter(kernel: KernelFactory.Neighborhood(KernelSize.SIZE_13x13), filter: FilterType.MEDIAN);
             ImageFactory.SaveImageToFile(outputFile, outcome);
         }
     }

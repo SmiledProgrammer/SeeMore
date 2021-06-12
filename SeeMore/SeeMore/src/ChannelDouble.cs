@@ -74,7 +74,7 @@ namespace SeeMore
 
         protected override double ConvertFromDouble(double value)
         {
-            return Math.Abs(value);
+            return Math.Min(1.0, Math.Max(0.0, value));
         }
     }
 }

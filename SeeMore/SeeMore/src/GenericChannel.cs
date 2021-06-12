@@ -29,64 +29,64 @@ namespace SeeMore
 
         internal void Median(GenericChannel<T> originalChannel, GenericImage<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
         {
-            T[] pixels = new T[kernelSize * kernelSize];
+            uint totalCount = kernelSize * kernelSize;
+            double[] pixels = new double[totalCount];
             byte count = 0;
             Action<double> filterFunction = (p) =>
             {
-                pixels[count] = ConvertFromDouble(p);
+                pixels[count] = p;
                 count++;
             };
             kernelFunction(originalChannel, x, y, filterFunction);
             Array.Sort(pixels);
-            T median = pixels[count / 2];
-            Pixels[x, y] = median;
+            double median = pixels[count / 2] * totalCount;
+            Pixels[x, y] = ConvertFromDouble(median);
         }
 
         internal void Maximum(GenericChannel<T> originalChannel, GenericImage<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
         {
+            uint totalCount = kernelSize * kernelSize;
             double max = 0.0;
             Action<double> filterFunction = (p) =>
             {
                 if (p >= max)
-                {
                     max = p;
-                }
             };
             kernelFunction(originalChannel, x, y, filterFunction);
+            max *= totalCount;
             Pixels[x, y] = ConvertFromDouble(max);
         }
 
         internal void Minimum(GenericChannel<T> originalChannel, GenericImage<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
         {
+            uint totalCount = kernelSize * kernelSize;
             double min = double.MaxValue;
             Action<double> filterFunction = (p) =>
             {
                 if (p <= min)
-                {
                     min = p;
-                }
             };
             kernelFunction(originalChannel, x, y, filterFunction);
+            min *= totalCount;
             Pixels[x, y] = ConvertFromDouble(min);
         }
 
         internal void Range(GenericChannel<T> originalChannel, GenericImage<T>.KernelFunction kernelFunction, uint x, uint y, uint kernelSize)
         {
+            uint totalCount = kernelSize * kernelSize;
             double max = 0.0;
             double min = double.MaxValue;
             Action<double> filterFunction = (p) =>
             {
                 if (p >= max)
-                {
                     max = p;
-                }
+
                 if (p <= min)
-                {
                     min = p;
-                }
             };
             kernelFunction(originalChannel, x, y, filterFunction);
-            Pixels[x, y] = ConvertFromDouble(max - min);
+            double range = (max - min) * totalCount;
+            Pixels[x, y] = ConvertFromDouble(range);
         }
 
         public T this[int x, int y]

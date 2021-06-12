@@ -74,7 +74,8 @@ namespace SeeMore
 
         protected override ushort ConvertFromDouble(double value)
         {
-            return (ushort)(Math.Abs(value) * ushort.MaxValue);
+            value = Math.Min(1.0, Math.Max(0.0, value));
+            return (ushort)(value * ushort.MaxValue);
         }
     }
 }

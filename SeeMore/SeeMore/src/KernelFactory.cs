@@ -65,5 +65,16 @@ namespace SeeMore
             };
             return new Kernel(kernelData, 5).Multiply(1.0 / 256.0);
         }
+
+        public static Kernel Sharpen()
+        {
+            double[,] kernelData =
+            {
+                {  0, -1,  0 },
+                { -1,  5, -1 },
+                {  0, -1,  0 }
+            };
+            return new Kernel(kernelData, 3);
+        }
     }
 }
