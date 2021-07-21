@@ -1,5 +1,5 @@
 # SeeMore
-Biblioteka do przetwarzania obrazów w C#/.NET Core
+Biblioteka do przetwarzania obrazów napisana w C#/.NET Core
 
 Możliwości biblioteki:  
 • Nakładanie na obraz filtrów: uśredniających, medianowych, maksymalnych, minimalnych  
